@@ -86,7 +86,7 @@
     <ModalViewGene />
     <ModalViewSample />
     <ModalViewCompare />
-    <project-results
+    <ProjectResults
       ref="results"
       :height-chart-wrapper="heightChartWrapper"
       :items="items"
