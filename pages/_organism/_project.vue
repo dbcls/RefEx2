@@ -267,11 +267,10 @@
         };
       if (type === 'gene') {
         filters = [description, logMedianFilter, ...filters];
-        store.commit('set_project_filters', filters);
       } else {
         filters.splice(1, 0, logMedianFilter);
-        store.commit('set_project_filters', filters);
       }
+      store.commit('set_project_filters', filters);
       store.commit('set_project_items', {
         items: items,
       });
