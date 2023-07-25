@@ -271,7 +271,6 @@
         filters.splice(1, 0, logMedianFilter);
       }
       store.commit('set_project_filters', filters);
-      store.commit('set_project_items', items);
 
       return {
         filterType: type,
@@ -448,9 +447,6 @@
       currentUrl() {
         return window.location.href;
       },
-    },
-    created() {
-      this.$store.commit('set_project_items', this.items);
     },
     mounted() {
       if (this.isError) return;

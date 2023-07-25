@@ -163,7 +163,6 @@
     computed: {
       ...mapGetters({
         projectResults: 'get_project_results',
-        projectItems: 'get_project_items',
         paginationObject: 'get_project_pagination',
         filters: 'project_filters',
         geneSummarySource: 'gene_summary_source',
@@ -233,7 +232,7 @@
         if (this.currentPageId) ids = [this.currentPageId];
         for (let i = 0; i < ids.length; i++) {
           for (const statName in tmp) {
-            tmp[statName][ids[i]] = this.projectItems[i][statName][itemNum];
+            tmp[statName][ids[i]] = this.items[i][statName][itemNum];
             if (i === ids.length - 1) statData[statName] = tmp[statName];
           }
         }
