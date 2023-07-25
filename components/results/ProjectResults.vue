@@ -233,8 +233,7 @@
         if (this.currentPageId) ids = [this.currentPageId];
         for (let i = 0; i < ids.length; i++) {
           for (const statName in tmp) {
-            tmp[statName][ids[i]] =
-              this.projectItems.items[i][statName][itemNum];
+            tmp[statName][ids[i]] = this.projectItems[i][statName][itemNum];
             if (i === ids.length - 1) statData[statName] = tmp[statName];
           }
         }

@@ -271,9 +271,7 @@
         filters.splice(1, 0, logMedianFilter);
       }
       store.commit('set_project_filters', filters);
-      store.commit('set_project_items', {
-        items: items,
-      });
+      store.commit('set_project_items', items);
 
       return {
         filterType: type,
@@ -306,11 +304,6 @@
         activeDataset: 'active_dataset',
         activeFilter: 'active_filter',
       }),
-      projectItems() {
-        return {
-          items: this.items,
-        };
-      },
       sampleIdKey() {
         return this.filterType === 'gene' ? 'sample_id' : 'id';
       },
@@ -457,7 +450,7 @@
       },
     },
     created() {
-      this.$store.commit('set_project_items', this.projectItems);
+      this.$store.commit('set_project_items', this.items);
     },
     mounted() {
       if (this.isError) return;
