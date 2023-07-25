@@ -180,21 +180,14 @@
               };
               let order = toNum(str);
               if (typeof order === 'string') {
+                const orderMap = {
+                  X: 23,
+                  Y: 24,
+                  MT: 25,
+                  '-': 26,
+                };
                 order.toUpperCase();
-                switch (order) {
-                  case 'X':
-                    order = 23;
-                    break;
-                  case 'Y':
-                    order = 24;
-                    break;
-                  case 'MT':
-                    order = 25;
-                    break;
-                  case '-':
-                    order = 26;
-                    break;
-                }
+                order = orderMap[order];
               }
               return order;
             };
