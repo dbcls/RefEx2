@@ -160,6 +160,8 @@
       let results;
       let resultsAll = {};
       let isError = false;
+      console.log(route);
+      console.log(query);
       const { project, organism } = route.params;
       store.commit('set_specie', organism);
       const { id, type } = query;
@@ -210,21 +212,26 @@
           });
           store.commit('set_project_results_all', resultsAll);
           store.commit('set_active_filter', type);
-          const mapStatData = (data, stat) =>
-            data.refex_info?.map(x => {
-              x = parseFloat(x[stat]);
-              return x;
-            });
+          const getMappedStatData = data => {
+            const mapping = {
+              minData: 'LogMin',
+              firstQuartileData: 'Log1stQu',
+              medianData: 'LogMedian',
+              thirdQuartileData: 'Log3rdQu',
+              maxData: 'LogMax',
+              sdData: 'LogSd',
+              numberOfSamplesData: 'NumberOfSamples',
+            };
+            const mappedData = {};
+            for (const [key, stat] of Object.entries(mapping)) {
+              mappedData[key] = data.refex_info?.map(x => parseFloat(x[stat]));
+            }
+            return mappedData;
+          };
           return {
             id,
             info: data[`${type}_info`],
-            minData: mapStatData(data, 'LogMin'),
-            firstQuartileData: mapStatData(data, 'Log1stQu'),
-            medianData: mapStatData(data, 'LogMedian'),
-            thirdQuartileData: mapStatData(data, 'Log3rdQu'),
-            maxData: mapStatData(data, 'LogMax'),
-            sdData: mapStatData(data, 'LogSd'),
-            numberOfSamplesData: mapStatData(data, 'NumberOfSamples'),
+            ...getMappedStatData(data),
           };
         })
       );
