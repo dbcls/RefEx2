@@ -160,8 +160,6 @@
       let results;
       let resultsAll = {};
       let isError = false;
-      console.log(route);
-      console.log(query);
       const { project, organism } = route.params;
       store.commit('set_specie', organism);
       const { id, type } = query;
