@@ -460,6 +460,10 @@
       });
     },
     updated() {
+      this.$store.commit(
+        'set_project_results',
+        this.projectResultsAll[this.selectedId]
+      );
       this.heightChartWrapper = Math.floor(
         this.$refs.chartWrapper.getBoundingClientRect().height
       );
