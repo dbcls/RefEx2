@@ -34,7 +34,7 @@
             <span v-if="typeof data.refseq.rna === 'object'">
               <span v-for="(rna, index) in data.refseq.rna" :key="index">
                 <a
-                  :href="`https://www.ncbi.nlm.nih.gov/gene/?term=${rna}`"
+                  :href="`https://www.ncbi.nlm.nih.gov/nuccore/${rna}`"
                   target="_blank"
                   >{{ rna }}</a
                 >
@@ -45,7 +45,7 @@
             </span>
             <span v-else>
               <a
-                :href="`https://www.ncbi.nlm.nih.gov/gene/?term=${data.refseq.rna}`"
+                :href="`https://www.ncbi.nlm.nih.gov/nuccore/${data.refseq.rna}`"
                 target="_blank"
                 >{{ data.refseq.rna }}</a
               >
