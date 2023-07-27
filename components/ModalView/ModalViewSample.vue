@@ -34,6 +34,9 @@
             <p class="contents">{{ value }}</p>
           </template>
         </div>
+        <div class="detail_contents">
+          <span>({{ data.NumberOfSamples }} samples)</span>
+        </div>
       </div>
       <p v-else class="loading">Loading...</p>
     </div>
