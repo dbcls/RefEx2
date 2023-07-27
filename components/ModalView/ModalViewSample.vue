@@ -3,7 +3,7 @@
     <div class="modal_wrapper" @click.stop="">
       <div v-if="!isLoading" class="sample_detail">
         <p class="sample_name">
-          {{ ` ${data.Description} (Sample ID: ${id})` }}
+          {{ data.Description }}
         </p>
         <div v-for="(value, key) in data" :key="key" class="detail_contents">
           <template v-if="key === 'RefexSampleId'"
