@@ -6,13 +6,13 @@
           {{ ` ${data.Description} (Sample ID: ${id})` }}
         </p>
         <div v-for="(value, key) in data" :key="key" class="detail_contents">
-          <template
-            v-if="key === 'RefexSampleId' || key === 'Description'"
-          ></template>
-          <template v-else-if="key === 'NumberOfSamples'"
-            ><p class="title">Number of Samples</p>
+          <template v-if="key === 'RefexSampleId'"
+            ><p class="title">RefEx Sample ID</p>
             <p class="contents">{{ value }}</p></template
           >
+          <template
+            v-else-if="key === 'NumberOfSamples' || key === 'Description'"
+          ></template>
           <template v-else-if="key === 'BioSampleId'">
             <p class="title">BioSample ID</p>
             <p class="contents">
