@@ -22,17 +22,44 @@
                 <span>({{ data.NumberOfSamples }} samples)</span>
               </div>
               <p class="contents">
-                <span
-                  v-for="(biosample, index) in JSON.parse(value)"
-                  :key="index"
-                >
-                  <span>{{ biosample }}</span>
+                <template v-if="showAllBiosamples">
+                  <!-- すべてのバイオサンプルを表示 -->
                   <span
-                    v-if="index !== JSON.parse(value).length - 1"
-                    class="comma"
-                    >,</span
+                    v-for="(biosample, index) in JSON.parse(value)"
+                    :key="index"
                   >
-                </span>
+                    {{ biosample }}
+                    <span
+                      v-if="index !== JSON.parse(value).length"
+                      class="comma"
+                      >,</span
+                    >
+                  </span>
+                  <span v-if="JSON.parse(value).length > 10">
+                    <span class="omission" @click="toggleBiosamplesVisibility"
+                      >...less</span
+                    >
+                  </span>
+                </template>
+                <template v-else>
+                  <!-- 最初の10個のバイオサンプルを表示 -->
+                  <span
+                    v-for="(biosample, index) in JSON.parse(value).slice(0, 10)"
+                    :key="index"
+                  >
+                    {{ biosample }}
+                    <span
+                      v-if="index !== 10 || JSON.parse(value).length <= 10"
+                      class="comma"
+                      >,</span
+                    >
+                  </span>
+                  <span v-if="JSON.parse(value).length > 10">
+                    <span class="omission" @click="toggleBiosamplesVisibility"
+                      >more...</span
+                    >
+                  </span>
+                </template>
               </p>
             </template>
 
@@ -61,6 +88,7 @@
       return {
         data: {},
         isLoading: false,
+        showAllBiosamples: false,
       };
     },
     computed: {
@@ -98,6 +126,9 @@
         this.isLoading = false;
       },
     },
+    created() {
+      this.showAllBiosamples = false;
+    },
     methods: {
       ...mapMutations({
         setSampleModal: 'set_sample_modal',
@@ -112,6 +143,9 @@
         const data = Object.values(sampleFilter);
         const match = data.find(item => item.column === column);
         return match ? match.label : column;
+      },
+      toggleBiosamplesVisibility() {
+        this.showAllBiosamples = !this.showAllBiosamples;
       },
     },
   };
@@ -139,8 +173,8 @@
         margin: 0 67px
         margin-top: 30px
         > .detail_contents
-          display: flex
-          align-items: flex-start
+          display: grid
+          grid-template-columns: 1fr 2fr
           margin-bottom: 14px
           > .bio_sample
             > .title
@@ -157,10 +191,12 @@
         .contents
           margin: 0
           font-size: 14px
-          left: 250px
-          position: absolute
           .comma
-            margin: 0 2px 0 -2px
+            margin: 0 2px 0 -4px
+          .omission
+            text-decoration: underline
+            cursor: pointer
+            color: $MAIN_COLOR
     > .loading
       text-align: center
 </style>
