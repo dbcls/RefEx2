@@ -27,13 +27,16 @@
                   <span
                     v-for="(biosample, index) in JSON.parse(value)"
                     :key="index"
-                  >
-                    {{ biosample }}
+                    ><a
+                      :href="`https://www.ncbi.nlm.nih.gov/biosample/?term=${biosample}`"
+                      target="_blank"
+                      >{{ biosample }}</a
+                    >
                     <span
                       v-if="index !== JSON.parse(value).length"
                       class="comma"
-                      >,</span
-                    >
+                      >,
+                    </span>
                   </span>
                   <span v-if="JSON.parse(value).length > 10">
                     <span class="omission" @click="toggleBiosamplesVisibility"
@@ -47,12 +50,16 @@
                     v-for="(biosample, index) in JSON.parse(value).slice(0, 10)"
                     :key="index"
                   >
-                    {{ biosample }}
+                    <a
+                      :href="`https://www.ncbi.nlm.nih.gov/biosample/?term=${biosample}`"
+                      target="_blank"
+                      >{{ biosample }}</a
+                    >
                     <span
                       v-if="index !== 10 || JSON.parse(value).length <= 10"
                       class="comma"
-                      >,</span
-                    >
+                      >,
+                    </span>
                   </span>
                   <span v-if="JSON.parse(value).length > 10">
                     <span class="omission" @click="toggleBiosamplesVisibility"
@@ -180,6 +187,8 @@
             > .title
               font-weight: bold
               margin: 0
+            + .contents
+              line-height: 1.5
           > .title
             margin: 0
             font-size: 14px
@@ -192,7 +201,7 @@
           margin: 0
           font-size: 14px
           .comma
-            margin: 0 2px 0 -4px
+            margin: 0 2px 0 -2px
           .omission
             text-decoration: underline
             cursor: pointer
