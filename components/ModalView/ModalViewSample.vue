@@ -5,37 +5,42 @@
         <p class="sample_name">
           {{ data.Description }}
         </p>
-        <div v-for="(value, key) in data" :key="key" class="detail_contents">
-          <template v-if="key === 'RefexSampleId'"
-            ><p class="title">RefEx Sample ID</p>
-            <p class="contents">{{ value }}</p></template
+        <div class="contents_wrapper">
+          <div
+            v-for="(value, key) in filteredData"
+            :key="key"
+            class="detail_contents"
           >
-          <template
-            v-else-if="key === 'NumberOfSamples' || key === 'Description'"
-          ></template>
-          <template v-else-if="key === 'BioSampleId'">
-            <p class="title">BioSample ID</p>
-            <p class="contents">
-              <span
-                v-for="(biosample, index) in JSON.parse(value)"
-                :key="index"
-              >
-                <span>{{ biosample }}</span>
+            <template v-if="key === 'RefexSampleId'">
+              <p class="title">RefEx Sample ID</p>
+              <p class="contents">{{ value }}</p>
+            </template>
+
+            <template v-else-if="key === 'BioSampleId'">
+              <div class="bio_sample">
+                <p class="title">BioSample ID</p>
+                <span>({{ data.NumberOfSamples }} samples)</span>
+              </div>
+              <p class="contents">
                 <span
-                  v-if="index !== JSON.parse(value).length - 1"
-                  class="comma"
-                  >,</span
+                  v-for="(biosample, index) in JSON.parse(value)"
+                  :key="index"
                 >
-              </span>
-            </p>
-          </template>
-          <template v-else>
-            <p class="title">{{ getColumnLabel(key) }}</p>
-            <p class="contents">{{ value }}</p>
-          </template>
-        </div>
-        <div class="detail_contents">
-          <span>({{ data.NumberOfSamples }} samples)</span>
+                  <span>{{ biosample }}</span>
+                  <span
+                    v-if="index !== JSON.parse(value).length - 1"
+                    class="comma"
+                    >,</span
+                  >
+                </span>
+              </p>
+            </template>
+
+            <template v-else>
+              <p class="title">{{ getColumnLabel(key) }}</p>
+              <p class="contents">{{ value }}</p>
+            </template>
+          </div>
         </div>
       </div>
       <p v-else class="loading">Loading...</p>
@@ -63,6 +68,14 @@
         id: 'sample_modal',
         activeDataset: 'active_dataset',
       }),
+      filteredData() {
+        const filteredKeys = ['NumberOfSamples', 'Description'];
+        return Object.fromEntries(
+          Object.entries(this.data).filter(
+            ([key]) => !filteredKeys.includes(key)
+          )
+        );
+      },
     },
     watch: {
       async id() {
@@ -122,21 +135,30 @@
         border-left: 7px solid $MAIN_COLOR
         padding: 8px 60px
         display: block
-      > .detail_contents
+      > .contents_wrapper
         margin: 0 67px
         margin-top: 30px
-        > .title
-          font-size: 18px
-          font-weight: bold
-          margin: 20px 0 2px
-        > .sub_title
-          font-size: 16px
-          font-weight: bold
-          margin: 10px 0 0px
+        > .detail_contents
+          display: flex
+          align-items: flex-start
+          margin-bottom: 14px
+          > .bio_sample
+            > .title
+              font-weight: bold
+              margin: 0
+          > .title
+            margin: 0
+            font-size: 14px
+            font-weight: bold
+          > .sub_title
+            font-size: 16px
+            font-weight: bold
+            margin: 10px 0 0px
         .contents
-          font-size: 14px
           margin: 0
-          line-height: 20px
+          font-size: 14px
+          left: 250px
+          position: absolute
           .comma
             margin: 0 2px 0 -2px
     > .loading
