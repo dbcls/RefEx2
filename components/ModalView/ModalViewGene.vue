@@ -6,15 +6,18 @@
           class="gene_name"
           :href="`https://www.ncbi.nlm.nih.gov/gene/?term=${data._id}`"
           target="_blank"
-          >{{ `${data.symbol}`
-          }}<span>{{ ` (${data.name}, GeneID: ${data._id})` }}</span></a
+          >{{ `${data.symbol}` }}<span>{{ ` (${data.name})` }}</span></a
         >
-        <div class="detail_contents">
-          <div v-if="data.alias" class="contents_wrapper">
+        <div class="contents_wrapper">
+          <div class="detail_contents">
+            <p class="title">Gene ID</p>
+            <p class="content">{{ data._id }}</p>
+          </div>
+          <div v-if="data.alias" class="detail_contents">
             <p class="title">Alias</p>
             <p
               v-if="data.alias && typeof data.alias === 'object'"
-              class="contents"
+              class="content"
             >
               <span v-for="(alias, index) in data.alias" :key="index">
                 <span>{{ alias }}</span>
@@ -23,21 +26,21 @@
                 >
               </span>
             </p>
-            <p v-else class="contents">
+            <p v-else class="content">
               <span>{{ data.alias }}</span>
             </p>
           </div>
-          <div v-if="data.type_of_gene" class="contents_wrapper">
+          <div v-if="data.type_of_gene" class="detail_contents">
             <p class="title">Type of gene</p>
-            <p class="contents">{{ data.type_of_gene }}</p>
+            <p class="content">{{ data.type_of_gene }}</p>
           </div>
-          <div v-if="data.summary" class="contents_wrapper">
+          <div v-if="data.summary" class="detail_contents">
             <p class="title">Summary</p>
-            <p class="contents">{{ data.summary }}</p>
+            <p class="content">{{ data.summary }}</p>
           </div>
-          <div v-if="data.refseq" class="contents_wrapper">
+          <div v-if="data.refseq" class="detail_contents">
             <p class="title">RefSeq</p>
-            <p v-if="data.refseq" class="contents">
+            <p v-if="data.refseq" class="content">
               <span v-if="typeof data.refseq.rna === 'object'">
                 <span v-for="(rna, index) in data.refseq.rna" :key="index">
                   <a
@@ -61,10 +64,10 @@
               </span>
             </p>
           </div>
-          <div v-if="data.ensembl" class="contents_wrapper">
+          <div v-if="data.ensembl" class="detail_contents">
             <p class="title">Ensembl gene</p>
             <div v-if="data.ensembl">
-              <p v-if="Array.isArray(data.ensembl)" class="contents">
+              <p v-if="Array.isArray(data.ensembl)" class="content">
                 <span v-for="index in data.ensembl.length" :key="index">
                   <a
                     :href="`http://asia.ensembl.org/Multi/Search/Results?q=${
@@ -78,7 +81,7 @@
                   >
                 </span>
               </p>
-              <p v-else class="contents">
+              <p v-else class="content">
                 <span>
                   <a
                     :href="`http://asia.ensembl.org/Multi/Search/Results?q=${data.ensembl.gene};site=enssembl`"
@@ -89,26 +92,34 @@
               </p>
             </div>
           </div>
-          <div v-if="data.go" class="contents_wrapper">
-            <p class="title">Gene Ontology</p>
-            <p class="sub_title">Biological Process</p>
-            <TableGeneOntology
-              :data-source="data.go"
-              :type-upper="'BP'"
-              :type-lower="'bp'"
-            ></TableGeneOntology>
-            <p class="sub_title">Cellular Component</p>
-            <TableGeneOntology
-              :data-source="data.go"
-              :type-upper="'CC'"
-              :type-lower="'cc'"
-            ></TableGeneOntology>
-            <p class="sub_title">Molecular Function</p>
-            <TableGeneOntology
-              :data-source="data.go"
-              :type-upper="'MF'"
-              :type-lower="'mf'"
-            ></TableGeneOntology>
+          <div v-if="data.go">
+            <div class="detail_contents">
+              <p class="title">Gene Ontology</p>
+            </div>
+            <div class="detail_contents">
+              <p class="sub_title">Biological Process</p>
+              <TableGeneOntology
+                :data-source="data.go"
+                :type-upper="'BP'"
+                :type-lower="'bp'"
+              ></TableGeneOntology>
+            </div>
+            <div class="detail_contents">
+              <p class="sub_title">Cellular Component</p>
+              <TableGeneOntology
+                :data-source="data.go"
+                :type-upper="'CC'"
+                :type-lower="'cc'"
+              ></TableGeneOntology>
+            </div>
+            <div class="detail_contents">
+              <p class="sub_title">Molecular Function</p>
+              <TableGeneOntology
+                :data-source="data.go"
+                :type-upper="'MF'"
+                :type-lower="'mf'"
+              ></TableGeneOntology>
+            </div>
           </div>
         </div>
       </div>
@@ -186,19 +197,22 @@
         border-left: 7px solid $MAIN_COLOR
         padding: 8px 60px
         display: block
-      > .detail_contents
+      > .contents_wrapper
         margin: 0 67px
         margin-top: 30px
-        > .contents_wrapper
+        .detail_contents
+          display: grid
+          grid-template-columns: 1fr 2fr
+          margin-bottom: 30px
           > .title
-            font-size: 18px
-            font-weight: bold
-            margin: 20px 0 2px
-          > .sub_title
             font-size: 16px
             font-weight: bold
-            margin: 10px 0 0px
-        .contents
+            margin: 0
+          > .sub_title
+            font-size: 14px
+            font-weight: bold
+            margin: 0
+        .content
           font-size: 14px
           margin: 0
           line-height: 20px

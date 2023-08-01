@@ -13,7 +13,7 @@
           >
             <template v-if="key === 'RefexSampleId'">
               <p class="title">RefEx Sample ID</p>
-              <p class="contents">{{ value }}</p>
+              <p class="content">{{ value }}</p>
             </template>
 
             <template v-else-if="key === 'BioSampleId'">
@@ -21,7 +21,7 @@
                 <p class="title">BioSample ID</p>
                 <span>({{ data.NumberOfSamples }} samples)</span>
               </div>
-              <p class="contents">
+              <p class="content">
                 <template v-if="showAllBiosamples">
                   <!-- すべてのバイオサンプルを表示 -->
                   <span
@@ -72,7 +72,7 @@
 
             <template v-else>
               <p class="title">{{ getColumnLabel(key) }}</p>
-              <p class="contents">{{ value }}</p>
+              <p class="content">{{ value }}</p>
             </template>
           </div>
         </div>
@@ -182,22 +182,18 @@
         > .detail_contents
           display: grid
           grid-template-columns: 1fr 2fr
-          margin-bottom: 14px
+          margin-bottom: 30px
           > .bio_sample
             > .title
               font-weight: bold
               margin: 0
-            + .contents
+            + .content
               line-height: 1.5
           > .title
             margin: 0
             font-size: 14px
             font-weight: bold
-          > .sub_title
-            font-size: 16px
-            font-weight: bold
-            margin: 10px 0 0px
-        .contents
+        .content
           margin: 0
           font-size: 14px
           .comma
