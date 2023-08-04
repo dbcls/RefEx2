@@ -199,6 +199,8 @@
       } else {
         this.$store.commit('set_active_filter', 'sample');
       }
+      this.setGeneModal(null);
+      this.setSampleModal(null);
     },
     updated() {
       this.setProjectPagesNumber(this.pagesNumber);
