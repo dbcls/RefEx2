@@ -70,9 +70,9 @@
               <p v-if="Array.isArray(data.ensembl)" class="content">
                 <span v-for="index in data.ensembl.length" :key="index">
                   <a
-                    :href="`http://asia.ensembl.org/Multi/Search/Results?q=${
+                    :href="`${activeSpecie.prefix.ensembl}${
                       data.ensembl[index - 1].gene
-                    };site=enssembl`"
+                    };site=ensembl`"
                     target="_blank"
                     >{{ data.ensembl[index - 1].gene }}</a
                   >
@@ -84,7 +84,7 @@
               <p v-else class="content">
                 <span>
                   <a
-                    :href="`http://asia.ensembl.org/Multi/Search/Results?q=${data.ensembl.gene};site=enssembl`"
+                    :href="`${activeSpecie.prefix.ensembl}${data.ensembl.gene};site=ensembl`"
                     target="_blank"
                     >{{ data.ensembl.gene }}</a
                   >
@@ -146,6 +146,7 @@
     computed: {
       ...mapGetters({
         id: 'gene_modal',
+        activeSpecie: 'active_specie',
       }),
     },
     watch: {

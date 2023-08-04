@@ -116,6 +116,7 @@
       async id() {
         if (this.id === null) return;
         this.isLoading = true;
+        this.showAllBiosamples = false;
         await this.$axios
           .$get(
             `https://refex2-api.dbcls.jp/api/sample_info/${
@@ -132,9 +133,6 @@
           });
         this.isLoading = false;
       },
-    },
-    created() {
-      this.showAllBiosamples = false;
     },
     methods: {
       ...mapMutations({
