@@ -151,6 +151,9 @@
     },
     async beforeRouteUpdate(to, from, next) {
       this.$nuxt.$loading.start();
+      if (this.filterType === 'gene') {
+        this.setIsSampleModalMessage(true);
+      }
       this.currentPageId = to.query.id;
       await this.$nuxt.refresh();
       next();
@@ -485,6 +488,7 @@
       ...mapMutations({
         setGeneModal: 'set_gene_modal',
         setSampleModal: 'set_sample_modal',
+        setIsSampleModalMessage: 'set_is_sample_modal_message',
       }),
       toggleDisplaySettings() {
         this.isDisplaySettingsOn = !this.isDisplaySettingsOn;

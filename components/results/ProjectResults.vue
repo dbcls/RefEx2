@@ -213,6 +213,7 @@
         setFilterModal: 'set_filter_modal',
         setActiveDataset: 'set_active_dataset',
         setProjectPagesNumber: 'set_project_pages_number',
+        setIsSampleModalMessage: 'set_is_sample_modal_message',
       }),
       setQuery() {
         this.query = this.$route.query;
@@ -242,6 +243,9 @@
       },
       moveToProjectPage(route) {
         this.$router.push(this.routeToOtherProjectPage(route));
+        if (this.activeFilter.name === 'gene') {
+          this.setIsSampleModalMessage(true);
+        }
       },
       activeSort(col_name) {
         this.$emit('activeSort', {

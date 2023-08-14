@@ -279,6 +279,7 @@
         updatePagination: 'set_pagination',
         setStoreSearchConditions: 'set_search_conditions',
         resetStoreSearchConditions: 'reset_search_conditions',
+        setIsSampleModalMessage: 'set_is_sample_modal_message',
       }),
       updateSearchCondition() {
         if (this.filterType === 'gene') {
@@ -306,6 +307,7 @@
             this.routeToProjectPage(suggestion[this.paramsForSuggestions[2]])
           );
         } else if (this.filterType === 'sample') {
+          this.setIsSampleModalMessage(true);
           this.$router.push(
             this.routeToProjectPage(suggestion[this.paramsForSuggestions[0]])
           );

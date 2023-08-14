@@ -77,6 +77,7 @@ export const state = () => ({
   project_items: {},
   search_conditions: default_search_conditions(),
   screener_filter_list: {},
+  is_sample_modal_message: false,
 });
 
 export const getters = {
@@ -175,6 +176,9 @@ export const getters = {
   },
   get_screener_filter_list(state) {
     return state.screener_filter_list;
+  },
+  get_is_sample_modal_message(state) {
+    return state.is_sample_modal_message;
   },
 };
 
@@ -297,5 +301,8 @@ export const mutations = {
   },
   set_screener_filter_list(state, screener_filter_list) {
     state.screener_filter_list = screener_filter_list;
+  },
+  set_is_sample_modal_message(state, value) {
+    state.is_sample_modal_message = value;
   },
 };
