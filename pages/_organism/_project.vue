@@ -161,7 +161,7 @@
       let resultsAll = {};
       let isError = false;
       const { project, organism } = route.params;
-      store.commit('set_specie', organism);
+      store.commit('set_specie', organism.toLowerCase());
       const { id, type } = query;
       const items = await Promise.all(
         id.split(',').map(async (id, index) => {
@@ -329,7 +329,7 @@
       },
       tsvTitle() {
         const today = this.$getToday();
-        return `RefEx2_${this.activeSpecie.species}_${this.activeDataset.dataset}_${this.filterType}_comparison_${today}.tsv`;
+        return `RefEx2_${this.activeSpecie.species_id}_${this.activeDataset.dataset}_${this.filterType}_comparison_${today}.tsv`;
       },
       roundDownClientHeight() {
         return Math.floor(
@@ -354,9 +354,17 @@
       },
       resultsWithCombinedMedians() {
         const medianArraysObj = {};
-        const projectResults =
-          this.projectResultsAll[this.selectedItem.id] ||
-          this.projectResultsAll[this.currentPageId];
+        let projectResults = [];
+        const propertyNames = Object.keys(this.projectResultsAll);
+
+        if (propertyNames.length === 1) {
+          const propertyName = propertyNames[0];
+          projectResults = [...this.projectResultsAll[propertyName]];
+        } else {
+          projectResults =
+            this.projectResultsAll[this.selectedItem.id] ||
+            this.projectResultsAll[this.currentPageId];
+        }
         for (const item of Object.values(this.items)) {
           const symbolOrDescription = info => info.symbol || info.Description;
           medianArraysObj[`LogMedian_${symbolOrDescription(item.info)}`] =
@@ -467,7 +475,6 @@
     mounted() {
       if (this.isError) return;
       this.checkSampleAlias();
-      this.$store.commit('set_project_filters', this.filters);
       this.$store.commit(
         'set_project_results',
         this.projectResultsAll[this.selectedId]
