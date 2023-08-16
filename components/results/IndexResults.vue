@@ -275,7 +275,7 @@
       },
       tsvTitle() {
         const today = this.$getToday();
-        return `RefEx2_${this.activeSpecie.species}_${this.activeDataset.dataset}_${this.filterType}_search_results_${today}.tsv`;
+        return `RefEx2_${this.activeSpecie.species_id}_${this.activeDataset.dataset}_${this.filterType}_search_results_${today}.tsv`;
       },
       geneIdListForCopy() {
         const geneIdList = this.resultsCached?.map(({ geneid }) => geneid);
@@ -303,6 +303,8 @@
     },
     created() {
       this.setPageType('index');
+      this.setGeneModal(null);
+      this.setSampleModal(null);
     },
     methods: {
       ...mapMutations({
@@ -310,12 +312,16 @@
         setSampleModal: 'set_sample_modal',
         setPageType: 'set_page_type',
         setCheckedResults: 'set_checked_results',
+        setIsSampleModalMessage: 'set_is_sample_modal_message',
       }),
       copyToClipboard(target) {
         navigator.clipboard.writeText(target);
       },
       moveToProjectPage(route) {
         this.$nuxt.$loading.start();
+        if (this.filterType === 'sample') {
+          this.setIsSampleModalMessage(true);
+        }
         this.$router.push(this.routeToProjectPage(route));
       },
       isArrayLikeString(str) {

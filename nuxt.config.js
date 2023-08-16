@@ -6,6 +6,7 @@ export default {
   ssr: false,
   loading: '~/components/ModalView/ModalViewLoading.vue',
   loadingIndicator: {
+    name: '~/components/CustomLoading.html',
     color: '#488EC4',
     background: 'white',
   },
@@ -79,7 +80,7 @@ export default {
       let routes = [];
       datasets.map(specie => {
         specie.datasets.forEach(dataset => {
-          routes.push(`${specie.species}/${dataset.dataset}`);
+          routes.push(`${specie.species_id}/${dataset.dataset}`);
         });
       });
       return routes;
