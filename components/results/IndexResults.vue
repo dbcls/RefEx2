@@ -303,6 +303,8 @@
     },
     created() {
       this.setPageType('index');
+      this.setGeneModal(null);
+      this.setSampleModal(null);
     },
     methods: {
       ...mapMutations({

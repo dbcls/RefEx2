@@ -62,15 +62,22 @@
     border-spacing: 0px 10px
     width: 100%
     table-layout: auto
+    border-bottom: 2px solid $BLACK
     > thead,tbody
+
       .id
         width: 90px
+        padding: 0 10px
       .evidence
         width: 70px
       .qualifier
         width: 105px
     > thead
       text-align: left
+      > tr
+          > th
+            border-top: 2px solid $BLACK
+            border-bottom: 1px solid $BLACK
     > tbody
       vertical-align: top
 </style>

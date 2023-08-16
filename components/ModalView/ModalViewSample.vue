@@ -3,36 +3,78 @@
     <div class="modal_wrapper" @click.stop="">
       <div v-if="!isLoading" class="sample_detail">
         <p class="sample_name">
-          {{ ` ${data.Description} (Sample ID: ${id})` }}
+          {{ data.Description }}
         </p>
-        <div v-for="(value, key) in data" :key="key" class="detail_contents">
-          <template
-            v-if="key === 'RefexSampleId' || key === 'Description'"
-          ></template>
-          <template v-else-if="key === 'NumberOfSamples'"
-            ><p class="title">Number of Samples</p>
-            <p class="contents">{{ value }}</p></template
+        <div class="contents_wrapper">
+          <div
+            v-for="(value, key) in filteredData"
+            :key="key"
+            class="detail_contents"
           >
-          <template v-else-if="key === 'BioSampleId'">
-            <p class="title">BioSample ID</p>
-            <p class="contents">
-              <span
-                v-for="(biosample, index) in JSON.parse(value)"
-                :key="index"
-              >
-                <span>{{ biosample }}</span>
-                <span
-                  v-if="index !== JSON.parse(value).length - 1"
-                  class="comma"
-                  >,</span
-                >
-              </span>
-            </p>
-          </template>
-          <template v-else>
-            <p class="title">{{ getColumnLabel(key) }}</p>
-            <p class="contents">{{ value }}</p>
-          </template>
+            <template v-if="key === 'RefexSampleId'">
+              <p class="title">RefEx Sample ID</p>
+              <p class="content">{{ value }}</p>
+            </template>
+
+            <template v-else-if="key === 'BioSampleId'">
+              <div class="bio_sample">
+                <p class="title">BioSample ID</p>
+                <span>({{ data.NumberOfSamples }} samples)</span>
+              </div>
+              <p class="content">
+                <template v-if="showAllBiosamples">
+                  <!-- すべてのバイオサンプルを表示 -->
+                  <span
+                    v-for="(biosample, index) in JSON.parse(value)"
+                    :key="index"
+                    ><a
+                      :href="`https://www.ncbi.nlm.nih.gov/biosample/?term=${biosample}`"
+                      target="_blank"
+                      >{{ biosample }}</a
+                    >
+                    <span
+                      v-if="index !== JSON.parse(value).length"
+                      class="comma"
+                      >,
+                    </span>
+                  </span>
+                  <span v-if="JSON.parse(value).length > 10">
+                    <span class="omission" @click="toggleBiosamplesVisibility"
+                      >...less</span
+                    >
+                  </span>
+                </template>
+                <template v-else>
+                  <!-- 最初の10個のバイオサンプルを表示 -->
+                  <span
+                    v-for="(biosample, index) in JSON.parse(value).slice(0, 10)"
+                    :key="index"
+                  >
+                    <a
+                      :href="`https://www.ncbi.nlm.nih.gov/biosample/?term=${biosample}`"
+                      target="_blank"
+                      >{{ biosample }}</a
+                    >
+                    <span
+                      v-if="index !== 10 || JSON.parse(value).length <= 10"
+                      class="comma"
+                      >,
+                    </span>
+                  </span>
+                  <span v-if="JSON.parse(value).length > 10">
+                    <span class="omission" @click="toggleBiosamplesVisibility"
+                      >more...</span
+                    >
+                  </span>
+                </template>
+              </p>
+            </template>
+
+            <template v-else>
+              <p class="title">{{ getColumnLabel(key) }}</p>
+              <p class="content">{{ value }}</p>
+            </template>
+          </div>
         </div>
       </div>
       <p v-else class="loading">Loading...</p>
@@ -53,6 +95,7 @@
       return {
         data: {},
         isLoading: false,
+        showAllBiosamples: false,
       };
     },
     computed: {
@@ -60,11 +103,20 @@
         id: 'sample_modal',
         activeDataset: 'active_dataset',
       }),
+      filteredData() {
+        const filteredKeys = ['NumberOfSamples', 'Description'];
+        return Object.fromEntries(
+          Object.entries(this.data).filter(
+            ([key]) => !filteredKeys.includes(key)
+          )
+        );
+      },
     },
     watch: {
       async id() {
         if (this.id === null) return;
         this.isLoading = true;
+        this.showAllBiosamples = false;
         await this.$axios
           .$get(
             `https://refex2-api.dbcls.jp/api/sample_info/${
@@ -97,6 +149,9 @@
         const match = data.find(item => item.column === column);
         return match ? match.label : column;
       },
+      toggleBiosamplesVisibility() {
+        this.showAllBiosamples = !this.showAllBiosamples;
+      },
     },
   };
 </script>
@@ -119,23 +174,32 @@
         border-left: 7px solid $MAIN_COLOR
         padding: 8px 60px
         display: block
-      > .detail_contents
+      > .contents_wrapper
         margin: 0 67px
         margin-top: 30px
-        > .title
-          font-size: 18px
-          font-weight: bold
-          margin: 20px 0 2px
-        > .sub_title
-          font-size: 16px
-          font-weight: bold
-          margin: 10px 0 0px
-        .contents
-          font-size: 14px
+        > .detail_contents
+          display: grid
+          grid-template-columns: 1fr 2fr
+          margin-bottom: 30px
+          > .bio_sample
+            > .title
+              font-weight: bold
+              margin: 0
+            + .content
+              line-height: 1.5
+          > .title
+            margin: 0
+            font-size: 14px
+            font-weight: bold
+        .content
           margin: 0
-          line-height: 20px
+          font-size: 14px
           .comma
             margin: 0 2px 0 -2px
+          .omission
+            text-decoration: underline
+            cursor: pointer
+            color: $MAIN_COLOR
     > .loading
       text-align: center
 </style>
