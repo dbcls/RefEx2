@@ -312,12 +312,16 @@
         setSampleModal: 'set_sample_modal',
         setPageType: 'set_page_type',
         setCheckedResults: 'set_checked_results',
+        setIsSampleModalMessage: 'set_is_sample_modal_message',
       }),
       copyToClipboard(target) {
         navigator.clipboard.writeText(target);
       },
       moveToProjectPage(route) {
         this.$nuxt.$loading.start();
+        if (this.filterType === 'sample') {
+          this.setIsSampleModalMessage(true);
+        }
         this.$router.push(this.routeToProjectPage(route));
       },
       isArrayLikeString(str) {

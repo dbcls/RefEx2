@@ -65,6 +65,7 @@
       ...mapMutations({
         toggleCompareModal: 'set_compare_modal',
         setCheckedResults: 'set_checked_results',
+        setIsSampleModalMessage: 'set_is_sample_modal_message',
       }),
       setExample(route) {
         this.itemIdsForComparisonStr = route;
@@ -72,6 +73,9 @@
       comparisonSearch() {
         if (!Boolean(this.itemIdsForComparisonStr)) return;
         this.$nuxt.$loading.start();
+        if (this.activeFilter.name === 'sample') {
+          this.setIsSampleModalMessage(true);
+        }
         this.$router.push(
           this.routeToProjectPage(
             this.itemIdsForComparisonStr.replace(/^,/, '').replace(/ /g, '')

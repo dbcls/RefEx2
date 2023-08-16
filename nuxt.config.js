@@ -9,6 +9,7 @@ export default {
   ssr: false,
   loading: '~/components/ModalView/ModalViewLoading.vue',
   loadingIndicator: {
+    name: '~/components/CustomLoading.html',
     color: '#488EC4',
     background: 'white',
   },
