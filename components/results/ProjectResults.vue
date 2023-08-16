@@ -257,7 +257,7 @@
       },
       setDataset() {
         const pageUrl = window.location.href;
-        const regex = /\/([^\/?]+)\?/;
+        const regex = /\/([^\/?]+)\/\?/;
         const match = pageUrl.match(regex);
         const urlDataset = match[1];
         this.setActiveDataset(
