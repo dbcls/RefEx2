@@ -92,11 +92,11 @@
           align-items: center
           margin: auto 0
           width: 100%
-          padding: 10px 0
+          margin: 15px 0
           a
             line-height: 0
           img
-            height: 60px
+            height: 50px
         > nav
           margin: auto 0
           width: 100%

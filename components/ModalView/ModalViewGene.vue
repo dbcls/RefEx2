@@ -2,16 +2,23 @@
   <modal-view v-if="id" @click.native="setGeneModal()">
     <div class="modal_wrapper" @click.stop="">
       <div v-if="!isLoading" class="gene_detail">
-        <a
+        <p
           class="gene_name"
           :href="`https://www.ncbi.nlm.nih.gov/gene/?term=${data._id}`"
           target="_blank"
-          >{{ `${data.symbol}` }}<span>{{ ` (${data.name})` }}</span></a
         >
+          {{ `${data.symbol}` }}<span>{{ ` (${data.name})` }}</span>
+        </p>
         <div class="contents_wrapper">
           <div class="detail_contents">
             <p class="title">Gene ID</p>
-            <p class="content">{{ data._id }}</p>
+            <p class="content">
+              <a
+                :href="`https://www.ncbi.nlm.nih.gov/gene/?term=${data._id}`"
+                target="_blank"
+                >{{ data._id }}</a
+              >
+            </p>
           </div>
           <div v-if="data.alias" class="detail_contents">
             <p class="title">Alias</p>
@@ -198,6 +205,7 @@
         border-left: 7px solid $MAIN_COLOR
         padding: 8px 60px
         display: block
+        color: $MAIN_COLOR
       > .contents_wrapper
         margin: 0 67px
         margin-top: 30px
