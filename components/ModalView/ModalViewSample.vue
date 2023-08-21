@@ -11,15 +11,15 @@
             :key="key"
             class="detail_contents"
           >
-            <template v-if="key === 'RefexSampleId'">
-              <p class="title">RefEx Sample ID</p>
-              <p class="content">{{ value }}</p>
-            </template>
-
-            <template v-else-if="key === 'BioSampleId'">
+            <template v-if="key === 'BioSampleId'">
               <div class="bio_sample">
                 <p class="title">BioSample ID</p>
-                <span>({{ data.NumberOfSamples }} samples)</span>
+                <span v-if="data.NumberOfSamples >= 2"
+                  >({{ data.NumberOfSamples }} samples)</span
+                >
+                <span v-else-if="data.NumberOfSamples == 1"
+                  >({{ data.NumberOfSamples }} sample)</span
+                >
               </div>
               <p class="content">
                 <template v-if="showAllBiosamples">
@@ -33,7 +33,7 @@
                       >{{ biosample }}</a
                     >
                     <span
-                      v-if="index !== JSON.parse(value).length"
+                      v-if="index !== JSON.parse(value).length - 1"
                       class="comma"
                       >,
                     </span>
@@ -56,7 +56,15 @@
                       >{{ biosample }}</a
                     >
                     <span
-                      v-if="index !== 10 || JSON.parse(value).length <= 10"
+                      v-if="
+                        JSON.parse(value).length < 10 &&
+                        index !== JSON.parse(value).length - 1
+                      "
+                      class="comma"
+                      >,
+                    </span>
+                    <span
+                      v-else-if="JSON.parse(value).length >= 10 && index !== 9"
                       class="comma"
                       >,
                     </span>
@@ -74,6 +82,10 @@
               <p class="title">{{ getColumnLabel(key) }}</p>
               <p class="content">{{ value }}</p>
             </template>
+          </div>
+          <div class="detail_contents">
+            <p class="title">RefEx Sample ID</p>
+            <p class="content">{{ data.RefexSampleId }}</p>
           </div>
         </div>
       </div>
@@ -104,7 +116,11 @@
         activeDataset: 'active_dataset',
       }),
       filteredData() {
-        const filteredKeys = ['NumberOfSamples', 'Description'];
+        const filteredKeys = [
+          'NumberOfSamples',
+          'Description',
+          'RefexSampleId',
+        ];
         return Object.fromEntries(
           Object.entries(this.data).filter(
             ([key]) => !filteredKeys.includes(key)
@@ -183,10 +199,13 @@
           margin-bottom: 30px
           > .bio_sample
             > .title
+              font-size: 14px
               font-weight: bold
               margin: 0
             + .content
               line-height: 1.5
+            > span
+              font-size: 14px
           > .title
             margin: 0
             font-size: 14px
