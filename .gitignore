@@ -90,3 +90,8 @@ sw.*
 *.swp
 
 .npmrc
+
+# vscode other settings
+.vscode/
+!.vscode/settings.json
+!.vscode/launch.json
