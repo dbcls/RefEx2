@@ -110,7 +110,6 @@
   document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
     const typeValue = params.get("type");
-    console.log(typeValue);
 
     if (typeValue === "sample") {
       document.querySelector(".loading_message").style.display = "block";
