@@ -88,6 +88,7 @@
       margin: 0
       &.screener_title
         margin-top: 3px
+        margin-bottom:10px
         display: flex
         align-items: center
         > svg
@@ -118,9 +119,6 @@
       +selection
       font-size: 20px
     > .classification_wrapper
-      border: 1px dashed $GRAY
-      border-radius: 3px
-      padding: 10px 30px
       margin-top: -7px
     .tag
       +ontology_tag
