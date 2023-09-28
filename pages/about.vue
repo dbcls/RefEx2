@@ -5,7 +5,7 @@
       <p>
 RefEx2 is a web tool designed to facilitate the search for transcriptome datasets of various species, which serve as references for gene expression data analysis. 
 This user-friendly platform allows flexible searching in both gene and sample directions, making it easy to investigate specific questions, such as how a particular gene is expressed across different samples or what gene expression patterns are observed in specific samples. 
-Currently, RefEx2 provides access to 6 reference datasets for four different species: humans, mice, Drosophila meranogaster and Arabidopsis thaliana.
+Currently, RefEx2 provides access to 6 reference datasets for four different species: humans, mice, Drosophila melanogaster, and Arabidopsis thaliana.
       </p>
     </div>
   </div>
