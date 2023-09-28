@@ -27,7 +27,7 @@
                 {{ column.name }}
                 <font-awesome-icon
                   v-if="isEntropy(column.id)"
-                  v-tooltip="'Range: 1-5'"
+                  v-tooltip="'Range: 0-5'"
                   data-cy="entropy_tooltip"
                   icon="info-circle"
                 />
@@ -285,19 +285,17 @@
     },
     methods: {
       validateNumInput(index, column, e) {
-        const numInput = parseFloat(e.target.value);
+        const inputText = e.target.value;
+        const numInput = parseFloat(inputText);
         const targetItem = this.getTargetItem(index);
         const { id, min, max } = column;
         const isWithinRange =
           numInput >= parseInt(min) && numInput <= parseInt(max);
-        const toOneDecimal = () => {
-          let text = numInput.toString();
-          const tenthsIndex = text.indexOf('.') + 1;
-          return text.substring(0, tenthsIndex + 1);
-        };
-        targetItem[id] = isWithinRange
-          ? toOneDecimal()
-          : targetItem[id].substring(0, targetItem[id].length - 1);
+        if (isWithinRange || (inputText.length === 2 && inputText[1] === '.')) {
+          targetItem[id] = inputText;
+        } else {
+          targetItem[id] = inputText.substring(0, inputText.length - 1);
+        }
       },
       getTargetItem(index) {
         return this.list[index];
