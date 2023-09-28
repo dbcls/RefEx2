@@ -3,10 +3,14 @@
     <h2 class="category_title">About</h2>
     <div>
       <p>
-        RefEx2 is a web tool designed to facilitate the search for transcriptome datasets of various species, which serve as references for gene expression data analysis. 
-This user-friendly platform allows flexible searching in both gene and sample directions, making it easy to investigate specific questions, such as how a particular gene is expressed across different samples or what gene expression patterns are observed in specific samples. 
-Currently, RefEx2 provides access to 6 reference datasets for four different species: humans, mice, Drosophila melanogaster, and Arabidopsis thaliana.
-     </p>
+        DNAマイクロアレイの開発によりゲノム規模での遺伝子の発現量の測定が可能となって以来、遺伝子発現データはさまざまな研究グループにより異なる測定手法を用いて産生され、公共データベースに蓄積しつづけています。
+        これらのデータは、仮説の構築、研究計画の立案、実験データの解釈など、さまざまな状況において幅広い分野の研究者に利用される汎用的なデータですが、その膨大さや多様さのため、それらを自らの研究に利用することは困難な場合があります。
+      </p>
+
+      <p>
+        RefEx(Reference Expression
+        dataset)は、遺伝子発現解析の基準となる正常な組織や細胞などの大規模測定データを集め、並列に比較できるよう整理し、それらを快適に閲覧できるウェブツールです。
+      </p>
     </div>
   </div>
 </template>
