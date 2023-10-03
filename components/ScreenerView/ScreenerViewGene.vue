@@ -234,9 +234,6 @@
         };
         this.setSearchConditions(filterCondition);
         this.handleFilterValueUpdate(this.filterValue);
-        // TODO: 現在選択されているfilter以外はresetする
-        // 選択されているものを青枠で囲む？
-        console.log('test');
       },
     },
     async created() {
