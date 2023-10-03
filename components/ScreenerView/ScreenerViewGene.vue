@@ -456,10 +456,7 @@
         &:after
           content: none
     .filter
-      // TODO: Del indentation
-      margin-left: 20px
-    .filter + .filter
-      margin-top: 30px
+      padding: 10px
     .filter_TPM, .filter_specificity_ROKU, .filter_specificity_tau
       table
         thead

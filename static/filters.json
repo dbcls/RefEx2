@@ -62,7 +62,6 @@
     ]
   },
   {
-    "name": "sample",
-    "description": "Genes that are specifically expressed in a given sample by classification"
+    "name": "sample"
   }
 ]

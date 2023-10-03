@@ -2,9 +2,6 @@
   <!-- v-html setup neccesary for plugin, does NOT use user input/API data and is therefore safe to use -->
   <!-- eslint-disable vue/no-v-html -->
   <div>
-    <h3 v-if="description !== ''">
-      {{ description }}
-    </h3>
     <div v-if="filters && filters.length > 0" class="classification_wrapper">
       <div
         v-for="(filter, filterIndex) of filters"
