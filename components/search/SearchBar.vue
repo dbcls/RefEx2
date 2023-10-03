@@ -339,8 +339,19 @@
             query,
           })
           .then(results => {
+            const resultArray = Object.values(results.data[this.queryPrefix]);
+            const compareItems = (a, b) => a.symbol.localeCompare(b.symbol);
+            const matchingItems = resultArray.filter(
+              item => item.symbol === suggestion
+            );
+            const nonMatchingItems = resultArray.filter(
+              item => item.symbol !== suggestion
+            );
+            matchingItems.sort(compareItems);
+            nonMatchingItems.sort(compareItems);
+            const sortedResultArray = matchingItems.concat(nonMatchingItems);
             this.isLoading = false;
-            return results.data[this.queryPrefix];
+            return sortedResultArray;
           });
       },
       showResults(type = 'all') {
@@ -352,7 +363,6 @@
           this.isSummaryIncluded = false;
         this.$axios
           .$post('gql', {
-            // TODO:
             query: this.suggestQuery,
           })
           .then(result => {
