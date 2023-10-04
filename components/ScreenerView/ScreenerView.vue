@@ -7,8 +7,14 @@
     :data-cy="`${$vnode.key}_screener`"
   >
     <p class="screener_title" @click="toggleScreener">
-      <font-awesome-icon :icon="icon" class="filter" />
-      {{ title }}
+      <template v-if="master">
+        <font-awesome-icon icon="filter" class="filter" />
+        Screener
+      </template>
+      <template v-else>
+        <font-awesome-icon icon="check" class="filter" />
+        {{ title }}
+      </template>
       <font-awesome-icon
         icon="chevron-right"
         :class="isOpen ? 'open' : 'close'"
@@ -22,13 +28,14 @@
 <script>
   export default {
     props: {
-      icon: {
-        type: String,
-        default: 'filter',
-      },
       title: {
         type: String,
         default: 'Please enter a title',
+        required: true,
+      },
+      id: {
+        type: String,
+        default: '',
       },
       master: {
         type: Boolean,
@@ -40,11 +47,17 @@
         isOpen: false,
       };
     },
+    watch: {
+      '$store.state.active_gene_filter': function () {
+        if (this.master) return;
+        this.isOpen = this.id === this.$store.state.active_gene_filter;
+      },
+    },
     methods: {
       toggleScreener() {
         this.isOpen = !this.isOpen;
         if (this.master) return;
-        this.$store.commit('set_active_gene_filter', 'chr');
+        this.$store.commit('set_active_gene_filter', this.id);
       },
     },
   };
