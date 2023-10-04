@@ -181,6 +181,9 @@ export const getters = {
   get_is_sample_modal_message(state) {
     return state.is_sample_modal_message;
   },
+  get_active_gene_filter(state) {
+    return state.active_gene_filter;
+  },
 };
 
 export const mutations = {
@@ -305,5 +308,8 @@ export const mutations = {
   },
   set_is_sample_modal_message(state, value) {
     state.is_sample_modal_message = value;
+  },
+  set_active_gene_filter(state, value) {
+    state.active_gene_filter = value;
   },
 };
