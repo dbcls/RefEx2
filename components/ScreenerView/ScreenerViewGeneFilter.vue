@@ -1,162 +1,167 @@
 <template>
-  <div class="filter" :data-cy="`${filter.type.toLowerCase()}_filter`">
-    <div class="filter_title">
-      <div>
-        Filter by {{ filter.name }}
-        <font-awesome-icon
-          v-tooltip="'This is Filter by ' + filter.name"
-          data-cy="filter_tooltip"
-          icon="info-circle"
-        />
+  <ScreenerView :title="`Filter by ${filter.name}`">
+    <div class="filter" :data-cy="`${filter.type.toLowerCase()}_filter`">
+      <div class="filter_title">
+        <div>
+          Filter by {{ filter.name }}
+          <font-awesome-icon
+            v-tooltip="'This is Filter by ' + filter.name"
+            data-cy="filter_tooltip"
+            icon="info-circle"
+          />
+        </div>
+        <button
+          class="reset_btn"
+          :disabled="resetIsDisabled"
+          @click="dispatchAction('INIT')"
+        >
+          <font-awesome-icon icon="rotate-right" />
+          Reset
+        </button>
       </div>
-      <button
-        class="reset_btn"
-        :disabled="resetIsDisabled"
-        @click="dispatchAction('INIT')"
-      >
-        <font-awesome-icon icon="rotate-right" />
-        Reset
-      </button>
-    </div>
-    <client-only>
-      <div :class="filter.id">
-        <table ref="itemList" class="item-list">
-          <thead>
-            <tr>
-              <th v-for="column in columns" :key="column.id" :class="column.id">
-                {{ column.name }}
-                <font-awesome-icon
-                  v-if="isEntropy(column.id)"
-                  v-tooltip="'Range: 0-5'"
-                  data-cy="entropy_tooltip"
-                  icon="info-circle"
-                />
-                <WarningMessage
-                  v-if="column.id === 'sample' && !eachSampleIsSelected"
+      <client-only>
+        <div :class="filter.id">
+          <table ref="itemList" class="item-list">
+            <thead>
+              <tr>
+                <th
+                  v-for="column in columns"
+                  :key="column.id"
+                  :class="column.id"
                 >
-                  Please select from suggestion(s)
-                </WarningMessage>
-                <WarningMessage
-                  v-else-if="column.isRequired && !isValidColumn(column.id)"
-                >
-                </WarningMessage>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, itemIndex) in list"
-              :key="itemIndex"
-              class="list-item"
-            >
-              <td
-                v-for="column in columns"
-                :key="column.id"
-                :class="{
-                  warning:
-                    column.isRequired && !isValidInput(column.id, itemIndex),
-                }"
-                :data-cy="`${filter.type.toLowerCase()}_${
-                  column.id
-                }_${itemIndex}`"
-              >
-                <select
-                  v-if="column.inputType === 'dropdown'"
-                  v-model="item[column.id]"
-                  required
-                  @change="
-                    e => {
-                      dispatchAction('ADD', itemIndex, column.id);
-                      if (column.id === 'group') {
-                        setSelectedSample(itemIndex, 'CLEAR', e);
-                      }
-                    }
-                  "
-                >
-                  <option value="" disabled selected hidden>
-                    {{ column.placeholder }}
-                  </option>
-                  <template v-if="column.id === 'group'">
-                    <option
-                      v-for="option of Object.values(availableGroups)"
-                      :key="option.id"
-                      :value="option.id"
-                    >
-                      {{ option.label }}
-                    </option>
-                  </template>
-                  <template v-else>
-                    <option
-                      v-for="(option, optionIndex) of column.options"
-                      :key="optionIndex"
-                      :value="option.value"
-                    >
-                      {{ option.description }}
-                    </option>
-                  </template>
-                </select>
-                <div
-                  v-else-if="column.id === 'sample'"
-                  class="sample-input"
-                  :class="{ valid: isSelectedArray[itemIndex] }"
-                >
-                  <vue-simple-suggest
-                    ref="sampleInputs"
-                    v-model.trim="item[column.id].input"
-                    display-attribute="description"
-                    value-attribute="id"
-                    :styles="autoCompleteStyle(item)"
-                    :max-suggestions="0"
-                    :list="
-                      autocompleteItems(
-                        itemIndex,
-                        item[column.id].input,
-                        item.group
-                      )
-                    "
-                    :debounce="500"
-                    :min-length="0"
-                    :placeholder="column.placeholder"
-                    class="text_search_name"
-                    :class="{ disabled: item.group === '' }"
-                    :disabled="item.group === ''"
-                    @select="setSelectedSample(itemIndex, 'ADD')"
-                    @input="dispatchAction('ADD', itemIndex, column.id)"
-                    @focus="e => setSelectedSample(itemIndex, 'CLEAR', e)"
+                  {{ column.name }}
+                  <font-awesome-icon
+                    v-if="isEntropy(column.id)"
+                    v-tooltip="'Range: 0-5'"
+                    data-cy="entropy_tooltip"
+                    icon="info-circle"
+                  />
+                  <WarningMessage
+                    v-if="column.id === 'sample' && !eachSampleIsSelected"
                   >
-                    <!-- plugin uses slot-scope as a prop variable. {suggestion} turns into an object at the plugin-->
-                    <!-- eslint-disable vue/no-unused-vars -->
-                    <!-- eslint-disable vue/no-v-html -->
-                    <div slot="suggestion-item" slot-scope="{ suggestion }">
-                      <span
-                        v-html="
-                          $highlightedSuggestion(
-                            suggestion.description,
-                            item[column.id].input,
-                            2
-                          )
-                        "
-                      ></span>
-                    </div>
-                  </vue-simple-suggest>
-                </div>
-                <input
-                  v-else
-                  v-model.trim="item[column.id]"
-                  :type="column.inputType"
-                  :placeholder="column.placeholder"
-                  :min="column.min"
-                  :max="column.max"
-                  step="0.1"
-                  @input="
-                    e => {
-                      validateNumInput(itemIndex, column, e);
-                      dispatchAction('ADD', itemIndex, column.id);
-                    }
-                  "
-                />
-              </td>
-              <!-- // hide trash can button until multi-search
+                    Please select from suggestion(s)
+                  </WarningMessage>
+                  <WarningMessage
+                    v-else-if="column.isRequired && !isValidColumn(column.id)"
+                  >
+                  </WarningMessage>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(item, itemIndex) in list"
+                :key="itemIndex"
+                class="list-item"
+              >
+                <td
+                  v-for="column in columns"
+                  :key="column.id"
+                  :class="{
+                    warning:
+                      column.isRequired && !isValidInput(column.id, itemIndex),
+                  }"
+                  :data-cy="`${filter.type.toLowerCase()}_${
+                    column.id
+                  }_${itemIndex}`"
+                >
+                  <select
+                    v-if="column.inputType === 'dropdown'"
+                    v-model="item[column.id]"
+                    required
+                    @change="
+                      e => {
+                        dispatchAction('ADD', itemIndex, column.id);
+                        if (column.id === 'group') {
+                          setSelectedSample(itemIndex, 'CLEAR', e);
+                        }
+                      }
+                    "
+                  >
+                    <option value="" disabled selected hidden>
+                      {{ column.placeholder }}
+                    </option>
+                    <template v-if="column.id === 'group'">
+                      <option
+                        v-for="option of Object.values(availableGroups)"
+                        :key="option.id"
+                        :value="option.id"
+                      >
+                        {{ option.label }}
+                      </option>
+                    </template>
+                    <template v-else>
+                      <option
+                        v-for="(option, optionIndex) of column.options"
+                        :key="optionIndex"
+                        :value="option.value"
+                      >
+                        {{ option.description }}
+                      </option>
+                    </template>
+                  </select>
+                  <div
+                    v-else-if="column.id === 'sample'"
+                    class="sample-input"
+                    :class="{ valid: isSelectedArray[itemIndex] }"
+                  >
+                    <vue-simple-suggest
+                      ref="sampleInputs"
+                      v-model.trim="item[column.id].input"
+                      display-attribute="description"
+                      value-attribute="id"
+                      :styles="autoCompleteStyle(item)"
+                      :max-suggestions="0"
+                      :list="
+                        autocompleteItems(
+                          itemIndex,
+                          item[column.id].input,
+                          item.group
+                        )
+                      "
+                      :debounce="500"
+                      :min-length="0"
+                      :placeholder="column.placeholder"
+                      class="text_search_name"
+                      :class="{ disabled: item.group === '' }"
+                      :disabled="item.group === ''"
+                      @select="setSelectedSample(itemIndex, 'ADD')"
+                      @input="dispatchAction('ADD', itemIndex, column.id)"
+                      @focus="e => setSelectedSample(itemIndex, 'CLEAR', e)"
+                    >
+                      <!-- plugin uses slot-scope as a prop variable. {suggestion} turns into an object at the plugin-->
+                      <!-- eslint-disable vue/no-unused-vars -->
+                      <!-- eslint-disable vue/no-v-html -->
+                      <div slot="suggestion-item" slot-scope="{ suggestion }">
+                        <span
+                          v-html="
+                            $highlightedSuggestion(
+                              suggestion.description,
+                              item[column.id].input,
+                              2
+                            )
+                          "
+                        ></span>
+                      </div>
+                    </vue-simple-suggest>
+                  </div>
+                  <input
+                    v-else
+                    v-model.trim="item[column.id]"
+                    :type="column.inputType"
+                    :placeholder="column.placeholder"
+                    :min="column.min"
+                    :max="column.max"
+                    step="0.1"
+                    @input="
+                      e => {
+                        validateNumInput(itemIndex, column, e);
+                        dispatchAction('ADD', itemIndex, column.id);
+                      }
+                    "
+                  />
+                </td>
+                <!-- // hide trash can button until multi-search
               <td class="icon">
                 <a
                   class="delete_btn"
@@ -167,12 +172,13 @@
                   <font-awesome-icon icon="trash-xmark" />
                 </a>
               </td> -->
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </client-only>
-  </div>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </client-only>
+    </div>
+  </ScreenerView>
 </template>
 
 <script>
