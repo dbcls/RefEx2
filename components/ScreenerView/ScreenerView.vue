@@ -99,8 +99,7 @@
     p
       margin: 0
       &.screener_title
-        margin-top: 3px
-        margin-bottom:10px
+        padding: 3px 0 10px 0
         display: flex
         align-items: center
         > svg
