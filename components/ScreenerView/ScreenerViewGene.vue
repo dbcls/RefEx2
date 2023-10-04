@@ -62,7 +62,7 @@
     </ScreenerView>
 
     <ScreenerView icon="check" title="Genes with GO Term">
-      <div>
+      <div class="example_wrapper">
         <span class="example"
           >e.g.
           <span

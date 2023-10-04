@@ -14,7 +14,9 @@
         :class="isOpen ? 'open' : 'close'"
       />
     </p>
-    <slot></slot>
+    <div class="sub_wrapper">
+      <slot></slot>
+    </div>
   </div>
 </template>
 <script>
@@ -121,8 +123,8 @@
       gap: .5rem
       margin-bottom: 0.5rem
       align-items: center
-      > span
-        +sample_query
+    .example_wrapper
+      +sample_query
     input
       +text_input
       font-size: 20px
@@ -135,4 +137,10 @@
       margin-top: -7px
     .tag
       +ontology_tag
+  .sub_wrapper
+    padding: 10px 10px
+    // &.open
+    //   display: block
+    // &.close
+    //   display: none
 </style>
