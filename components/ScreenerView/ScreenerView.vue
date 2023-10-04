@@ -8,7 +8,7 @@
   >
     <p
       class="screener_title"
-      :class="{ open: isOpen, active: isOpen }"
+      :class="{ open: isOpen, active: isOpen, sub_accordion: !master }"
       @click="toggleScreener"
     >
       <template v-if="master">
@@ -129,6 +129,8 @@
         padding: 3px 0 10px 0
         display: flex
         align-items: center
+        &.sub_accordion
+          padding-bottom: 0
         > svg
           font-size: 12px
           transition: .3s
