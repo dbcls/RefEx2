@@ -266,12 +266,6 @@
       if (this.filterType === 'gene' && this.searchConditions.gene.summary) {
         this.isSummaryIncluded = this.searchConditions[this.filterType].summary;
       }
-      setTimeout(() => {
-        const mainInputField = this.$refs.searchInput.inputElement;
-        if (!Boolean(mainInputField.value)) {
-          mainInputField.focus(), 10;
-        }
-      });
     },
     methods: {
       ...mapMutations({
