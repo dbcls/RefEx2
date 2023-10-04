@@ -7,7 +7,7 @@
     :data-cy="`${$vnode.key}_screener`"
   >
     <p class="screener_title" @click="toggleScreener">
-      <font-awesome-icon icon="filter" class="filter" />
+      <font-awesome-icon :icon="icon" class="filter" />
       {{ title }}
       <font-awesome-icon
         icon="chevron-right"
@@ -20,6 +20,10 @@
 <script>
   export default {
     props: {
+      icon: {
+        type: String,
+        default: 'filter',
+      },
       title: {
         type: String,
         default: 'Please enter a title',
