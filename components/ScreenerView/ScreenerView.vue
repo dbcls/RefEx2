@@ -30,6 +30,10 @@
         type: String,
         default: 'Please enter a title',
       },
+      master: {
+        type: Boolean,
+        default: false,
+      },
     },
     data() {
       return {
@@ -39,6 +43,8 @@
     methods: {
       toggleScreener() {
         this.isOpen = !this.isOpen;
+        if (this.master) return;
+        this.$store.commit('set_active_gene_filter', 'chr');
       },
     },
   };

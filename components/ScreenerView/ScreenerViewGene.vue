@@ -268,6 +268,7 @@
       ...mapMutations({
         setSearchConditions: 'set_search_conditions',
         setScreenerFilterList: 'set_screener_filter_list',
+        setActiveGeneFilter: 'set_active_gene_filter',
       }),
       resetUpdateParameters() {
         this.$emit('updateParameters', {});
