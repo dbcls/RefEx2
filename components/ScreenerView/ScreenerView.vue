@@ -8,7 +8,7 @@
   >
     <p class="screener_title" @click="toggleScreener">
       <font-awesome-icon icon="filter" class="filter" />
-      Screener
+      {{ title }}
       <font-awesome-icon
         icon="chevron-right"
         :class="isOpen ? 'open' : 'close'"
@@ -19,6 +19,12 @@
 </template>
 <script>
   export default {
+    props: {
+      title: {
+        type: String,
+        default: 'Please enter a title',
+      },
+    },
     data() {
       return {
         isOpen: false,

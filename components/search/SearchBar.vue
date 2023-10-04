@@ -119,7 +119,7 @@
     <template v-else-if="filterType === 'sample'">
       <div class="summary_check_wrapper"></div>
     </template>
-    <ScreenerView ref="screenerView" :key="$vnode.key">
+    <ScreenerView ref="screenerView" :key="$vnode.key" title="Screener">
       <component
         :is="`screener-view-${filterType}`"
         @updateParameters="updateParams"
