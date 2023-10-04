@@ -78,6 +78,7 @@ export const state = () => ({
   search_conditions: default_search_conditions(),
   screener_filter_list: {},
   is_sample_modal_message: false,
+  active_gene_filter: '',
 });
 
 export const getters = {
