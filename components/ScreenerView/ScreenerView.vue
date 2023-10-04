@@ -6,13 +6,21 @@
     :class="{ open: isOpen }"
     :data-cy="`${$vnode.key}_screener`"
   >
-    <p class="screener_title" @click="toggleScreener">
+    <p
+      class="screener_title"
+      :class="{ open: isOpen, active: isOpen }"
+      @click="toggleScreener"
+    >
       <template v-if="master">
         <font-awesome-icon icon="filter" class="filter" />
         Screener
       </template>
       <template v-else>
-        <font-awesome-icon icon="check" class="filter" />
+        <font-awesome-icon
+          icon="check"
+          class="filter"
+          :class="{ active: isOpen }"
+        />
         {{ title }}
       </template>
       <font-awesome-icon
@@ -136,6 +144,9 @@
             color: $DISABLE_COLOR
         &:hover
           cursor: pointer
+        &.open
+          [data-icon="check"]
+            color: $MAIN_COLOR
     h3,h4
       display: flex
       gap: .5rem
@@ -157,8 +168,4 @@
       +ontology_tag
   .sub_wrapper
     padding: 10px 10px
-    // &.open
-    //   display: block
-    // &.close
-    //   display: none
 </style>
