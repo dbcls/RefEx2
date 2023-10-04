@@ -34,6 +34,8 @@
   </div>
 </template>
 <script>
+  import { mapGetters } from 'vuex';
+
   export default {
     props: {
       title: {
@@ -55,6 +57,11 @@
         isOpen: false,
       };
     },
+    computed: {
+      ...mapGetters({
+        getActiveGeneFilter: 'get_active_gene_filter',
+      }),
+    },
     watch: {
       '$store.state.active_gene_filter': function () {
         if (this.master) return;
@@ -65,10 +72,17 @@
       toggleScreener() {
         this.isOpen = !this.isOpen;
         if (this.master) return;
-        this.$store.commit('set_active_gene_filter', {
-          id: this.id,
-          title: this.title,
-        });
+        if (this.getActiveGeneFilter.id === this.id) {
+          this.$store.commit('set_active_gene_filter', {
+            id: '',
+            title: '',
+          });
+        } else {
+          this.$store.commit('set_active_gene_filter', {
+            id: this.id,
+            title: this.title,
+          });
+        }
       },
     },
   };
