@@ -1,5 +1,5 @@
 <template>
-  <ScreenerView :title="`Filter by ${filter.name}`">
+  <ScreenerView icon="check" :title="`Filter by ${filter.name}`">
     <div class="filter" :data-cy="`${filter.type.toLowerCase()}_filter`">
       <div class="filter_title">
         <div>

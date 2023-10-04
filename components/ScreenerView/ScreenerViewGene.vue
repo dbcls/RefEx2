@@ -13,7 +13,7 @@
         search conditions.
       </template>
     </div>
-    <ScreenerView title="Genes with Chr"
+    <ScreenerView icon="check" title="Genes with Chr"
       ><client-only>
         <multi-select
           v-model="chrValue"
@@ -37,7 +37,7 @@
       </client-only></ScreenerView
     >
 
-    <ScreenerView title="Genes with Type of Gene">
+    <ScreenerView icon="check" title="Genes with Type of Gene">
       <client-only>
         <multi-select
           v-model="TOGValue"
@@ -61,7 +61,7 @@
       </client-only>
     </ScreenerView>
 
-    <ScreenerView title="Genes with GO Term">
+    <ScreenerView icon="check" title="Genes with GO Term">
       <div>
         <span class="example"
           >e.g.

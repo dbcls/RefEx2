@@ -521,4 +521,6 @@
           +button
           margin-top: 26px
           margin-bottom: 50px
+  .screener_wrapper
+    padding: 10px 34px
 </style>

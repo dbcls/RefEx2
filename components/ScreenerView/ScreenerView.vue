@@ -43,7 +43,7 @@
 </script>
 <style lang="sass" scoped>
   .screener_wrapper
-    padding: 10px 34px
+    // padding: 10px 34px
     box-shadow: 0 1px 4px rgba(62, 70, 82, .22)
     border-radius: 3px
     height: 42px
@@ -111,6 +111,9 @@
             margin-left: 10px
           &.open
             transform: rotate(90deg)
+          &[data-icon="check"]
+            font-size: 20px
+            color: $DISABLE_COLOR
         &:hover
           cursor: pointer
     h3,h4
