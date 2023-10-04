@@ -58,14 +58,17 @@
     watch: {
       '$store.state.active_gene_filter': function () {
         if (this.master) return;
-        this.isOpen = this.id === this.$store.state.active_gene_filter;
+        this.isOpen = this.id === this.$store.state.active_gene_filter.id;
       },
     },
     methods: {
       toggleScreener() {
         this.isOpen = !this.isOpen;
         if (this.master) return;
-        this.$store.commit('set_active_gene_filter', this.id);
+        this.$store.commit('set_active_gene_filter', {
+          id: this.id,
+          title: this.title,
+        });
       },
     },
   };
