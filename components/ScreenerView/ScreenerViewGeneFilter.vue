@@ -1,13 +1,9 @@
 <template>
-  <ScreenerView
-    :id="filter.id"
-    icon="check"
-    :title="`Filter by ${filter.name}`"
-  >
+  <ScreenerView :id="filter.id" icon="check" :title="`${filter.name}`">
     <div :data-cy="`${filter.type.toLowerCase()}_filter`">
       <div class="filter_title">
         <div>
-          Filter by {{ filter.name }}
+          {{ filter.name }}
           <font-awesome-icon
             v-tooltip="'This is Filter by ' + filter.name"
             data-cy="filter_tooltip"
