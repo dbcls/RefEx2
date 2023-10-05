@@ -46,7 +46,14 @@
             v-show="filter.is_displayed"
             :key="index"
           >
-            <TableHeader :label="filter.label"></TableHeader>
+            <TableHeader
+              :id="filter.column"
+              :label="filter.label"
+              v-bind="filter"
+              :columns-array="columnsArray"
+              :orders-array="ordersArray"
+              @activeSort="setProjectSortColumn"
+            ></TableHeader>
           </th>
         </tr>
       </thead>
@@ -182,6 +189,8 @@
     data() {
       return {
         ...initialState(),
+        columnsArray: [],
+        ordersArray: [],
       };
     },
     computed: {
@@ -349,6 +358,18 @@
       },
       resetComponent() {
         Object.assign(this.$data, initialState());
+      },
+      setProjectSortColumn(column) {
+        const columnIndex = this.columnsArray.indexOf(column);
+        if (columnIndex === -1) {
+          this.columnsArray.unshift(column);
+          this.ordersArray.unshift('desc');
+        } else if (this.ordersArray[columnIndex] === 'desc') {
+          this.ordersArray.splice(columnIndex, 1, 'asc');
+        } else {
+          this.columnsArray.splice(columnIndex, 1);
+          this.ordersArray.splice(columnIndex, 1);
+        }
       },
     },
   };
