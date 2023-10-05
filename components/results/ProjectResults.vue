@@ -9,7 +9,7 @@
             :key="`filterIndex-${filterIndex}`"
             :style="{ top: heightChartWrapper + 'px' }"
           >
-            <table-header
+            <TableHeader
               :id="filter.column"
               v-bind="filter"
               :class="filter.column"
@@ -17,7 +17,7 @@
               :orders-array="ordersArray"
               @activeSort="activeSort"
             >
-            </table-header>
+            </TableHeader>
             <median-scale v-if="filter.column === 'LogMedian'" />
           </th>
         </tr>
