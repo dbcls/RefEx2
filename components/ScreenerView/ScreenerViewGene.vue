@@ -5,8 +5,10 @@
     <div class="filter_search_condition">
       <!-- // TODO: Delete if multiple queries is able -->
       <template v-if="!activeFilterObj.method">
-        <b>None</b> of the following filters will be applied to the search
-        conditions.
+        <b>{{
+          getActiveGeneFilter.id === '' ? 'NO' : getActiveGeneFilter.title
+        }}</b>
+        filter will be applied to the search conditions.
       </template>
       <template v-else>
         <b>Filter by {{ activeFilterObj.method }}</b> will be applied to the
@@ -185,6 +187,7 @@
         activeFilter: 'active_filter',
         searchConditions: 'get_search_conditions',
         getScreenerFilterList: 'get_screener_filter_list',
+        getActiveGeneFilter: 'get_active_gene_filter',
       }),
       goTermString() {
         if (this.parameters.go.length === 0) return '';
