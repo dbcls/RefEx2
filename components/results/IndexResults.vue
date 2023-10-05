@@ -46,7 +46,7 @@
             v-show="filter.is_displayed"
             :key="index"
           >
-            {{ filter.label }}
+            <TableHeader :label="filter.label"></TableHeader>
           </th>
         </tr>
       </thead>
@@ -145,6 +145,7 @@
   import { mapGetters, mapMutations } from 'vuex';
   import ResultsPagination from '~/components/results/ResultsPagination.vue';
   import DownloadButton from '../DownloadButton.vue';
+  import TableHeader from './TableHeader.vue';
   import filters from '~/static/filters.json';
 
   const initialState = () => {
@@ -158,6 +159,7 @@
     components: {
       ResultsPagination,
       DownloadButton,
+      TableHeader,
     },
     props: {
       filters: {
