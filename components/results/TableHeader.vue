@@ -6,7 +6,7 @@
         <div v-if="note" class="tag">{{ note }}</div>
       </div>
     </div>
-    <div v-else-if="true" class="inner" :class="{ '-column': note }">
+    <div v-else class="inner" :class="{ '-column': note }">
       <div v-if="columnNoSort.includes(id)">
         <div class="header_text">
           <div class="label">{{ label }}</div>
