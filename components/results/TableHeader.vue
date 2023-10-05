@@ -134,6 +134,8 @@
     align-items: center
     justify-content: flex-start
     min-width: 150px
+    .label
+      white-space: nowrap
     &.Description
       min-width: 450px
     &.symbol
