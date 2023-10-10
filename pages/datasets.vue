@@ -295,8 +295,9 @@
     margin: 0
     font-weight: bold
     font-size: 18px
+    margin-bottom: 2px
   .dataset_name:first-child
-    margin-top: 40px
+    margin-top: 16px
   table
     font-size: 14px
     border-spacing: 0px 10px
@@ -304,12 +305,15 @@
     table-layout: auto
     border-bottom: 2px solid #3E4652
     margin-bottom: 40px
+    border-collapse: collapse
     thead, tbody
       text-align: left
       tr
+        &:nth-of-type(even)
+          background-color: #F5F7F9
         th
           border-top: 2px solid #3E4652
           border-bottom: 1px solid #3E4652
         th, td
-          padding: 0 10px
+          padding: 10px
 </style>
