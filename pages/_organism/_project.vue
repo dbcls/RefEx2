@@ -102,7 +102,6 @@
       :orders-array="ordersArray"
       :results-with-combined-medians="resultsWithCombinedMedians"
       filter-type="gene"
-      @toggleDisplaySettings="toggleDisplaySettings"
       @isSortChanged="handleIsSortChanged"
     />
   </div>
