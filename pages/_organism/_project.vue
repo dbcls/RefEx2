@@ -66,7 +66,11 @@
             <CopyButton icon="link" text="Share" :content="currentUrl" />
           </div>
           <div class="align_right">
-            <button class="reset_btn" :class="isNoSort" @click="clearSortArray">
+            <button
+              class="reset_btn"
+              :disabled="!isSort"
+              @click="clearSortArray"
+            >
               <font-awesome-icon icon="rotate-right" />
               Reset sorting column(s)
             </button>
@@ -87,7 +91,7 @@
     <ModalViewSample />
     <ModalViewCompare />
     <ProjectResults
-      ref="results"
+      ref="mutlisortResults"
       :height-chart-wrapper="heightChartWrapper"
       :items="items"
       :gene-id-key="geneIdKey"
@@ -98,6 +102,8 @@
       :orders-array="ordersArray"
       :results-with-combined-medians="resultsWithCombinedMedians"
       filter-type="gene"
+      @toggleDisplaySettings="toggleDisplaySettings"
+      @isSortChanged="handleIsSortChanged"
     />
   </div>
 </template>
@@ -278,6 +284,7 @@
         projectTableHead: [],
         columnsArray: [],
         ordersArray: [],
+        isSort: false,
       };
     },
     computed: {
@@ -305,9 +312,6 @@
       },
       selectedItem() {
         return this.items.find(item => item.id === this.selectedId);
-      },
-      isNoSort() {
-        return this.columnsArray.length === 0 ? 'disabled' : '';
       },
       tsvTitle() {
         const today = this.$getToday();
@@ -427,8 +431,10 @@
         }
       },
       clearSortArray() {
-        this.columnsArray = [];
-        this.ordersArray = [];
+        this.$refs.mutlisortResults.clearSortArray();
+      },
+      handleIsSortChanged(status) {
+        this.isSort = status;
       },
     },
   };

@@ -193,6 +193,11 @@
         activeFilter: 'active_filter',
         projectFilters: 'project_filters',
       }),
+      isSort() {
+        const status = this.columnsArray.length !== 0;
+        this.$emit('isSortChanged', status);
+        return status;
+      },
       pageItems() {
         return this.filteredSortedData.slice(
           this.paginationObject.offset,
