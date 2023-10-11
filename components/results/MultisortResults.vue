@@ -316,6 +316,11 @@
         return filteredSortedData;
       },
     },
+    watch: {
+      currentPageId(newVal) {
+        this.$emit('currentPageIdChanged', newVal);
+      },
+    },
     created() {
       this.setPageType('project');
       this.setDataset();

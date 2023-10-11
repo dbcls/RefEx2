@@ -103,6 +103,7 @@
       filter-type="gene"
       table-type="project"
       @isSortChanged="handleIsSortChanged"
+      @currentPageIdChanged="handleCurrentPageIdChanged"
     />
   </div>
 </template>
@@ -142,6 +143,17 @@
       ModalViewDisplay,
       ModalViewFilter,
       MultisortResults,
+    },
+
+    async beforeRouteUpdate(to, from, next) {
+      this.$nuxt.$loading.start();
+      if (this.filterType === 'gene') {
+        this.setIsSampleModalMessage(true);
+      }
+      this.currentPageId = to.query.id;
+      await this.$nuxt.refresh();
+      next();
+      this.$forceUpdate();
     },
 
     async asyncData({ $axios, query, store, route }) {
@@ -284,6 +296,7 @@
         columnsArray: [],
         ordersArray: [],
         isSort: false,
+        currentPageId: '',
       };
     },
     computed: {
@@ -421,6 +434,9 @@
       },
       handleIsSortChanged(status) {
         this.isSort = status;
+      },
+      handleCurrentPageIdChanged(value) {
+        this.currentPageId = value;
       },
     },
   };
