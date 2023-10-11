@@ -348,6 +348,20 @@
         setProjectPagesNumber: 'set_project_pages_number',
         setIsSampleModalMessage: 'set_is_sample_modal_message',
       }),
+      moveToProjectPage(route) {
+        if (this.tableType === 'index') {
+          this.$nuxt.$loading.start();
+          if (this.filterType === 'sample') {
+            this.setIsSampleModalMessage(true);
+          }
+          this.$router.push(this.routeToProjectPage(route));
+        } else if (this.tableType === 'project') {
+          this.$router.push(this.routeToOtherProjectPage(route));
+          if (this.activeFilter.name === 'gene') {
+            this.setIsSampleModalMessage(true);
+          }
+        }
+      },
       setQuery() {
         this.query = this.$route.query;
       },
