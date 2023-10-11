@@ -101,6 +101,7 @@
       :orders-array="ordersArray"
       :results-with-combined-medians="resultsWithCombinedMedians"
       filter-type="gene"
+      table-type="project"
       @isSortChanged="handleIsSortChanged"
     />
   </div>

@@ -112,7 +112,7 @@
       ref="resultsPagination"
       :pages-number="$store.state.project_pages_number"
       :results-displayed="resultsDisplayed"
-      table-type="project"
+      :table-type="tableType"
       class="pagination"
     />
   </div>
@@ -149,6 +149,10 @@
         default: 'geneid',
       },
       filterType: {
+        type: String,
+        required: true,
+      },
+      tableType: {
         type: String,
         required: true,
       },
