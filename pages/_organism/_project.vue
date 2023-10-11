@@ -90,39 +90,29 @@
       ref="results"
       :height-chart-wrapper="heightChartWrapper"
       :items="items"
-      :current-page-id="currentPageId"
       :gene-id-key="geneIdKey"
       :dataset="dataset"
       :selected-item="selectedId"
       :columns-array="columnsArray"
       :column-sorters-array="columnSortersArray"
       :orders-array="ordersArray"
-      :filtered-sorted-data="filteredSortedData"
-      @activeSort="setProjectSortColumn"
-    />
-    <ResultsPagination
-      ref="resultsPagination"
-      :pages-number="$store.state.project_pages_number"
-      :results-displayed="resultsDisplayed"
-      table-type="project"
-      class="pagination"
+      :results-with-combined-medians="resultsWithCombinedMedians"
+      filter-type="gene"
     />
   </div>
 </template>
 
 <script>
-  import LocalNavigation from '../../components/search/LocalNavigation/LocalNavigation.vue';
   import 'vue-slider-component/dist-css/vue-slider-component.css';
   import { mapGetters, mapMutations } from 'vuex';
-  import ItemComparison from '~/components/results/ItemComparison.vue';
-  import ModalViewGene from '~/components/ModalView/ModalViewGene.vue';
-  import ModalViewSample from '~/components/ModalView/ModalViewSample.vue';
   import ModalViewCompare from '~/components/ModalView/ModalViewCompare.vue';
   import ModalViewDisplay from '~/components/ModalView/ModalViewDisplay.vue';
   import ModalViewFilter from '~/components/ModalView/ModalViewFilter.vue';
+  import ModalViewGene from '~/components/ModalView/ModalViewGene.vue';
+  import ModalViewSample from '~/components/ModalView/ModalViewSample.vue';
+  import ItemComparison from '~/components/results/ItemComparison.vue';
   import ProjectResults from '~/components/results/ProjectResults.vue';
-  import ResultsPagination from '~/components/results/ResultsPagination.vue';
-  import _ from 'lodash';
+  import LocalNavigation from '../../components/search/LocalNavigation/LocalNavigation.vue';
 
   const logMedianFilter = {
     column: 'LogMedian',
@@ -147,18 +137,8 @@
       ModalViewDisplay,
       ModalViewFilter,
       ProjectResults,
-      ResultsPagination,
     },
-    async beforeRouteUpdate(to, from, next) {
-      this.$nuxt.$loading.start();
-      if (this.filterType === 'gene') {
-        this.setIsSampleModalMessage(true);
-      }
-      this.currentPageId = to.query.id;
-      await this.$nuxt.refresh();
-      next();
-      this.$forceUpdate();
-    },
+
     async asyncData({ $axios, query, store, route }) {
       let results;
       let resultsAll = {};
@@ -298,7 +278,6 @@
         projectTableHead: [],
         columnsArray: [],
         ordersArray: [],
-        currentPageId: '',
       };
     },
     computed: {
@@ -355,6 +334,9 @@
         }
         return arr;
       },
+      currentUrl() {
+        return window.location.href;
+      },
       resultsWithCombinedMedians() {
         const medianArraysObj = {};
         let projectResults = [];
@@ -384,93 +366,6 @@
         });
         return resultsWithCombinedMedians;
       },
-      filteredSortedData() {
-        const copy = [...this.resultsWithCombinedMedians];
-        const inRange = (x, [min, max]) => {
-          return typeof x !== 'number' || (x - min) * (x - max) <= 0;
-        };
-        const textFilter = (fullText, inputText) => {
-          const reg = new RegExp(inputText, 'gi');
-          const isMatch = reg.test(fullText);
-          if (inputText.length > 0 && isMatch) return fullText.replaceAll(reg);
-        };
-        const createNumberList = str =>
-          str
-            .replace('-', ',')
-            .split(',')
-            .map(x => parseInt(x) || 'out of filter bounds');
-        const filtered = copy.filter(result => {
-          let isFiltered = false;
-          for (const filter of this.projectFilters) {
-            const key = filter.column;
-            if (!filter.is_displayed) continue;
-            // options filter
-            else if (filter.options) {
-              if (typeof filter.filterModal === 'string') {
-                this.$store.commit('update_project_filters', {
-                  filter: [filter.filterModal],
-                });
-              }
-              if (!filter.filterModal.includes(result[key])) isFiltered = true;
-            }
-            // number filter
-            else if (
-              typeof filter.filterModal === 'number' ||
-              Array.isArray(filter.filterModal)
-            ) {
-              // checks if all values are in range. Creates a list in case of Age due to multiple values in string form
-              const n =
-                key === 'Age' ? createNumberList(result[key]) : [result[key]];
-              if (n.find(x => inRange(x, filter.filterModal)) === undefined)
-                isFiltered = true;
-            }
-            // text filter
-            else if (filter.filterModal !== '' && !isFiltered) {
-              // exact match if filter is based on API options
-              const isMatch = textFilter(result[key], filter.filterModal);
-              isFiltered = filter.filterModal !== '' && !isMatch;
-            }
-          }
-          return !isFiltered;
-        });
-        this.updateProjectTableHead();
-        const multisortData = data =>
-          _.orderBy(data, this.columnSortersArray, this.ordersArray);
-        const filteredSortedData = multisortData(filtered);
-        return filteredSortedData;
-      },
-      resultsDisplayed() {
-        const displayed = [];
-        for (const filter of this.projectFilters) {
-          if (filter.is_displayed) displayed.push(filter.column);
-        }
-        const logMedianKeys = [];
-        for (const key of Object.keys(this.resultsWithCombinedMedians[0])) {
-          if (key.startsWith('LogMedian_')) {
-            logMedianKeys.push(key);
-          }
-        }
-        const resultsDisplayed = [];
-        for (const item of this.filteredSortedData) {
-          const filtered = Object.keys(item)
-            .filter(itemKey => displayed.includes(itemKey))
-            .reduce((resultDisplayed, itemKey) => {
-              if (itemKey === 'LogMedian') {
-                for (const logMediankey of logMedianKeys) {
-                  resultDisplayed[logMediankey] = item[logMediankey];
-                }
-              } else if (itemKey === 'alias') {
-                resultDisplayed[itemKey] = this.$composeAlias(item[itemKey]);
-              } else resultDisplayed[itemKey] = item[itemKey];
-              return resultDisplayed;
-            }, {});
-          resultsDisplayed.push(filtered);
-        }
-        return resultsDisplayed;
-      },
-      currentUrl() {
-        return window.location.href;
-      },
     },
     created() {
       this.$store.commit('set_project_items', this.projectItems);
@@ -482,10 +377,6 @@
         'set_project_results',
         this.projectResultsAll[this.selectedId]
       );
-      this.setProjectSortColumn({
-        column: 'LogMedian',
-        selectedItem: this.selectedId,
-      });
     },
     updated() {
       this.heightChartWrapper = Math.floor(
@@ -535,57 +426,9 @@
           });
         }
       },
-      setProjectSortColumn({ column, selectedItem }) {
-        if (column === 'chromosomePosition') {
-          column += 'Int';
-        }
-        const columnIndex = this.columnsArray.indexOf(column);
-        if (columnIndex === -1) {
-          this.columnsArray.unshift(column);
-          this.ordersArray.unshift('desc');
-        } else if (column === 'LogMedian' && this.selectedId !== selectedItem) {
-          this.ordersArray.splice(columnIndex, 1, 'desc');
-        } else if (this.ordersArray[columnIndex] === 'desc') {
-          this.ordersArray.splice(columnIndex, 1, 'asc');
-        } else {
-          this.columnsArray.splice(columnIndex, 1);
-          this.ordersArray.splice(columnIndex, 1);
-        }
-      },
       clearSortArray() {
         this.columnsArray = [];
         this.ordersArray = [];
-      },
-      updateProjectTableHead() {
-        const arr = [];
-        for (const filter of this.projectFilters) {
-          if (
-            !filter.is_displayed ||
-            filter.column === 'gene expression patterns'
-          )
-            continue;
-          const obj = {};
-          if (filter.column === 'LogMedian') {
-            for (const oldHead of Object.keys(
-              this.resultsWithCombinedMedians[0]
-            )) {
-              if (oldHead.includes('LogMedian_')) {
-                const medianObj = {};
-                const newHead = oldHead
-                  .replace('LogMedian_', '')
-                  .concat('_Median (log2(TPM+1))');
-                medianObj[oldHead] = newHead;
-                arr.push(medianObj);
-              }
-            }
-            continue;
-          }
-          obj[filter.column] = filter.note
-            ? `${filter.label} (${filter.note})`
-            : filter.label;
-          arr.push(obj);
-        }
-        this.projectTableHead = arr;
       },
     },
   };
@@ -660,14 +503,4 @@
             > .reset_btn, .show_all_btn
               +button
               +sub_button
-    .pagination
-      display: flex
-      position: sticky
-      left: 0
-      min-width: calc(100vw - 55px)
-      max-width: fit-content
-      position: sticky
-      background-color: white
-      top: 0
-      padding: $PADDING_WRAPPER
 </style>

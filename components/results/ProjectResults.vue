@@ -1,122 +1,143 @@
 <template>
-  <section class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th
-            v-for="(filter, filterIndex) of filters"
-            v-show="filter.is_displayed"
-            :key="`filterIndex-${filterIndex}`"
-            :style="{ top: heightChartWrapper + 'px' }"
-          >
-            <table-header
-              :id="filter.column"
-              v-bind="filter"
-              :class="filter.column"
-              :columns-array="columnsArray"
-              :orders-array="ordersArray"
-              @activeSort="activeSort"
+  <div>
+    <section class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th
+              v-for="(filter, filterIndex) of filters"
+              v-show="filter.is_displayed"
+              :key="`filterIndex-${filterIndex}`"
+              :style="{ top: heightChartWrapper + 'px' }"
             >
-            </table-header>
-            <median-scale v-if="filter.column === 'LogMedian'" />
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(result, resultIndex) in pageItems" :key="resultIndex">
-          <template v-for="(filter, filterIndex) of filters">
-            <td
-              v-if="filter.is_displayed"
-              :key="`result-${filterIndex}`"
-              :class="filter.column.replaceAll(' ', '_')"
-            >
-              <a
-                v-if="filter.column === 'symbol'"
-                class="text_with_icon"
-                @click="
-                  moveToProjectPage(result.ncbiGeneId || result.ensemblGeneId)
-                "
+              <table-header
+                :id="filter.column"
+                v-bind="filter"
+                :class="filter.column"
+                :columns-array="columnsArray"
+                :orders-array="ordersArray"
+                @activeSort="activeSort"
               >
-                <font-awesome-icon class="left_icon" icon="dna" />
-                {{ result.symbol }}
-                <font-awesome-icon
-                  class="right_icon info"
-                  icon="info-circle"
-                  @click.stop="setGeneModal(result[geneIdKey])"
-                />
-              </a>
-              <a
-                v-else-if="filter.column === 'Description'"
-                class="text_with_icon"
-                @click="moveToProjectPage(result['RefexSampleId'])"
+              </table-header>
+              <median-scale v-if="filter.column === 'LogMedian'" />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(result, resultIndex) in pageItems" :key="resultIndex">
+            <template v-for="(filter, filterIndex) of filters">
+              <td
+                v-if="filter.is_displayed"
+                :key="`result-${filterIndex}`"
+                :class="filter.column.replaceAll(' ', '_')"
               >
-                <font-awesome-icon icon="flask" />
-                {{ result.Description }}
-                <font-awesome-icon
-                  class="right_icon info"
-                  icon="info-circle"
-                  @click.stop="setSampleModal(result['RefexSampleId'])"
-                />
-              </a>
-              <MedianBar
-                v-else-if="filter.column === 'LogMedian'"
-                :items="items"
-                :stat-info="tooltipData(items, result.itemNum)"
-              />
-              <img
-                v-else-if="filter.column === 'gene expression patterns'"
-                :src="geneSummarySource(result[geneIdKey])"
-                :alt="result[geneIdKey]"
-              />
-              <template v-else-if="hasStringQuotes(result[filter.column])">
-                {{ result[filter.column].replaceAll('"', '') }}
-              </template>
-              <a
-                v-else-if="filter.column === 'ncbiGeneId'"
-                class="text_with_icon"
-                target="_blank"
-                :href="datasetInfo.url_prefix + result.ncbiGeneId"
-              >
-                {{ result[filter.column] }}
-                <font-awesome-icon icon="external-link-alt" />
-              </a>
-              <a
-                v-else-if="filter.column === 'ensemblGeneId'"
-                class="text_with_icon"
-                target="_blank"
-                :href="datasetInfo.url_prefix + result.ensemblGeneId"
-              >
-                {{ result[filter.column] }}
-                <font-awesome-icon icon="external-link-alt" />
-              </a>
-              <template v-else>
-                {{ result[filter.column] }}
-                <span
-                  v-if="filter.column !== 'alias'"
+                <a
+                  v-if="filter.column === 'symbol'"
+                  class="text_with_icon"
                   @click="
-                    setFilterSearchValue('');
-                    setFilterSearchValue(result[filter.column]);
-                    setFilterModal(filter.column);
+                    moveToProjectPage(result.ncbiGeneId || result.ensemblGeneId)
                   "
-                  ><font-awesome-icon icon="plus-circle"
-                /></span>
-              </template>
-            </td>
-          </template>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+                >
+                  <font-awesome-icon class="left_icon" icon="dna" />
+                  {{ result.symbol }}
+                  <font-awesome-icon
+                    class="right_icon info"
+                    icon="info-circle"
+                    @click.stop="setGeneModal(result[geneIdKey])"
+                  />
+                </a>
+                <a
+                  v-else-if="filter.column === 'Description'"
+                  class="text_with_icon"
+                  @click="moveToProjectPage(result['RefexSampleId'])"
+                >
+                  <font-awesome-icon icon="flask" />
+                  {{ result.Description }}
+                  <font-awesome-icon
+                    class="right_icon info"
+                    icon="info-circle"
+                    @click.stop="setSampleModal(result['RefexSampleId'])"
+                  />
+                </a>
+                <MedianBar
+                  v-else-if="filter.column === 'LogMedian'"
+                  :items="items"
+                  :stat-info="tooltipData(items, result.itemNum)"
+                />
+                <img
+                  v-else-if="filter.column === 'gene expression patterns'"
+                  :src="geneSummarySource(result[geneIdKey])"
+                  :alt="result[geneIdKey]"
+                />
+                <template v-else-if="hasStringQuotes(result[filter.column])">
+                  {{ result[filter.column].replaceAll('"', '') }}
+                </template>
+                <a
+                  v-else-if="filter.column === 'ncbiGeneId'"
+                  class="text_with_icon"
+                  target="_blank"
+                  :href="datasetInfo.url_prefix + result.ncbiGeneId"
+                >
+                  {{ result[filter.column] }}
+                  <font-awesome-icon icon="external-link-alt" />
+                </a>
+                <a
+                  v-else-if="filter.column === 'ensemblGeneId'"
+                  class="text_with_icon"
+                  target="_blank"
+                  :href="datasetInfo.url_prefix + result.ensemblGeneId"
+                >
+                  {{ result[filter.column] }}
+                  <font-awesome-icon icon="external-link-alt" />
+                </a>
+                <template v-else>
+                  {{ result[filter.column] }}
+                  <span
+                    v-if="filter.column !== 'alias'"
+                    @click="
+                      setFilterSearchValue('');
+                      setFilterSearchValue(result[filter.column]);
+                      setFilterModal(filter.column);
+                    "
+                    ><font-awesome-icon icon="plus-circle"
+                  /></span>
+                </template>
+              </td>
+            </template>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <ResultsPagination
+      ref="resultsPagination"
+      :pages-number="$store.state.project_pages_number"
+      :results-displayed="resultsDisplayed"
+      table-type="project"
+      class="pagination"
+    />
+  </div>
 </template>
 
 <script>
   import TableHeader from '~/components/results/TableHeader.vue';
   import { mapGetters, mapMutations } from 'vuex';
   import specieSets from '~/refex-sample/datasets.json';
+  import ResultsPagination from '~/components/results/ResultsPagination.vue';
 
   export default {
     components: {
       TableHeader,
+      ResultsPagination,
+    },
+    async beforeRouteUpdate(to, from, next) {
+      this.$nuxt.$loading.start();
+      if (this.filterType === 'gene') {
+        this.setIsSampleModalMessage(true);
+      }
+      this.currentPageId = to.query.id;
+      await this.$nuxt.refresh();
+      next();
+      this.$forceUpdate();
     },
     props: {
       selectedItem: {
@@ -126,6 +147,10 @@
       geneIdKey: {
         type: String,
         default: 'geneid',
+      },
+      filterType: {
+        type: String,
+        required: true,
       },
       dataset: {
         type: String,
@@ -139,28 +164,21 @@
         type: Number,
         default: 200,
       },
-      columnsArray: {
+      resultsWithCombinedMedians: {
         type: Array,
-        default: () => [],
-      },
-      columnSortersArray: {
-        type: Array,
-        default: () => [],
-      },
-      ordersArray: {
-        type: Array,
-        default: () => [],
-      },
-      filteredSortedData: {
-        type: Array,
-        default: () => [],
-      },
-      currentPageId: {
-        type: String,
-        default: '',
+        required: true,
       },
     },
-
+    data() {
+      return {
+        optionsStaticData: {},
+        isDisplaySettingsOn: false,
+        projectTableHead: [],
+        columnsArray: [],
+        ordersArray: [],
+        currentPageId: '',
+      };
+    },
     computed: {
       ...mapGetters({
         projectResults: 'get_project_results',
@@ -173,6 +191,7 @@
         activeDataset: 'active_dataset',
         activeSpecie: 'active_specie',
         activeFilter: 'active_filter',
+        projectFilters: 'project_filters',
       }),
       pageItems() {
         return this.filteredSortedData.slice(
@@ -190,6 +209,103 @@
       datasetInfo() {
         return this.activeDataset['gene'];
       },
+      columnSortersArray() {
+        const arr = [];
+        for (const column of this.columnsArray) {
+          const sorter = data =>
+            column === 'ncbiGeneId'
+              ? parseInt(data[column], 10)
+              : typeof data[column] === 'string'
+              ? data[column].toLowerCase()
+              : data[column];
+          arr.push(sorter);
+        }
+        return arr;
+      },
+      resultsDisplayed() {
+        const displayed = [];
+        for (const filter of this.projectFilters) {
+          if (filter.is_displayed) displayed.push(filter.column);
+        }
+        const logMedianKeys = [];
+        for (const key of Object.keys(this.resultsWithCombinedMedians[0])) {
+          if (key.startsWith('LogMedian_')) {
+            logMedianKeys.push(key);
+          }
+        }
+        const resultsDisplayed = [];
+        for (const item of this.filteredSortedData) {
+          const filtered = Object.keys(item)
+            .filter(itemKey => displayed.includes(itemKey))
+            .reduce((resultDisplayed, itemKey) => {
+              if (itemKey === 'LogMedian') {
+                for (const logMediankey of logMedianKeys) {
+                  resultDisplayed[logMediankey] = item[logMediankey];
+                }
+              } else if (itemKey === 'alias') {
+                resultDisplayed[itemKey] = this.$composeAlias(item[itemKey]);
+              } else resultDisplayed[itemKey] = item[itemKey];
+              return resultDisplayed;
+            }, {});
+          resultsDisplayed.push(filtered);
+        }
+        return resultsDisplayed;
+      },
+      filteredSortedData() {
+        const copy = [...this.resultsWithCombinedMedians];
+        const inRange = (x, [min, max]) => {
+          return typeof x !== 'number' || (x - min) * (x - max) <= 0;
+        };
+        const textFilter = (fullText, inputText) => {
+          const reg = new RegExp(inputText, 'gi');
+          const isMatch = reg.test(fullText);
+          if (inputText.length > 0 && isMatch) return fullText.replaceAll(reg);
+        };
+        const createNumberList = str =>
+          str
+            .replace('-', ',')
+            .split(',')
+            .map(x => parseInt(x) || 'out of filter bounds');
+        const filtered = copy.filter(result => {
+          let isFiltered = false;
+          for (const filter of this.projectFilters) {
+            const key = filter.column;
+            if (!filter.is_displayed) continue;
+            // options filter
+            else if (filter.options) {
+              if (typeof filter.filterModal === 'string') {
+                this.$store.commit('update_project_filters', {
+                  filter: [filter.filterModal],
+                });
+              }
+              if (!filter.filterModal.includes(result[key])) isFiltered = true;
+            }
+            // number filter
+            else if (
+              typeof filter.filterModal === 'number' ||
+              Array.isArray(filter.filterModal)
+            ) {
+              // checks if all values are in range. Creates a list in case of Age due to multiple values in string form
+              const n =
+                key === 'Age' ? createNumberList(result[key]) : [result[key]];
+              if (n.find(x => inRange(x, filter.filterModal)) === undefined)
+                isFiltered = true;
+            }
+            // text filter
+            else if (filter.filterModal !== '' && !isFiltered) {
+              // exact match if filter is based on API options
+              const isMatch = textFilter(result[key], filter.filterModal);
+              isFiltered = filter.filterModal !== '' && !isMatch;
+            }
+          }
+          return !isFiltered;
+        });
+        this.updateProjectTableHead();
+        const multisortData = data =>
+          _.orderBy(data, this.columnSortersArray, this.ordersArray);
+        const filteredSortedData = multisortData(filtered);
+        return filteredSortedData;
+      },
     },
     created() {
       this.setPageType('project');
@@ -201,6 +317,12 @@
       }
       this.setGeneModal(null);
       this.setSampleModal(null);
+    },
+    mounted() {
+      this.setProjectSortColumn({
+        column: 'LogMedian',
+        selectedItem: this.selectedItem,
+      });
     },
     updated() {
       this.setProjectPagesNumber(this.pagesNumber);
@@ -250,7 +372,7 @@
         }
       },
       activeSort(col_name) {
-        this.$emit('activeSort', {
+        this.setProjectSortColumn({
           column: col_name,
           selectedItem: this.selectedItem,
         });
@@ -268,6 +390,61 @@
       },
       hasStringQuotes(str) {
         return str?.startsWith('"') && str?.endsWith('"');
+      },
+      clearSortArray() {
+        this.columnsArray = [];
+        this.ordersArray = [];
+      },
+      updateProjectTableHead() {
+        const arr = [];
+        for (const filter of this.projectFilters) {
+          if (
+            !filter.is_displayed ||
+            filter.column === 'gene expression patterns'
+          )
+            continue;
+          const obj = {};
+          if (filter.column === 'LogMedian') {
+            for (const oldHead of Object.keys(
+              this.resultsWithCombinedMedians[0]
+            )) {
+              if (oldHead.includes('LogMedian_')) {
+                const medianObj = {};
+                const newHead = oldHead
+                  .replace('LogMedian_', '')
+                  .concat('_Median (log2(TPM+1))');
+                medianObj[oldHead] = newHead;
+                arr.push(medianObj);
+              }
+            }
+            continue;
+          }
+          obj[filter.column] = filter.note
+            ? `${filter.label} (${filter.note})`
+            : filter.label;
+          arr.push(obj);
+        }
+        this.projectTableHead = arr;
+      },
+      setProjectSortColumn({ column, selectedItem }) {
+        if (column === 'chromosomePosition') {
+          column += 'Int';
+        }
+        const columnIndex = this.columnsArray.indexOf(column);
+        if (columnIndex === -1) {
+          this.columnsArray.unshift(column);
+          this.ordersArray.unshift('desc');
+        } else if (
+          column === 'LogMedian' &&
+          this.selectedItem !== selectedItem
+        ) {
+          this.ordersArray.splice(columnIndex, 1, 'desc');
+        } else if (this.ordersArray[columnIndex] === 'desc') {
+          this.ordersArray.splice(columnIndex, 1, 'asc');
+        } else {
+          this.columnsArray.splice(columnIndex, 1);
+          this.ordersArray.splice(columnIndex, 1);
+        }
       },
     },
   };
@@ -298,4 +475,14 @@
                 cursor: pointer
           > td:last-child
             width: 100%
+  .pagination
+    display: flex
+    position: sticky
+    left: 0
+    min-width: calc(100vw - 55px)
+    max-width: fit-content
+    position: sticky
+    background-color: white
+    top: 0
+    padding: $PADDING_WRAPPER
 </style>
