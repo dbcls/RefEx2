@@ -110,7 +110,7 @@
     </section>
     <ResultsPagination
       ref="resultsPagination"
-      :pages-number="$store.state.project_pages_number"
+      :pages-number="pagesNumber"
       :results-displayed="resultsDisplayed"
       :table-type="tableType"
       class="pagination"
