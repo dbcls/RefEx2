@@ -90,7 +90,7 @@
     <ModalViewGene />
     <ModalViewSample />
     <ModalViewCompare />
-    <ProjectResults
+    <MultisortResults
       ref="mutlisortResults"
       :height-chart-wrapper="heightChartWrapper"
       :items="items"
@@ -115,7 +115,7 @@
   import ModalViewGene from '~/components/ModalView/ModalViewGene.vue';
   import ModalViewSample from '~/components/ModalView/ModalViewSample.vue';
   import ItemComparison from '~/components/results/ItemComparison.vue';
-  import ProjectResults from '~/components/results/ProjectResults.vue';
+  import MultisortResults from '~/components/results/MultisortResults.vue';
   import LocalNavigation from '../../components/search/LocalNavigation/LocalNavigation.vue';
 
   const logMedianFilter = {
@@ -140,7 +140,7 @@
       ModalViewCompare,
       ModalViewDisplay,
       ModalViewFilter,
-      ProjectResults,
+      MultisortResults,
     },
 
     async asyncData({ $axios, query, store, route }) {
