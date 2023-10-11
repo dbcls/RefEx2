@@ -98,7 +98,6 @@
       :dataset="dataset"
       :selected-item="selectedId"
       :columns-array="columnsArray"
-      :column-sorters-array="columnSortersArray"
       :orders-array="ordersArray"
       :results-with-combined-medians="resultsWithCombinedMedians"
       filter-type="gene"
@@ -323,19 +322,6 @@
       },
       projectSortColumns() {
         return [this.columnsArray, this.ordersArray];
-      },
-      columnSortersArray() {
-        const arr = [];
-        for (const column of this.columnsArray) {
-          const sorter = data =>
-            column === 'ncbiGeneId'
-              ? parseInt(data[column], 10)
-              : typeof data[column] === 'string'
-              ? data[column].toLowerCase()
-              : data[column];
-          arr.push(sorter);
-        }
-        return arr;
       },
       currentUrl() {
         return window.location.href;
