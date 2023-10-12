@@ -412,7 +412,7 @@
         this.filters = arr;
       },
       updateSelectedItem(id) {
-        this.setSortColumn({
+        this.$refs.mutlisortResults.setSortColumn({
           column: 'LogMedian',
           selectedItem: id,
         });
