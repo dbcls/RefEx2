@@ -321,7 +321,7 @@
       this.setDataset();
     },
     mounted() {
-      this.setProjectSortColumn({
+      this.setSortColumn({
         column: 'LogMedian',
         selectedItem: this.selectedItem,
       });
@@ -381,7 +381,7 @@
         return statData;
       },
       activeSort(col_name) {
-        this.setProjectSortColumn({
+        this.setSortColumn({
           column: col_name,
           selectedItem: this.selectedItem,
         });
@@ -433,7 +433,7 @@
         }
         this.projectTableHead = arr;
       },
-      setProjectSortColumn({ column, selectedItem }) {
+      setSortColumn({ column, selectedItem }) {
         if (column === 'chromosomePosition') {
           column += 'Int';
         }

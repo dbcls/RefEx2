@@ -411,7 +411,7 @@
         this.filters = arr;
       },
       updateSelectedItem(id) {
-        this.setProjectSortColumn({
+        this.setSortColumn({
           column: 'LogMedian',
           selectedItem: id,
         });
