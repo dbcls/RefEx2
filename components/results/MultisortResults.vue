@@ -168,7 +168,7 @@
         type: Number,
         default: 200,
       },
-      resultsWithCombinedMedians: {
+      results: {
         type: Array,
         required: true,
       },
@@ -237,7 +237,7 @@
           if (filter.is_displayed) displayed.push(filter.column);
         }
         const logMedianKeys = [];
-        for (const key of Object.keys(this.resultsWithCombinedMedians[0])) {
+        for (const key of Object.keys(this.results[0])) {
           if (key.startsWith('LogMedian_')) {
             logMedianKeys.push(key);
           }
@@ -261,7 +261,7 @@
         return resultsDisplayed;
       },
       filteredSortedData() {
-        const copy = [...this.resultsWithCombinedMedians];
+        const copy = [...this.results];
         const inRange = (x, [min, max]) => {
           return typeof x !== 'number' || (x - min) * (x - max) <= 0;
         };
@@ -427,9 +427,7 @@
             continue;
           const obj = {};
           if (filter.column === 'LogMedian') {
-            for (const oldHead of Object.keys(
-              this.resultsWithCombinedMedians[0]
-            )) {
+            for (const oldHead of Object.keys(this.results[0])) {
               if (oldHead.includes('LogMedian_')) {
                 const medianObj = {};
                 const newHead = oldHead

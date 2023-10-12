@@ -99,7 +99,7 @@
       :dataset="dataset"
       :items="items"
       :height-chart-wrapper="heightChartWrapper"
-      :results-with-combined-medians="resultsWithCombinedMedians"
+      :results="resultsWithCombinedMedians"
       @isSortChanged="handleIsSortChanged"
       @currentPageIdChanged="handleCurrentPageIdChanged"
     />
