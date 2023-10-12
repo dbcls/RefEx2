@@ -24,6 +24,14 @@
         />
       </div>
       <div class="display_settings_wrapper">
+        <button
+          class="reset_btn"
+          :disabled="!isSortingColumns"
+          @click="clearSortArray"
+        >
+          <font-awesome-icon icon="rotate-right" />
+          Reset sorting
+        </button>
         <button class="show_all_btn" @click="$emit('toggleDisplaySettings')">
           <font-awesome-icon icon="eye" />
           Show/hide columns
@@ -205,6 +213,7 @@
         getCheckedResults: 'get_checked_results',
         isOn: 'compare_modal',
         activeFilter: 'active_filter',
+        isSortingColumns: 'get_is_sorting_columns',
       }),
       examples() {
         return this.activeDataset[this.filterType].item_comparison_example;
@@ -352,6 +361,9 @@
       },
       resetComponent() {
         Object.assign(this.$data, initialState());
+      },
+      clearSortArray() {
+        this.$refs.mutlisortResults.clearSortArray();
       },
     },
   };
