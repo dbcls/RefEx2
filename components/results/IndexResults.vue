@@ -32,8 +32,8 @@
     </div>
     <MultisortResults
       ref="mutlisortResults"
-      filter-type="gene"
       table-type="index"
+      :filter-type="filterType"
       :results="resultsCached"
       :filters="filters"
       :results-num="resultsNum"
