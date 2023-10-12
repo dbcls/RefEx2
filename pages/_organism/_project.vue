@@ -92,16 +92,14 @@
     <ModalViewCompare />
     <MultisortResults
       ref="mutlisortResults"
-      :height-chart-wrapper="heightChartWrapper"
-      :items="items"
-      :gene-id-key="geneIdKey"
-      :dataset="dataset"
       :selected-item="selectedId"
-      :columns-array="columnsArray"
-      :orders-array="ordersArray"
-      :results-with-combined-medians="resultsWithCombinedMedians"
+      :gene-id-key="geneIdKey"
       filter-type="gene"
       table-type="project"
+      :dataset="dataset"
+      :items="items"
+      :height-chart-wrapper="heightChartWrapper"
+      :results-with-combined-medians="resultsWithCombinedMedians"
       @isSortChanged="handleIsSortChanged"
       @currentPageIdChanged="handleCurrentPageIdChanged"
     />
