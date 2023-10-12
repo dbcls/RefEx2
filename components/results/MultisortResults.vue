@@ -73,19 +73,15 @@
                   {{ result[filter.column].replaceAll('"', '') }}
                 </template>
                 <a
-                  v-else-if="filter.column === 'ncbiGeneId'"
+                  v-else-if="
+                    filter.column === 'ncbiGeneId' ||
+                    filter.column === 'ensemblGeneId'
+                  "
                   class="text_with_icon"
                   target="_blank"
-                  :href="datasetInfo.url_prefix + result.ncbiGeneId"
-                >
-                  {{ result[filter.column] }}
-                  <font-awesome-icon icon="external-link-alt" />
-                </a>
-                <a
-                  v-else-if="filter.column === 'ensemblGeneId'"
-                  class="text_with_icon"
-                  target="_blank"
-                  :href="datasetInfo.url_prefix + result.ensemblGeneId"
+                  :href="
+                    activeDataset['gene'].url_prefix + result[filter.column]
+                  "
                 >
                   {{ result[filter.column] }}
                   <font-awesome-icon icon="external-link-alt" />
@@ -210,9 +206,6 @@
         return Math.ceil(
           this.filteredSortedData.length / this.paginationObject.limit
         );
-      },
-      datasetInfo() {
-        return this.activeDataset['gene'];
       },
       columnSortersArray() {
         const arr = [];
