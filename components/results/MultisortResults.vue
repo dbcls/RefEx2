@@ -323,17 +323,12 @@
         });
       }
     },
-    updated() {
-      this.setProjectPagesNumber(this.pagesNumber);
-    },
     methods: {
       ...mapMutations({
         setGeneModal: 'set_gene_modal',
         setSampleModal: 'set_sample_modal',
-        updatePagination: 'set_project_pagination',
         setFilterSearchValue: 'set_filter_search_value',
         setFilterModal: 'set_filter_modal',
-        setProjectPagesNumber: 'set_project_pages_number',
         setIsSampleModalMessage: 'set_is_sample_modal_message',
         setIsSortingColumns: 'set_is_sorting_columns',
       }),

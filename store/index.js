@@ -73,7 +73,6 @@ export const state = () => ({
   filter_search_value: '',
   index_gene_pages_number: 0,
   index_sample_pages_number: 0,
-  project_pages_number: 0,
   project_items: {},
   search_conditions: default_search_conditions(),
   screener_filter_list: {},
@@ -168,9 +167,6 @@ export const getters = {
   },
   get_index_sample_pages_number(state) {
     return state.index_sample_pages_number;
-  },
-  get_project_pages_number(state) {
-    return state.project_pages_number;
   },
   get_search_conditions(state) {
     return state.search_conditions;
@@ -284,9 +280,6 @@ export const mutations = {
   },
   set_index_sample_pages_number(state, index_sample_pages_number) {
     state.index_sample_pages_number = index_sample_pages_number;
-  },
-  set_project_pages_number(state, project_pages_number) {
-    state.project_pages_number = project_pages_number;
   },
   set_search_conditions(state, items) {
     state.search_conditions[items.type][items.item] = items.value;
