@@ -30,6 +30,15 @@
         </button>
       </div>
     </div>
+    <MultisortResults
+      ref="mutlisortResults"
+      filter-type="gene"
+      table-type="index"
+      :results="resultsCached"
+      :filters="filters"
+      :results-num="resultsNum"
+      :key-for-id="keyForId"
+    />
     <table :data-cy="`${$vnode.key}_index_table`">
       <thead :data-cy="`${$vnode.key}_index_thead`">
         <tr>
@@ -139,15 +148,6 @@
       </tbody>
     </table>
     <ResultsPagination :pages-number="pagesNumber" table-type="index" />
-    <MultisortResults
-      ref="mutlisortResults"
-      filter-type="gene"
-      table-type="index"
-      :results="resultsCached"
-      :filters="filters"
-      :results-num="resultsNum"
-      :key-for-id="keyForId"
-    />
   </div>
 </template>
 <script>
