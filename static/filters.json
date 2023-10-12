@@ -9,7 +9,8 @@
         "note": "",
         "is_checkbox": false,
         "is_displayed": true,
-        "is_ontology": false
+        "is_ontology": false,
+        "filterModal": ""
       },
       {
         "column": "name",
@@ -17,7 +18,8 @@
         "note": "",
         "is_checkbox": false,
         "is_displayed": true,
-        "is_ontology": false
+        "is_ontology": false,
+        "filterModal": ""
       },
       {
         "column": "alias",
@@ -25,7 +27,8 @@
         "note": "",
         "is_checkbox": false,
         "is_displayed": true,
-        "is_ontology": false
+        "is_ontology": false,
+        "filterModal": ""
       },
       {
         "column": "geneid",
@@ -33,7 +36,8 @@
         "note": "",
         "is_checkbox": false,
         "is_displayed": true,
-        "is_ontology": false
+        "is_ontology": false,
+        "filterModal": ""
       },
       {
         "column": "chromosomePosition",
@@ -41,7 +45,8 @@
         "note": "",
         "is_checkbox": false,
         "is_displayed": true,
-        "is_ontology": false
+        "is_ontology": false,
+        "filterModal": ""
       },
       {
         "column": "typeOfGene",
@@ -49,7 +54,8 @@
         "note": "",
         "is_checkbox": false,
         "is_displayed": true,
-        "is_ontology": false
+        "is_ontology": false,
+        "filterModal": ""
       },
       {
         "column": "gene expression patterns",
@@ -57,7 +63,8 @@
         "note": "",
         "is_checkbox": false,
         "is_displayed": true,
-        "is_ontology": false
+        "is_ontology": false,
+        "filterModal": ""
       }
     ]
   },
