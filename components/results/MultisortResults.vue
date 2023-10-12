@@ -317,7 +317,7 @@
         this.$emit('currentPageIdChanged', newVal);
       },
       isSort(newVal) {
-        this.$store.commit('set_is_sorting_columns', newVal);
+        this.setIsSortingColumns(newVal);
       },
     },
     created() {
@@ -342,6 +342,7 @@
         setActiveDataset: 'set_active_dataset',
         setProjectPagesNumber: 'set_project_pages_number',
         setIsSampleModalMessage: 'set_is_sample_modal_message',
+        setIsSortingColumns: 'set_is_sorting_columns',
       }),
       moveToProjectPage(route) {
         if (this.tableType === 'index') {

@@ -68,7 +68,7 @@
           <div class="align_right">
             <button
               class="reset_btn"
-              :disabled="!isSort"
+              :disabled="!isSortingColumns"
               @click="clearSortArray"
             >
               <font-awesome-icon icon="rotate-right" />
@@ -101,7 +101,6 @@
       :height-chart-wrapper="heightChartWrapper"
       :results="resultsWithCombinedMedians"
       :filters="projectFilters"
-      @isSortChanged="handleIsSortChanged"
       @currentPageIdChanged="handleCurrentPageIdChanged"
     />
   </div>
@@ -294,7 +293,6 @@
         projectTableHead: [],
         columnsArray: [],
         ordersArray: [],
-        isSort: false,
         currentPageId: '',
       };
     },
@@ -306,6 +304,7 @@
         activeSpecie: 'active_specie',
         activeDataset: 'active_dataset',
         activeFilter: 'active_filter',
+        isSortingColumns: 'get_is_sorting_columns',
       }),
       projectItems() {
         return {
@@ -441,9 +440,6 @@
       },
       clearSortArray() {
         this.$refs.mutlisortResults.clearSortArray();
-      },
-      handleIsSortChanged(status) {
-        this.isSort = status;
       },
       handleCurrentPageIdChanged(value) {
         this.currentPageId = value;
