@@ -17,7 +17,14 @@
               v-show="filter.is_displayed"
               :key="index"
             >
-              {{ filter.label }}
+              <TableHeader
+                :id="filter.column"
+                :label="filter.label"
+                v-bind="filter"
+                :columns-array="columnsArray"
+                :orders-array="ordersArray"
+                @activeSort="activeSort"
+              />
             </th>
           </tr>
           <tr v-if="tableType === 'project'">
