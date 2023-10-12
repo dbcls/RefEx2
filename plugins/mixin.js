@@ -1,3 +1,5 @@
+// https://v2.nuxt.com/docs/directory-structure/plugins/#inject-in-root--context
+// access the method with $ at the beginning
 export default ({ app }, inject) => {
   inject(
     'highlightedSuggestion',
