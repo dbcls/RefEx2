@@ -3,7 +3,24 @@
     <section class="table-wrapper">
       <table>
         <thead>
-          <tr>
+          <tr v-if="tableType === 'index'">
+            <th class="checkbox">
+              <input
+                type="checkbox"
+                :checked="isAllChecked"
+                @click="toggleAllCheckbox"
+              />
+            </th>
+            <th v-if="filterType === 'sample'">Description</th>
+            <th
+              v-for="(filter, index) of filters"
+              v-show="filter.is_displayed"
+              :key="index"
+            >
+              {{ filter.label }}
+            </th>
+          </tr>
+          <tr v-if="tableType === 'project'">
             <th
               v-for="(filter, filterIndex) of filters"
               v-show="filter.is_displayed"
@@ -24,83 +41,90 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(result, resultIndex) in pageItems" :key="resultIndex">
-            <template v-for="(filter, filterIndex) of filters">
-              <td
-                v-if="filter.is_displayed"
-                :key="`result-${filterIndex}`"
-                :class="filter.column.replaceAll(' ', '_')"
-              >
-                <a
-                  v-if="filter.column === 'symbol'"
-                  class="text_with_icon"
-                  @click="
-                    moveToProjectPage(result.ncbiGeneId || result.ensemblGeneId)
-                  "
+          <template v-if="tableType === 'index'">
+            <div>index tbody</div>
+          </template>
+          <template v-else-if="tableType === 'project'">
+            <tr v-for="(result, resultIndex) in pageItems" :key="resultIndex">
+              <template v-for="(filter, filterIndex) of filters">
+                <td
+                  v-if="filter.is_displayed"
+                  :key="`result-${filterIndex}`"
+                  :class="filter.column.replaceAll(' ', '_')"
                 >
-                  <font-awesome-icon class="left_icon" icon="dna" />
-                  {{ result.symbol }}
-                  <font-awesome-icon
-                    class="right_icon info"
-                    icon="info-circle"
-                    @click.stop="setGeneModal(result[geneIdKey])"
-                  />
-                </a>
-                <a
-                  v-else-if="filter.column === 'Description'"
-                  class="text_with_icon"
-                  @click="moveToProjectPage(result['RefexSampleId'])"
-                >
-                  <font-awesome-icon icon="flask" />
-                  {{ result.Description }}
-                  <font-awesome-icon
-                    class="right_icon info"
-                    icon="info-circle"
-                    @click.stop="setSampleModal(result['RefexSampleId'])"
-                  />
-                </a>
-                <MedianBar
-                  v-else-if="filter.column === 'LogMedian'"
-                  :items="items"
-                  :stat-info="tooltipData(items, result.itemNum)"
-                />
-                <img
-                  v-else-if="filter.column === 'gene expression patterns'"
-                  :src="geneSummarySource(result[geneIdKey])"
-                  :alt="result[geneIdKey]"
-                />
-                <template v-else-if="$hasStringQuotes(result[filter.column])">
-                  {{ result[filter.column].replaceAll('"', '') }}
-                </template>
-                <a
-                  v-else-if="
-                    filter.column === 'ncbiGeneId' ||
-                    filter.column === 'ensemblGeneId'
-                  "
-                  class="text_with_icon"
-                  target="_blank"
-                  :href="
-                    activeDataset['gene'].url_prefix + result[filter.column]
-                  "
-                >
-                  {{ result[filter.column] }}
-                  <font-awesome-icon icon="external-link-alt" />
-                </a>
-                <template v-else>
-                  {{ result[filter.column] }}
-                  <span
-                    v-if="filter.column !== 'alias'"
+                  <a
+                    v-if="filter.column === 'symbol'"
+                    class="text_with_icon"
                     @click="
-                      setFilterSearchValue('');
-                      setFilterSearchValue(result[filter.column]);
-                      setFilterModal(filter.column);
+                      moveToProjectPage(
+                        result.ncbiGeneId || result.ensemblGeneId
+                      )
                     "
-                    ><font-awesome-icon icon="plus-circle"
-                  /></span>
-                </template>
-              </td>
-            </template>
-          </tr>
+                  >
+                    <font-awesome-icon class="left_icon" icon="dna" />
+                    {{ result.symbol }}
+                    <font-awesome-icon
+                      class="right_icon info"
+                      icon="info-circle"
+                      @click.stop="setGeneModal(result[geneIdKey])"
+                    />
+                  </a>
+                  <a
+                    v-else-if="filter.column === 'Description'"
+                    class="text_with_icon"
+                    @click="moveToProjectPage(result['RefexSampleId'])"
+                  >
+                    <font-awesome-icon icon="flask" />
+                    {{ result.Description }}
+                    <font-awesome-icon
+                      class="right_icon info"
+                      icon="info-circle"
+                      @click.stop="setSampleModal(result['RefexSampleId'])"
+                    />
+                  </a>
+                  <MedianBar
+                    v-else-if="filter.column === 'LogMedian'"
+                    :items="items"
+                    :stat-info="tooltipData(items, result.itemNum)"
+                  />
+                  <img
+                    v-else-if="filter.column === 'gene expression patterns'"
+                    :src="geneSummarySource(result[geneIdKey])"
+                    :alt="result[geneIdKey]"
+                  />
+                  <template v-else-if="$hasStringQuotes(result[filter.column])">
+                    {{ result[filter.column].replaceAll('"', '') }}
+                  </template>
+                  <a
+                    v-else-if="
+                      filter.column === 'ncbiGeneId' ||
+                      filter.column === 'ensemblGeneId'
+                    "
+                    class="text_with_icon"
+                    target="_blank"
+                    :href="
+                      activeDataset['gene'].url_prefix + result[filter.column]
+                    "
+                  >
+                    {{ result[filter.column] }}
+                    <font-awesome-icon icon="external-link-alt" />
+                  </a>
+                  <template v-else>
+                    {{ result[filter.column] }}
+                    <span
+                      v-if="filter.column !== 'alias'"
+                      @click="
+                        setFilterSearchValue('');
+                        setFilterSearchValue(result[filter.column]);
+                        setFilterModal(filter.column);
+                      "
+                      ><font-awesome-icon icon="plus-circle"
+                    /></span>
+                  </template>
+                </td>
+              </template>
+            </tr>
+          </template>
         </tbody>
       </table>
     </section>
@@ -172,6 +196,10 @@
         type: Array,
         required: true,
       },
+      keyForId: {
+        type: String,
+        default: '',
+      },
     },
     data() {
       return {
@@ -194,6 +222,16 @@
         activeDataset: 'active_dataset',
         activeFilter: 'active_filter',
       }),
+      resultsUniqueKeys() {
+        return this.results.map(item => item[this.keyForId]);
+      },
+      isAllChecked() {
+        return (
+          this.resultsUniqueKeys.length > 0 &&
+          this.checkedResults[this.activeFilter.name].length ===
+            this.resultsUniqueKeys.length
+        );
+      },
       isSortColumns() {
         return this.columnsArray.length !== 0;
       },
@@ -220,6 +258,7 @@
         return arr;
       },
       resultsDisplayed() {
+        if (this.tableType === 'index') return;
         const displayed = [];
         for (const filter of this.filters) {
           if (filter.is_displayed) displayed.push(filter.column);
@@ -345,6 +384,14 @@
             this.setIsSampleModalMessage(true);
           }
         }
+      },
+      toggleAllCheckbox() {
+        if (this.isAllChecked) {
+          this.checkedResults[this.activeFilter.name] = [];
+        } else {
+          this.checkedResults[this.activeFilter.name] = this.resultsUniqueKeys;
+        }
+        this.handleChange();
       },
       tooltipData(items, itemNum) {
         const statData = {};

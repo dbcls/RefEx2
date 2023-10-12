@@ -76,7 +76,7 @@
             <input
               v-model="checkedResults[activeFilter.name]"
               type="checkbox"
-              :value="result[keyForID]"
+              :value="result[keyForId]"
               @change="handleChange"
             />
           </td>
@@ -139,6 +139,14 @@
       </tbody>
     </table>
     <ResultsPagination :pages-number="pagesNumber" table-type="index" />
+    <MultisortResults
+      ref="mutlisortResults"
+      filter-type="gene"
+      table-type="index"
+      :results="resultsCached"
+      :filters="filters"
+      :key-for-id="keyForId"
+    />
   </div>
 </template>
 <script>
@@ -146,6 +154,7 @@
   import ResultsPagination from '~/components/results/ResultsPagination.vue';
   import DownloadButton from '../DownloadButton.vue';
   import filters from '~/static/filters.json';
+  import MultisortResults from '~/components/results/MultisortResults.vue';
 
   const initialState = () => {
     return {
@@ -158,6 +167,7 @@
     components: {
       ResultsPagination,
       DownloadButton,
+      MultisortResults,
     },
     props: {
       filters: {
@@ -199,9 +209,9 @@
         return this.activeDataset[this.filterType].item_comparison_example;
       },
       resultsUniqueKeys() {
-        return this.resultsCached.map(item => item[this.keyForID]);
+        return this.resultsCached.map(item => item[this.keyForId]);
       },
-      keyForID() {
+      keyForId() {
         return this.filterType === 'gene' ? 'geneid' : 'refexSampleId';
       },
       filterType() {
