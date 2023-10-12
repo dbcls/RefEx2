@@ -352,9 +352,6 @@
           }
         }
       },
-      setQuery() {
-        this.query = this.$route.query;
-      },
       tooltipData(items, itemNum) {
         const statData = {};
         let tmp = {
