@@ -369,6 +369,7 @@
       },
     },
     created() {
+      this.$store.commit('set_page_type', 'project');
       this.$store.commit('set_project_items', this.projectItems);
     },
     mounted() {

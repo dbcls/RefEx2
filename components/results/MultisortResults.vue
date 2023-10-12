@@ -322,7 +322,6 @@
       },
     },
     created() {
-      this.setPageType('project');
       this.setDataset();
       if (location.search.match(/=(.*)&/)[1] === 'gene') {
         this.$store.commit('set_active_filter', 'gene');
@@ -346,7 +345,6 @@
         setGeneModal: 'set_gene_modal',
         setSampleModal: 'set_sample_modal',
         updatePagination: 'set_project_pagination',
-        setPageType: 'set_page_type',
         setFilterSearchValue: 'set_filter_search_value',
         setFilterModal: 'set_filter_modal',
         setActiveDataset: 'set_active_dataset',
