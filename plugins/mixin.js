@@ -41,4 +41,7 @@ export default ({ app }, inject) => {
   inject('hasStringQuotes', str => {
     return str?.startsWith('"') && str?.endsWith('"');
   });
+  inject('isArrayLikeString', str => {
+    return str?.startsWith('[');
+  });
 };
