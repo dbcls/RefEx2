@@ -195,7 +195,7 @@
         activeSpecie: 'active_specie',
         activeFilter: 'active_filter',
       }),
-      isSort() {
+      isSortColumns() {
         return this.columnsArray.length !== 0;
       },
       pageItems() {
@@ -309,7 +309,7 @@
       currentPageId(newVal) {
         this.$emit('currentPageIdChanged', newVal);
       },
-      isSort(newVal) {
+      isSortColumns(newVal) {
         this.setIsSortingColumns(newVal);
       },
     },
