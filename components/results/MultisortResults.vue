@@ -229,10 +229,9 @@
 </template>
 
 <script>
-  import TableHeader from '~/components/results/TableHeader.vue';
   import { mapGetters, mapMutations } from 'vuex';
-  import specieSets from '~/refex-sample/datasets.json';
   import ResultsPagination from '~/components/results/ResultsPagination.vue';
+  import TableHeader from '~/components/results/TableHeader.vue';
 
   const initialState = () => {
     return {
