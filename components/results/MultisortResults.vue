@@ -321,6 +321,7 @@
       },
     },
     created() {
+      this.setIsSortingColumns(false);
       this.setDataset();
     },
     mounted() {
