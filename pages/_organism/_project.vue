@@ -371,6 +371,8 @@
     created() {
       this.$store.commit('set_page_type', 'project');
       this.$store.commit('set_project_items', this.projectItems);
+      this.setGeneModal(null);
+      this.setSampleModal(null);
     },
     mounted() {
       if (this.isError) return;

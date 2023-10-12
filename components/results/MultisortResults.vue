@@ -328,8 +328,6 @@
       } else {
         this.$store.commit('set_active_filter', 'sample');
       }
-      this.setGeneModal(null);
-      this.setSampleModal(null);
     },
     mounted() {
       this.setProjectSortColumn({
