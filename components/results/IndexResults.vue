@@ -385,7 +385,8 @@
         gap: 15px
       > .display_settings_wrapper
         +display_settings_wrapper
-        > .show_all_btn
+        gap: 10px
+        > .reset_btn, .show_all_btn
           +button
           +sub_button
           white-space: nowrap
