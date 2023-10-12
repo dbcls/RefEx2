@@ -1,9 +1,9 @@
 <template>
   <div>
     <section class="table-wrapper">
-      <table>
+      <table v-if="tableType === 'index'">
         <thead>
-          <tr v-if="tableType === 'index'">
+          <tr>
             <th class="checkbox">
               <input
                 type="checkbox"
@@ -27,7 +27,98 @@
               />
             </th>
           </tr>
-          <tr v-if="tableType === 'project'">
+        </thead>
+        <tbody>
+          <td
+            v-if="resultsCached.length === 0"
+            class="warning"
+            :colspan="filters.filter(x => x.is_displayed).length + 2"
+          >
+            <font-awesome-icon icon="exclamation-triangle" />
+            <template v-if="resultsNum === 0"
+              >No results found. Please check the spelling or try other
+              keywords.</template
+            >
+            <template v-else>
+              Please press the 'Find {{ filterType }}s' button to update the
+              results to the current screener settings.
+            </template>
+          </td>
+          <tr
+            v-for="(result, resultIndex) in pageItems"
+            v-else
+            :key="`result_${resultIndex}`"
+            :data-cy="`${$vnode.key}_index_result_${resultIndex}`"
+          >
+            <td class="checkbox" @click="e => e.stopPropagation()">
+              <input
+                v-model="checkedResults[activeFilter.name]"
+                type="checkbox"
+                :value="result[keyForId]"
+                @change="handleChange"
+              />
+            </td>
+            <td v-if="filterType === 'sample'">
+              <a
+                class="text_with_icon"
+                @click="moveToProjectPage(result['refexSampleId'])"
+              >
+                <font-awesome-icon icon="flask" />
+                {{ result.Description }}
+                <font-awesome-icon
+                  icon="info-circle"
+                  @click.stop="setSampleModal(result['refexSampleId'])"
+                />
+              </a>
+            </td>
+            <td
+              v-for="(filter, index) of filters"
+              v-show="filter.is_displayed"
+              :key="index"
+              :class="filter.column.replaceAll(' ', '_')"
+            >
+              <img
+                v-if="filter.column === 'gene expression patterns'"
+                :src="geneSummarySource(result.geneid)"
+                :alt="result.geneid"
+              />
+              <a
+                v-else-if="filter.column === 'symbol'"
+                class="text_with_icon"
+                @click="moveToProjectPage(result['geneid'])"
+                ><font-awesome-icon class="left_icon" icon="dna" />
+                {{ result[filter.column] }}
+                <font-awesome-icon
+                  icon="info-circle"
+                  @click.stop="setGeneModal(result.geneid)"
+                />
+              </a>
+              <a
+                v-else-if="filter.column === 'geneid'"
+                class="text_with_icon"
+                target="_blank"
+                :href="datasetInfo.url_prefix + result.geneid"
+              >
+                {{ result[filter.column] }}
+                <font-awesome-icon icon="external-link-alt" />
+              </a>
+              <span
+                v-else-if="$isArrayLikeString(result[filter.column])"
+                :key="index"
+              >
+                {{ JSON.parse(result[filter.column]).join(', ') }}
+              </span>
+              <template v-else-if="$hasStringQuotes(result[filter.column])">
+                {{ result[filter.column].replaceAll('"', '') }}
+              </template>
+              <template v-else> {{ result[filter.column] }}</template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table v-else-if="tableType === 'project'">
+        <thead>
+          <tr>
             <th
               v-for="(filter, filterIndex) of filters"
               v-show="filter.is_displayed"
@@ -47,174 +138,83 @@
           </tr>
         </thead>
         <tbody>
-          <template v-if="tableType === 'index'">
-            <td
-              v-if="resultsCached.length === 0"
-              class="warning"
-              :colspan="filters.filter(x => x.is_displayed).length + 2"
-            >
-              <font-awesome-icon icon="exclamation-triangle" />
-              <template v-if="resultsNum === 0"
-                >No results found. Please check the spelling or try other
-                keywords.</template
+          <tr v-for="(result, resultIndex) in pageItems" :key="resultIndex">
+            <template v-for="(filter, filterIndex) of filters">
+              <td
+                v-if="filter.is_displayed"
+                :key="`result-${filterIndex}`"
+                :class="filter.column.replaceAll(' ', '_')"
               >
-              <template v-else>
-                Please press the 'Find {{ filterType }}s' button to update the
-                results to the current screener settings.
-              </template>
-            </td>
-            <tr
-              v-for="(result, resultIndex) in pageItems"
-              v-else
-              :key="`result_${resultIndex}`"
-              :data-cy="`${$vnode.key}_index_result_${resultIndex}`"
-            >
-              <td class="checkbox" @click="e => e.stopPropagation()">
-                <input
-                  v-model="checkedResults[activeFilter.name]"
-                  type="checkbox"
-                  :value="result[keyForId]"
-                  @change="handleChange"
-                />
-              </td>
-              <td v-if="filterType === 'sample'">
                 <a
+                  v-if="filter.column === 'symbol'"
                   class="text_with_icon"
-                  @click="moveToProjectPage(result['refexSampleId'])"
+                  @click="
+                    moveToProjectPage(result.ncbiGeneId || result.ensemblGeneId)
+                  "
+                >
+                  <font-awesome-icon class="left_icon" icon="dna" />
+                  {{ result.symbol }}
+                  <font-awesome-icon
+                    class="right_icon info"
+                    icon="info-circle"
+                    @click.stop="setGeneModal(result[geneIdKey])"
+                  />
+                </a>
+                <a
+                  v-else-if="filter.column === 'Description'"
+                  class="text_with_icon"
+                  @click="moveToProjectPage(result['RefexSampleId'])"
                 >
                   <font-awesome-icon icon="flask" />
                   {{ result.Description }}
                   <font-awesome-icon
+                    class="right_icon info"
                     icon="info-circle"
-                    @click.stop="setSampleModal(result['refexSampleId'])"
+                    @click.stop="setSampleModal(result['RefexSampleId'])"
                   />
                 </a>
-              </td>
-              <td
-                v-for="(filter, index) of filters"
-                v-show="filter.is_displayed"
-                :key="index"
-                :class="filter.column.replaceAll(' ', '_')"
-              >
-                <img
-                  v-if="filter.column === 'gene expression patterns'"
-                  :src="geneSummarySource(result.geneid)"
-                  :alt="result.geneid"
+                <MedianBar
+                  v-else-if="filter.column === 'LogMedian'"
+                  :items="items"
+                  :stat-info="tooltipData(items, result.itemNum)"
                 />
+                <img
+                  v-else-if="filter.column === 'gene expression patterns'"
+                  :src="geneSummarySource(result[geneIdKey])"
+                  :alt="result[geneIdKey]"
+                />
+                <template v-else-if="$hasStringQuotes(result[filter.column])">
+                  {{ result[filter.column].replaceAll('"', '') }}
+                </template>
                 <a
-                  v-else-if="filter.column === 'symbol'"
-                  class="text_with_icon"
-                  @click="moveToProjectPage(result['geneid'])"
-                  ><font-awesome-icon class="left_icon" icon="dna" />
-                  {{ result[filter.column] }}
-                  <font-awesome-icon
-                    icon="info-circle"
-                    @click.stop="setGeneModal(result.geneid)"
-                  />
-                </a>
-                <a
-                  v-else-if="filter.column === 'geneid'"
+                  v-else-if="
+                    filter.column === 'ncbiGeneId' ||
+                    filter.column === 'ensemblGeneId'
+                  "
                   class="text_with_icon"
                   target="_blank"
-                  :href="datasetInfo.url_prefix + result.geneid"
+                  :href="
+                    activeDataset['gene'].url_prefix + result[filter.column]
+                  "
                 >
                   {{ result[filter.column] }}
                   <font-awesome-icon icon="external-link-alt" />
                 </a>
-                <span
-                  v-else-if="$isArrayLikeString(result[filter.column])"
-                  :key="index"
-                >
-                  {{ JSON.parse(result[filter.column]).join(', ') }}
-                </span>
-                <template v-else-if="$hasStringQuotes(result[filter.column])">
-                  {{ result[filter.column].replaceAll('"', '') }}
-                </template>
-                <template v-else> {{ result[filter.column] }}</template>
-              </td>
-            </tr>
-          </template>
-          <template v-else-if="tableType === 'project'">
-            <tr v-for="(result, resultIndex) in pageItems" :key="resultIndex">
-              <template v-for="(filter, filterIndex) of filters">
-                <td
-                  v-if="filter.is_displayed"
-                  :key="`result-${filterIndex}`"
-                  :class="filter.column.replaceAll(' ', '_')"
-                >
-                  <a
-                    v-if="filter.column === 'symbol'"
-                    class="text_with_icon"
+                <template v-else>
+                  {{ result[filter.column] }}
+                  <span
+                    v-if="filter.column !== 'alias'"
                     @click="
-                      moveToProjectPage(
-                        result.ncbiGeneId || result.ensemblGeneId
-                      )
+                      setFilterSearchValue('');
+                      setFilterSearchValue(result[filter.column]);
+                      setFilterModal(filter.column);
                     "
-                  >
-                    <font-awesome-icon class="left_icon" icon="dna" />
-                    {{ result.symbol }}
-                    <font-awesome-icon
-                      class="right_icon info"
-                      icon="info-circle"
-                      @click.stop="setGeneModal(result[geneIdKey])"
-                    />
-                  </a>
-                  <a
-                    v-else-if="filter.column === 'Description'"
-                    class="text_with_icon"
-                    @click="moveToProjectPage(result['RefexSampleId'])"
-                  >
-                    <font-awesome-icon icon="flask" />
-                    {{ result.Description }}
-                    <font-awesome-icon
-                      class="right_icon info"
-                      icon="info-circle"
-                      @click.stop="setSampleModal(result['RefexSampleId'])"
-                    />
-                  </a>
-                  <MedianBar
-                    v-else-if="filter.column === 'LogMedian'"
-                    :items="items"
-                    :stat-info="tooltipData(items, result.itemNum)"
-                  />
-                  <img
-                    v-else-if="filter.column === 'gene expression patterns'"
-                    :src="geneSummarySource(result[geneIdKey])"
-                    :alt="result[geneIdKey]"
-                  />
-                  <template v-else-if="$hasStringQuotes(result[filter.column])">
-                    {{ result[filter.column].replaceAll('"', '') }}
-                  </template>
-                  <a
-                    v-else-if="
-                      filter.column === 'ncbiGeneId' ||
-                      filter.column === 'ensemblGeneId'
-                    "
-                    class="text_with_icon"
-                    target="_blank"
-                    :href="
-                      activeDataset['gene'].url_prefix + result[filter.column]
-                    "
-                  >
-                    {{ result[filter.column] }}
-                    <font-awesome-icon icon="external-link-alt" />
-                  </a>
-                  <template v-else>
-                    {{ result[filter.column] }}
-                    <span
-                      v-if="filter.column !== 'alias'"
-                      @click="
-                        setFilterSearchValue('');
-                        setFilterSearchValue(result[filter.column]);
-                        setFilterModal(filter.column);
-                      "
-                      ><font-awesome-icon icon="plus-circle"
-                    /></span>
-                  </template>
-                </td>
-              </template>
-            </tr>
-          </template>
+                    ><font-awesome-icon icon="plus-circle"
+                  /></span>
+                </template>
+              </td>
+            </template>
+          </tr>
         </tbody>
       </table>
     </section>
