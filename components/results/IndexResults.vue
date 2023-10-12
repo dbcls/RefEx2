@@ -130,7 +130,7 @@
             >
               {{ JSON.parse(result[filter.column]).join(', ') }}
             </span>
-            <template v-else-if="hasStringQuotes(result[filter.column])">
+            <template v-else-if="$hasStringQuotes(result[filter.column])">
               {{ result[filter.column].replaceAll('"', '') }}
             </template>
             <template v-else> {{ result[filter.column] }}</template>
@@ -326,9 +326,6 @@
       },
       isArrayLikeString(str) {
         return str?.startsWith('[');
-      },
-      hasStringQuotes(str) {
-        return str?.startsWith('"') && str?.endsWith('"');
       },
       toggleAllCheckbox() {
         if (this.isAllChecked) {

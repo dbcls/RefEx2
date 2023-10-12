@@ -69,7 +69,7 @@
                   :src="geneSummarySource(result[geneIdKey])"
                   :alt="result[geneIdKey]"
                 />
-                <template v-else-if="hasStringQuotes(result[filter.column])">
+                <template v-else-if="$hasStringQuotes(result[filter.column])">
                   {{ result[filter.column].replaceAll('"', '') }}
                 </template>
                 <a
@@ -398,9 +398,6 @@
             dataset => dataset.dataset === urlDataset
           )
         );
-      },
-      hasStringQuotes(str) {
-        return str?.startsWith('"') && str?.endsWith('"');
       },
       clearSortArray() {
         this.columnsArray = [];

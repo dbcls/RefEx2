@@ -36,4 +36,7 @@ export default ({ app }, inject) => {
       return oldString.replaceAll('"', '');
     }
   });
+  inject('hasStringQuotes', str => {
+    return str?.startsWith('"') && str?.endsWith('"');
+  });
 };
