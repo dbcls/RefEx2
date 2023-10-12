@@ -403,8 +403,8 @@
         );
       },
       clearSortArray() {
-        this.columnsArray = [];
-        this.ordersArray = [];
+        this.columnsArray.splice(0, this.columnsArray.length);
+        this.ordersArray.splice(0, this.ordersArray.length);
       },
       updateProjectTableHead() {
         const arr = [];
