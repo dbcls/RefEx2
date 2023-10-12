@@ -203,10 +203,8 @@
         return status;
       },
       pageItems() {
-        return this.filteredSortedData.slice(
-          this.paginationObject.offset,
-          this.paginationObject.offset + this.paginationObject.limit
-        );
+        const { offset, limit } = this.paginationObject;
+        return this.filteredSortedData.slice(offset, offset + limit);
       },
       pagesNumber() {
         return Math.ceil(
