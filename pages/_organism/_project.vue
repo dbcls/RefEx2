@@ -100,6 +100,7 @@
       :items="items"
       :height-chart-wrapper="heightChartWrapper"
       :results="resultsWithCombinedMedians"
+      :filters="projectFilters"
       @isSortChanged="handleIsSortChanged"
       @currentPageIdChanged="handleCurrentPageIdChanged"
     />

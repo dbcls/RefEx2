@@ -172,6 +172,10 @@
         type: Array,
         required: true,
       },
+      filters: {
+        type: Array,
+        required: true,
+      },
     },
     data() {
       return {
@@ -188,14 +192,12 @@
         projectResults: 'get_project_results',
         projectItems: 'get_project_items',
         paginationObject: 'get_project_pagination',
-        filters: 'project_filters',
         geneSummarySource: 'gene_summary_source',
         routeToOtherProjectPage: 'route_to_other_project_page',
         filterObj: 'active_filter_modal',
         activeDataset: 'active_dataset',
         activeSpecie: 'active_specie',
         activeFilter: 'active_filter',
-        projectFilters: 'project_filters',
       }),
       isSort() {
         const status = this.columnsArray.length !== 0;
@@ -229,7 +231,7 @@
       },
       resultsDisplayed() {
         const displayed = [];
-        for (const filter of this.projectFilters) {
+        for (const filter of this.filters) {
           if (filter.is_displayed) displayed.push(filter.column);
         }
         const logMedianKeys = [];
@@ -273,7 +275,7 @@
             .map(x => parseInt(x) || 'out of filter bounds');
         const filtered = copy.filter(result => {
           let isFiltered = false;
-          for (const filter of this.projectFilters) {
+          for (const filter of this.filters) {
             const key = filter.column;
             if (!filter.is_displayed) continue;
             // options filter
@@ -406,7 +408,7 @@
       },
       updateProjectTableHead() {
         const arr = [];
-        for (const filter of this.projectFilters) {
+        for (const filter of this.filters) {
           if (
             !filter.is_displayed ||
             filter.column === 'gene expression patterns'
