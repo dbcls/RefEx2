@@ -72,7 +72,7 @@
               @click="clearSortArray"
             >
               <font-awesome-icon icon="rotate-right" />
-              Reset sorting column(s)
+              Reset sorting
             </button>
             <button class="show_all_btn" @click="toggleDisplaySettings">
               <font-awesome-icon icon="eye" />
