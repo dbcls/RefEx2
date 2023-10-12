@@ -125,7 +125,7 @@
               <font-awesome-icon icon="external-link-alt" />
             </a>
             <span
-              v-else-if="isArrayLikeString(result[filter.column])"
+              v-else-if="$isArrayLikeString(result[filter.column])"
               :key="index"
             >
               {{ JSON.parse(result[filter.column]).join(', ') }}
@@ -145,6 +145,7 @@
       table-type="index"
       :results="resultsCached"
       :filters="filters"
+      :results-num="resultsNum"
       :key-for-id="keyForId"
     />
   </div>
@@ -333,9 +334,6 @@
           this.setIsSampleModalMessage(true);
         }
         this.$router.push(this.routeToProjectPage(route));
-      },
-      isArrayLikeString(str) {
-        return str?.startsWith('[');
       },
       toggleAllCheckbox() {
         if (this.isAllChecked) {

@@ -48,7 +48,91 @@
         </thead>
         <tbody>
           <template v-if="tableType === 'index'">
-            <div>index tbody</div>
+            <td
+              v-if="resultsCached.length === 0"
+              class="warning"
+              :colspan="filters.filter(x => x.is_displayed).length + 2"
+            >
+              <font-awesome-icon icon="exclamation-triangle" />
+              <template v-if="resultsNum === 0"
+                >No results found. Please check the spelling or try other
+                keywords.</template
+              >
+              <template v-else>
+                Please press the 'Find {{ filterType }}s' button to update the
+                results to the current screener settings.
+              </template>
+            </td>
+            <tr
+              v-for="(result, resultIndex) in pageItems"
+              v-else
+              :key="`result_${resultIndex}`"
+              :data-cy="`${$vnode.key}_index_result_${resultIndex}`"
+            >
+              <td class="checkbox" @click="e => e.stopPropagation()">
+                <input
+                  v-model="checkedResults[activeFilter.name]"
+                  type="checkbox"
+                  :value="result[keyForId]"
+                  @change="handleChange"
+                />
+              </td>
+              <td v-if="filterType === 'sample'">
+                <a
+                  class="text_with_icon"
+                  @click="moveToProjectPage(result['refexSampleId'])"
+                >
+                  <font-awesome-icon icon="flask" />
+                  {{ result.Description }}
+                  <font-awesome-icon
+                    icon="info-circle"
+                    @click.stop="setSampleModal(result['refexSampleId'])"
+                  />
+                </a>
+              </td>
+              <td
+                v-for="(filter, index) of filters"
+                v-show="filter.is_displayed"
+                :key="index"
+                :class="filter.column.replaceAll(' ', '_')"
+              >
+                <img
+                  v-if="filter.column === 'gene expression patterns'"
+                  :src="geneSummarySource(result.geneid)"
+                  :alt="result.geneid"
+                />
+                <a
+                  v-else-if="filter.column === 'symbol'"
+                  class="text_with_icon"
+                  @click="moveToProjectPage(result['geneid'])"
+                  ><font-awesome-icon class="left_icon" icon="dna" />
+                  {{ result[filter.column] }}
+                  <font-awesome-icon
+                    icon="info-circle"
+                    @click.stop="setGeneModal(result.geneid)"
+                  />
+                </a>
+                <a
+                  v-else-if="filter.column === 'geneid'"
+                  class="text_with_icon"
+                  target="_blank"
+                  :href="datasetInfo.url_prefix + result.geneid"
+                >
+                  {{ result[filter.column] }}
+                  <font-awesome-icon icon="external-link-alt" />
+                </a>
+                <span
+                  v-else-if="$isArrayLikeString(result[filter.column])"
+                  :key="index"
+                >
+                  {{ JSON.parse(result[filter.column]).join(', ') }}
+                </span>
+                <template v-else-if="$hasStringQuotes(result[filter.column])">
+                  {{ result[filter.column].replaceAll('"', '') }}
+                </template>
+                <template v-else> {{ result[filter.column] }}</template>
+              </td>
+            </tr>
           </template>
           <template v-else-if="tableType === 'project'">
             <tr v-for="(result, resultIndex) in pageItems" :key="resultIndex">
@@ -150,6 +234,13 @@
   import specieSets from '~/refex-sample/datasets.json';
   import ResultsPagination from '~/components/results/ResultsPagination.vue';
 
+  const initialState = () => {
+    return {
+      checkedResults: { gene: [], sample: [] },
+      resultsCached: [],
+    };
+  };
+
   export default {
     components: {
       TableHeader,
@@ -206,9 +297,14 @@
         type: String,
         default: '',
       },
+      resultsNum: {
+        type: Number,
+        default: 0,
+      },
     },
     data() {
       return {
+        ...initialState(),
         optionsStaticData: {},
         isDisplaySettingsOn: false,
         projectTableHead: [],
@@ -250,6 +346,9 @@
           this.filteredSortedData.length / this.paginationObject.limit
         );
       },
+      datasetInfo() {
+        return this.activeDataset[this.filterType];
+      },
       columnSortersArray() {
         const arr = [];
         for (const column of this.columnsArray) {
@@ -263,35 +362,54 @@
         }
         return arr;
       },
+      filtersDisplayed() {
+        return this.filters
+          .filter(({ is_displayed }) => is_displayed)
+          .map(({ column }) => column);
+      },
       resultsDisplayed() {
-        if (this.tableType === 'index') return;
-        const displayed = [];
-        for (const filter of this.filters) {
-          if (filter.is_displayed) displayed.push(filter.column);
-        }
-        const logMedianKeys = [];
-        for (const key of Object.keys(this.results[0])) {
-          if (key.startsWith('LogMedian_')) {
-            logMedianKeys.push(key);
+        if (this.tableType === 'index') {
+          return this.results.map(result => {
+            const updatedResult = { ...result };
+            const keyToReplace = 'alias';
+
+            if (this.filtersDisplayed.includes(keyToReplace)) {
+              updatedResult[keyToReplace] = this.$composeAlias(
+                result[keyToReplace]
+              );
+            }
+
+            return updatedResult;
+          });
+        } else {
+          const displayed = [];
+          for (const filter of this.filters) {
+            if (filter.is_displayed) displayed.push(filter.column);
           }
+          const logMedianKeys = [];
+          for (const key of Object.keys(this.results[0])) {
+            if (key.startsWith('LogMedian_')) {
+              logMedianKeys.push(key);
+            }
+          }
+          const resultsDisplayed = [];
+          for (const item of this.filteredSortedData) {
+            const filtered = Object.keys(item)
+              .filter(itemKey => displayed.includes(itemKey))
+              .reduce((resultDisplayed, itemKey) => {
+                if (itemKey === 'LogMedian') {
+                  for (const logMediankey of logMedianKeys) {
+                    resultDisplayed[logMediankey] = item[logMediankey];
+                  }
+                } else if (itemKey === 'alias') {
+                  resultDisplayed[itemKey] = this.$composeAlias(item[itemKey]);
+                } else resultDisplayed[itemKey] = item[itemKey];
+                return resultDisplayed;
+              }, {});
+            resultsDisplayed.push(filtered);
+          }
+          return resultsDisplayed;
         }
-        const resultsDisplayed = [];
-        for (const item of this.filteredSortedData) {
-          const filtered = Object.keys(item)
-            .filter(itemKey => displayed.includes(itemKey))
-            .reduce((resultDisplayed, itemKey) => {
-              if (itemKey === 'LogMedian') {
-                for (const logMediankey of logMedianKeys) {
-                  resultDisplayed[logMediankey] = item[logMediankey];
-                }
-              } else if (itemKey === 'alias') {
-                resultDisplayed[itemKey] = this.$composeAlias(item[itemKey]);
-              } else resultDisplayed[itemKey] = item[itemKey];
-              return resultDisplayed;
-            }, {});
-          resultsDisplayed.push(filtered);
-        }
-        return resultsDisplayed;
       },
       filteredSortedData() {
         const copy = [...this.results];
@@ -356,6 +474,14 @@
       isSortColumns(newVal) {
         this.setIsSortingColumns(newVal);
       },
+      resultsDisplayed: {
+        handler(newVal) {
+          if (newVal.length > 0) {
+            this.resultsCached = JSON.parse(JSON.stringify(newVal));
+          }
+        },
+        deep: true,
+      },
     },
     created() {
       this.setIsSortingColumns(false);
@@ -376,6 +502,7 @@
         setFilterModal: 'set_filter_modal',
         setIsSampleModalMessage: 'set_is_sample_modal_message',
         setIsSortingColumns: 'set_is_sorting_columns',
+        setCheckedResults: 'set_checked_results',
       }),
       moveToProjectPage(route) {
         if (this.tableType === 'index') {
@@ -398,6 +525,13 @@
           this.checkedResults[this.activeFilter.name] = this.resultsUniqueKeys;
         }
         this.handleChange();
+      },
+      handleChange() {
+        const type = this.filterKey;
+        this.setCheckedResults({
+          checked_results: this.checkedResults[type],
+          type,
+        });
       },
       tooltipData(items, itemNum) {
         const statData = {};
