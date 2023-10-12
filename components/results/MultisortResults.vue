@@ -208,12 +208,10 @@
           this.paginationObject.offset + this.paginationObject.limit
         );
       },
-
       pagesNumber() {
-        let pagesNumber = Math.ceil(
+        return Math.ceil(
           this.filteredSortedData.length / this.paginationObject.limit
         );
-        return pagesNumber;
       },
       datasetInfo() {
         return this.activeDataset['gene'];
