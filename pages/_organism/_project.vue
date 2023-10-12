@@ -371,6 +371,13 @@
     created() {
       this.$store.commit('set_page_type', 'project');
       this.$store.commit('set_project_items', this.projectItems);
+
+      const urlParams = new URLSearchParams(location.search);
+      const type = urlParams.get('type');
+      type === 'gene'
+        ? this.setActiveFilter('gene')
+        : this.setActiveFilter('sample');
+
       this.setGeneModal(null);
       this.setSampleModal(null);
     },
@@ -394,6 +401,7 @@
       ...mapMutations({
         setGeneModal: 'set_gene_modal',
         setSampleModal: 'set_sample_modal',
+        setActiveFilter: 'set_active_filter',
         setIsSampleModalMessage: 'set_is_sample_modal_message',
       }),
       toggleDisplaySettings() {
