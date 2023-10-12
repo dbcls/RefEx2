@@ -393,12 +393,6 @@
         }
         return statData;
       },
-      moveToProjectPage(route) {
-        this.$router.push(this.routeToOtherProjectPage(route));
-        if (this.activeFilter.name === 'gene') {
-          this.setIsSampleModalMessage(true);
-        }
-      },
       activeSort(col_name) {
         this.setProjectSortColumn({
           column: col_name,
