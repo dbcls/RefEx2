@@ -316,10 +316,12 @@
       this.setIsSortingColumns(false);
     },
     mounted() {
-      this.setSortColumn({
-        column: 'LogMedian',
-        selectedItem: this.selectedItem,
-      });
+      if (this.tableType === 'project') {
+        this.setSortColumn({
+          column: 'LogMedian',
+          selectedItem: this.selectedItem,
+        });
+      }
     },
     updated() {
       this.setProjectPagesNumber(this.pagesNumber);
