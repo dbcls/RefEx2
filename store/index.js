@@ -78,6 +78,7 @@ export const state = () => ({
   search_conditions: default_search_conditions(),
   screener_filter_list: {},
   is_sample_modal_message: false,
+  is_sorting_columns: false,
 });
 
 export const getters = {
@@ -179,6 +180,9 @@ export const getters = {
   },
   get_is_sample_modal_message(state) {
     return state.is_sample_modal_message;
+  },
+  get_is_sorting_columns(state) {
+    return state.is_sorting_columns;
   },
 };
 
@@ -304,5 +308,8 @@ export const mutations = {
   },
   set_is_sample_modal_message(state, value) {
     state.is_sample_modal_message = value;
+  },
+  set_is_sorting_columns(state, bool) {
+    state.is_sorting_columns = bool;
   },
 };

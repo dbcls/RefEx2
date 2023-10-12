@@ -200,9 +200,7 @@
         activeFilter: 'active_filter',
       }),
       isSort() {
-        const status = this.columnsArray.length !== 0;
-        this.$emit('isSortChanged', status);
-        return status;
+        return this.columnsArray.length !== 0;
       },
       pageItems() {
         const { offset, limit } = this.paginationObject;
@@ -317,6 +315,9 @@
     watch: {
       currentPageId(newVal) {
         this.$emit('currentPageIdChanged', newVal);
+      },
+      isSort(newVal) {
+        this.$store.commit('set_is_sorting_columns', newVal);
       },
     },
     created() {
