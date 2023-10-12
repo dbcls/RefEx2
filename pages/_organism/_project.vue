@@ -388,6 +388,7 @@
         'set_project_results',
         this.projectResultsAll[this.selectedId]
       );
+      this.setDataset();
     },
     updated() {
       this.heightChartWrapper = Math.floor(
@@ -403,6 +404,7 @@
         setSampleModal: 'set_sample_modal',
         setActiveFilter: 'set_active_filter',
         setIsSampleModalMessage: 'set_is_sample_modal_message',
+        setActiveDataset: 'set_active_dataset',
       }),
       toggleDisplaySettings() {
         this.isDisplaySettingsOn = !this.isDisplaySettingsOn;
@@ -443,6 +445,17 @@
       },
       handleCurrentPageIdChanged(value) {
         this.currentPageId = value;
+      },
+      setDataset() {
+        const pageUrl = window.location.href;
+        const regex = /\/([^\/?]+)\/\?/;
+        const match = pageUrl.match(regex);
+        const urlDataset = match[1];
+        this.setActiveDataset(
+          this.activeSpecie.datasets.find(
+            dataset => dataset.dataset === urlDataset
+          )
+        );
       },
     },
   };

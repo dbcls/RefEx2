@@ -192,7 +192,6 @@
         routeToOtherProjectPage: 'route_to_other_project_page',
         filterObj: 'active_filter_modal',
         activeDataset: 'active_dataset',
-        activeSpecie: 'active_specie',
         activeFilter: 'active_filter',
       }),
       isSortColumns() {
@@ -315,7 +314,6 @@
     },
     created() {
       this.setIsSortingColumns(false);
-      this.setDataset();
     },
     mounted() {
       this.setSortColumn({
@@ -333,7 +331,6 @@
         updatePagination: 'set_project_pagination',
         setFilterSearchValue: 'set_filter_search_value',
         setFilterModal: 'set_filter_modal',
-        setActiveDataset: 'set_active_dataset',
         setProjectPagesNumber: 'set_project_pages_number',
         setIsSampleModalMessage: 'set_is_sample_modal_message',
         setIsSortingColumns: 'set_is_sorting_columns',
@@ -380,17 +377,6 @@
           column: col_name,
           selectedItem: this.selectedItem,
         });
-      },
-      setDataset() {
-        const pageUrl = window.location.href;
-        const regex = /\/([^\/?]+)\/\?/;
-        const match = pageUrl.match(regex);
-        const urlDataset = match[1];
-        this.setActiveDataset(
-          this.activeSpecie.datasets.find(
-            dataset => dataset.dataset === urlDataset
-          )
-        );
       },
       clearSortArray() {
         this.columnsArray.splice(0, this.columnsArray.length);
