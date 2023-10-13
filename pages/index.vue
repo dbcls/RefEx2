@@ -6,6 +6,7 @@
     <ModalViewSample />
     <ModalViewCompare ref="ModalViewCompare" />
     <ModalViewAlert />
+    <ModalViewFilter />
   </div>
 </template>
 
@@ -17,6 +18,7 @@
   import FilterTab from '~/components/search/FilterTab.vue';
   import filters from '~/static/filters.json';
   import ModalViewAlert from '~/components/ModalView/ModalViewAlert.vue';
+  import ModalViewFilter from '~/components/ModalView/ModalViewFilter.vue';
 
   export default {
     components: {
@@ -26,6 +28,11 @@
       LocalNavigation,
       FilterTab,
       ModalViewAlert,
+      ModalViewFilter,
+    },
+    async asyncData({ $axios, store }) {
+      const optionsStaticData = await $axios.$get(`api/cv`);
+      store.commit('set_options_static_data', optionsStaticData);
     },
     data() {
       return {

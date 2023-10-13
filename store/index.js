@@ -78,6 +78,7 @@ export const state = () => ({
   screener_filter_list: {},
   is_sample_modal_message: false,
   is_sorting_columns: false,
+  options_static_data: {},
 });
 
 export const getters = {
@@ -105,7 +106,9 @@ export const getters = {
   },
   active_filter_modal(state) {
     return (
-      state.project_filters.find(x => x.column === state.filter_modal) || null
+      filters?.[0].filter.find(x => x.column === state.filter_modal) ||
+      state.project_filters.find(x => x.column === state.filter_modal) ||
+      null
     );
   },
   compare_modal(state) {
@@ -179,6 +182,9 @@ export const getters = {
   },
   get_is_sorting_columns(state) {
     return state.is_sorting_columns;
+  },
+  get_options_static_data(state) {
+    return state.options_static_data;
   },
 };
 
@@ -304,5 +310,8 @@ export const mutations = {
   },
   set_is_sorting_columns(state, bool) {
     state.is_sorting_columns = bool;
+  },
+  set_options_static_data(state, data) {
+    state.options_static_data = data;
   },
 };
