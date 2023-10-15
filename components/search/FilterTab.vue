@@ -81,6 +81,7 @@
         resultsByName: 'results_by_name',
         filterByName: 'filter_by_name',
         searchConditions: 'get_search_conditions',
+        optionsStaticData: 'get_options_static_data',
       }),
       isActive() {
         return this.$vnode.key === this.$store.state.active_filter;
@@ -97,6 +98,19 @@
         if (this.$vnode.key === 'gene') return;
         this.filters = this.activeDataset[this.$vnode.key]?.filter;
       },
+    },
+    mounted() {
+      if (this.activeDataset.dataset in this.optionsStaticData) {
+        for (const [key, value] of Object.entries(
+          this.optionsStaticData[this.activeDataset.dataset]
+        )) {
+          const filterIndex = this.filters.findIndex(x => x.column === key);
+
+          if (filterIndex > -1) {
+            this.filters[filterIndex].options = value;
+          }
+        }
+      }
     },
     methods: {
       ...mapMutations({
