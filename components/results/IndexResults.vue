@@ -325,6 +325,10 @@
       this.setPageType('index');
       this.setGeneModal(null);
       this.setSampleModal(null);
+      this.$store.commit('set_index_filters', {
+        type: this.filterKey,
+        filters: this.filters,
+      });
     },
     methods: {
       ...mapMutations({

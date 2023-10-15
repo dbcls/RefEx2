@@ -433,8 +433,10 @@
             // options filter
             else if (filter.options) {
               if (typeof filter.filterModal === 'string') {
-                this.$store.commit('update_project_filters', {
+                if (this.tableType === 'index') return !isFiltered;
+                this.$store.commit(`update_${this.tableType}_filters`, {
                   filter: [filter.filterModal],
+                  type: this.filterType,
                 });
               }
               if (!filter.filterModal.includes(result[key])) isFiltered = true;

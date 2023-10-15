@@ -42,6 +42,7 @@ export const state = () => ({
   active_specie: specieSets[0],
   active_filter: 'gene',
   active_dataset: specieSets[0].datasets[0],
+  index_filters: {},
   project_filters: [],
   project_filter_ranges: {
     LogMedian: [0, 18],
@@ -213,6 +214,9 @@ export const mutations = {
   set_compare_modal(state) {
     state.compare_modal = !state.compare_modal;
   },
+  set_index_filters(state, { type, filters }) {
+    state.index_filters[type] = [...filters];
+  },
   set_project_filters(state, filters) {
     const copy = [...filters];
     copy.forEach((entry, index) => {
@@ -227,6 +231,18 @@ export const mutations = {
       copy[index] = { ...entry, ...paramsToBeMerged };
     });
     state.project_filters = copy;
+  },
+  update_index_filters(
+    state,
+    { key = 'filterModal', filter, filterKey = state.filter_modal, type }
+  ) {
+    const copy = [...state.index_filters[type]];
+    const targetObjIndex = copy.findIndex(entry => entry.column === filterKey);
+    console.log(filterKey);
+    if (copy[targetObjIndex][key] !== filter) {
+      copy[targetObjIndex][key] = filter;
+      state.index_filters[type] = copy;
+    }
   },
   update_project_filters(
     state,

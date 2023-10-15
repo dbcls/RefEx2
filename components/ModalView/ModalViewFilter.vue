@@ -118,6 +118,7 @@
       ...mapGetters({
         filters: 'project_filters',
         filterObj: 'active_filter_modal',
+        activeFilter: 'active_filter',
         getFilterSearchValue: 'get_filter_search_value',
       }),
       isOn() {
@@ -156,10 +157,16 @@
         this.searchValue = [numberValue.min, numberValue.max];
       },
       updateFilterModal(type, value) {
-        this.updateProjectFilters({
+        console.log(this.activeFilter.name);
+        this.$store.commit('update_index_filters', {
           key: type,
           filter: value,
+          type: this.activeFilter.name,
         });
+        // this.updateProjectFilters({
+        //   key: type,
+        //   filter: value,
+        // });
       },
     },
   };
