@@ -236,12 +236,12 @@ export const mutations = {
     state,
     { key = 'filterModal', filter, filterKey = state.filter_modal, type }
   ) {
-    const copy = [...state.index_filters[type]];
-    const targetObjIndex = copy.findIndex(entry => entry.column === filterKey);
-    console.log(filterKey);
-    if (copy[targetObjIndex][key] !== filter) {
-      copy[targetObjIndex][key] = filter;
-      state.index_filters[type] = copy;
+    const targetFilter = state.index_filters[type];
+    const targetColumnIndex = targetFilter.findIndex(
+      entry => entry.column === filterKey
+    );
+    if (targetFilter[targetColumnIndex][key] !== filter) {
+      targetFilter[targetColumnIndex][key] = filter;
     }
   },
   update_project_filters(
