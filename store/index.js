@@ -219,7 +219,15 @@ export const mutations = {
     state.compare_modal = !state.compare_modal;
   },
   set_index_filters(state, { type, filters }) {
-    state.index_filters[type] = [...filters];
+    filters.forEach((entry, index) => {
+      let paramsToBeMerged = {};
+      if (entry.options) {
+        const options = [...entry.options.sort((a, b) => a - b)];
+        paramsToBeMerged = { filterModal: options, options };
+      } else paramsToBeMerged = { filterModal: entry.options ? [] : '' };
+      filters[index] = { ...entry, ...paramsToBeMerged };
+    });
+    state.index_filters[type] = filters;
   },
   set_project_filters(state, filters) {
     const copy = [...filters];
