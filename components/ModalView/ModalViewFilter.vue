@@ -120,6 +120,7 @@
         filterObj: 'active_filter_modal',
         activeFilter: 'active_filter',
         getFilterSearchValue: 'get_filter_search_value',
+        tableType: 'get_table_type',
       }),
       isOn() {
         return this.filterObj !== null;
@@ -157,16 +158,11 @@
         this.searchValue = [numberValue.min, numberValue.max];
       },
       updateFilterModal(type, value) {
-        console.log(this.activeFilter.name);
-        this.$store.commit('update_index_filters', {
+        this.$store.commit(`update_${this.tableType}_filters`, {
           key: type,
           filter: value,
           type: this.activeFilter.name,
         });
-        // this.updateProjectFilters({
-        //   key: type,
-        //   filter: value,
-        // });
       },
     },
   };

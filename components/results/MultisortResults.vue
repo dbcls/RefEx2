@@ -23,6 +23,7 @@
                 v-bind="filter"
                 :columns-array="columnsArray"
                 :orders-array="ordersArray"
+                table-type="index"
                 @activeSort="activeSort"
               />
             </th>
@@ -131,6 +132,7 @@
                 :class="filter.column"
                 :columns-array="columnsArray"
                 :orders-array="ordersArray"
+                table-type="project"
                 @activeSort="activeSort"
               />
               <median-scale v-if="filter.column === 'LogMedian'" />

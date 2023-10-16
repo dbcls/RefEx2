@@ -80,6 +80,7 @@ export const state = () => ({
   is_sample_modal_message: false,
   is_sorting_columns: false,
   options_static_data: {},
+  table_type: '',
 });
 
 export const getters = {
@@ -186,6 +187,9 @@ export const getters = {
   },
   get_options_static_data(state) {
     return state.options_static_data;
+  },
+  get_table_type(state) {
+    return state.table_type;
   },
 };
 
@@ -329,5 +333,8 @@ export const mutations = {
   },
   set_options_static_data(state, data) {
     state.options_static_data = data;
+  },
+  set_table_type(state, type) {
+    state.table_type = type;
   },
 };

@@ -22,7 +22,15 @@
           <font-awesome-icon :icon="sortIcon" :flip="sortOrder" />
         </div>
       </div>
-      <div class="header_btn search" @click="setFilterModal(id)">
+      <div
+        class="header_btn search"
+        @click="
+          () => {
+            setFilterModal(id);
+            setTableType(tableType);
+          }
+        "
+      >
         <font-awesome-icon icon="search" :class="{ active: isActiveSearch }" />
       </div>
     </div>
@@ -79,6 +87,10 @@
         type: Array,
         default: () => [],
       },
+      tableType: {
+        type: String,
+        required: true,
+      },
     },
     data() {
       return {
@@ -124,6 +136,7 @@
       },
       ...mapMutations({
         setFilterModal: 'set_filter_modal',
+        setTableType: 'set_table_type',
       }),
     },
   };
