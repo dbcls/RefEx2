@@ -45,6 +45,7 @@ export default {
     '~/plugins/mixin.js',
     '~/plugins/fontawesome.js',
     '~/plugins/floating-vue.js',
+    '~/plugins/custom-directives.js',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

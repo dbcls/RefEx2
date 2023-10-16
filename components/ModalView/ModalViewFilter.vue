@@ -85,6 +85,7 @@
       <div v-else class="input_wrapper">
         <input
           v-model.lazy="searchValue"
+          v-focus
           v-debounce="delay"
           type="text"
           placeholder="filter by text"
