@@ -413,7 +413,6 @@
         }
       },
       filteredSortedData() {
-        const copy = [...this.results];
         const inRange = (x, [min, max]) => {
           return typeof x !== 'number' || (x - min) * (x - max) <= 0;
         };
