@@ -99,7 +99,7 @@
         this.filters = this.activeDataset[this.$vnode.key]?.filter;
       },
     },
-    mounted() {
+    created() {
       if (this.activeDataset.dataset in this.optionsStaticData) {
         for (const [key, value] of Object.entries(
           this.optionsStaticData[this.activeDataset.dataset]
