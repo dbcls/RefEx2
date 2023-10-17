@@ -419,46 +419,48 @@
         };
         const textFilter = (fullText, inputText) => {
           const reg = new RegExp(inputText, 'gi');
-          const isMatch = reg.test(fullText);
-          if (inputText.length > 0 && isMatch) return fullText.replaceAll(reg);
+          if (inputText.length > 0 && reg.test(fullText))
+            return fullText.replaceAll(reg);
         };
         const createNumberList = str =>
           str
             .replace('-', ',')
             .split(',')
             .map(x => parseInt(x) || 'out of filter bounds');
-        const filtered = copy.filter(result => {
+        const filtered = this.results.filter(result => {
           let isFiltered = false;
           for (const filter of this.filters) {
-            const key = filter.column;
-            if (!filter.is_displayed) continue;
+            const { column, is_displayed, options, filterModal } = filter;
+            if (!is_displayed) continue;
             // options filter
-            else if (filter.options) {
-              if (typeof filter.filterModal === 'string') {
-                if (this.tableType === 'index') return !isFiltered;
+            if (options) {
+              if (typeof filterModal === 'string') {
+                // if (this.tableType === 'index') return !isFiltered;
                 this.$store.commit(`update_${this.tableType}_filters`, {
-                  filter: [filter.filterModal],
+                  filter: [filterModal],
                   type: this.filterType,
                 });
               }
-              if (!filter.filterModal.includes(result[key])) isFiltered = true;
+              if (!filterModal.includes(result[column])) isFiltered = true;
             }
             // number filter
             else if (
-              typeof filter.filterModal === 'number' ||
-              Array.isArray(filter.filterModal)
+              typeof filterModal === 'number' ||
+              Array.isArray(filterModal)
             ) {
               // checks if all values are in range. Creates a list in case of Age due to multiple values in string form
               const n =
-                key === 'Age' ? createNumberList(result[key]) : [result[key]];
-              if (n.find(x => inRange(x, filter.filterModal)) === undefined)
+                column === 'Age'
+                  ? createNumberList(result[column])
+                  : [result[column]];
+              if (n.find(x => inRange(x, filterModal)) === undefined)
                 isFiltered = true;
             }
             // text filter
-            else if (filter.filterModal !== '' && !isFiltered) {
+            else if (filterModal !== '' && !isFiltered) {
               // exact match if filter is based on API options
-              const isMatch = textFilter(result[key], filter.filterModal);
-              isFiltered = filter.filterModal !== '' && !isMatch;
+              const isMatch = textFilter(result[column], filterModal);
+              isFiltered = filterModal !== '' && !isMatch;
             }
           }
           return !isFiltered;
@@ -466,8 +468,7 @@
         this.updateProjectTableHead();
         const multisortData = data =>
           _.orderBy(data, this.columnSortersArray, this.ordersArray);
-        const filteredSortedData = multisortData(filtered);
-        return filteredSortedData;
+        return multisortData(filtered);
       },
     },
     watch: {
