@@ -4,16 +4,10 @@
   <div>
     <div class="filter_search_condition">
       <!-- // TODO: Delete if multiple queries is able -->
-      <template v-if="!activeFilterObj.method">
-        <b>{{
-          getActiveGeneFilter.id === '' ? 'NO' : getActiveGeneFilter.title
-        }}</b>
-        filter will be applied to the search conditions.
-      </template>
-      <template v-else>
-        <b>Filter by {{ activeFilterObj.method }}</b> will be applied to the
-        search conditions.
-      </template>
+      <b>{{
+        getActiveGeneFilter.id === '' ? 'NO' : getActiveGeneFilter.title
+      }}</b>
+      filter will be applied to the search conditions.
     </div>
     <ScreenerView id="chr" title="Genes with Chr"
       ><client-only>
@@ -213,13 +207,35 @@
       isInitialState(newVal) {
         this.$emit('setChildIsInitialState', newVal);
       },
+      getActiveGeneFilter() {
+        this.resetUpdateParameters();
+      },
       parameters() {
-        this.$emit('updateParameters', {
-          go: this.goTermString,
-          chromosomePosition: this.chrValue.join(),
-          typeOfGene: this.TOGValue.join(),
-          filter: this.filterValue,
-        });
+        // TODO: This is a temporary response and needs to be corrected when multiple searches are performed
+        switch (this.getActiveGeneFilter.id) {
+          case 'chr':
+            this.$emit('updateParameters', {
+              chromosomePosition: this.chrValue.join(),
+            });
+            break;
+          case 'type_of_gene':
+            this.$emit('updateParameters', {
+              typeOfGene: this.TOGValue.join(),
+            });
+            break;
+          case 'go_term':
+            this.$emit('updateParameters', {
+              go: this.goTermString,
+            });
+            break;
+          case 'filter_TPM':
+          case 'filter_specificity_ROKU':
+          case 'filter_specificity_tau':
+            this.$emit('updateParameters', {
+              filter: this.filterValue,
+            });
+            break;
+        }
       },
       chrValue() {
         const chrCondition = {
