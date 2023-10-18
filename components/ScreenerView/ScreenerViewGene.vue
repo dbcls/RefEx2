@@ -2,102 +2,107 @@
   <!-- v-html setup neccesary for plugin, does NOT use user input/API data and is therefore safe to use -->
   <!-- eslint-disable vue/no-v-html -->
   <div>
-    <h3>Genes with Chr</h3>
-    <client-only>
-      <multi-select
-        v-model="chrValue"
-        :allow-empty="true"
-        :close-on-select="false"
-        placeholder=""
-        :options="chrOptions"
-        :multiple="true"
-        ><template slot="option" slot-scope="props">
-          <div class="option">
-            <input
-              :checked="chrValue.includes(props.option)"
-              type="checkbox"
-              :value="props.option.name"
-            />
-            <span class="option__small">{{ props.option }}</span>
-            <!-- <font-awesome-icon icon="exclamation-triangle" /> -->
-          </div>
-        </template>
-      </multi-select>
-    </client-only>
-
-    <h3>Genes with Type of Gene</h3>
-    <client-only>
-      <multi-select
-        v-model="TOGValue"
-        :allow-empty="true"
-        :close-on-select="false"
-        placeholder=""
-        :options="TOGOptions"
-        :multiple="true"
-        ><template slot="option" slot-scope="props">
-          <div class="option">
-            <input
-              type="checkbox"
-              :checked="TOGValue.includes(props.option)"
-              :value="props.option.name"
-            />
-            <span class="option__small">{{ props.option }}</span>
-            <!-- <font-awesome-icon icon="exclamation-triangle" /> -->
-          </div>
-        </template>
-      </multi-select>
-    </client-only>
-
-    <h3>
-      Genes with GO Term
-      <span class="example"
-        >e.g.
-        <span
-          class="sample_value"
-          @click="
-            handleSingleTagUpdate('GO:0008134', 'transcription factor binding')
-          "
-          >transcription factor binding</span
-        >,
-        <span
-          class="sample_value"
-          @click="handleSingleTagUpdate('GO:0030154', 'cell differentiation')"
-          >cell differentiation
-        </span>
-      </span>
-    </h3>
-    <client-only>
-      <vue-tags-input
-        v-model="temporaryParameters.goTerm"
-        :tags="parameters.go"
-        :autocomplete-items="autoComplete.go"
-        :max-tags="1"
-        add-only-from-autocomplete
-        :placeholder="placeholderGOTerm"
-        :class="{ hide_caret: hideCaret }"
-        @input="updateAutoComplete"
-        @tags-changed="setTags($event, 'go')"
-      >
-        <div
-          slot="autocomplete-item"
-          slot-scope="{ item }"
-          class="my-item"
-          @click="handleSingleTagUpdate(item.id, item.text)"
-          v-html="$highlightedSuggestion(item.text, temporaryParameters.goTerm)"
-        ></div>
-      </vue-tags-input>
-    </client-only>
     <div class="filter_search_condition">
       <!-- // TODO: Delete if multiple queries is able -->
-      <template v-if="!activeFilterObj.method">
-        <b>None</b> of the following filters will be applied to the search
-        conditions.
-      </template>
-      <template v-else>
-        <b>Filter by {{ activeFilterObj.method }}</b> will be applied to the
-        search conditions.
-      </template>
+      <b>{{
+        getActiveGeneFilter.id === '' ? 'NO' : getActiveGeneFilter.title
+      }}</b>
+      filter will be applied to the search conditions.
     </div>
+    <ScreenerView id="chr" title="Genes with Chr"
+      ><client-only>
+        <multi-select
+          v-model="chrValue"
+          :allow-empty="true"
+          :close-on-select="false"
+          placeholder=""
+          :options="chrOptions"
+          :multiple="true"
+          ><template slot="option" slot-scope="props">
+            <div class="option">
+              <input
+                :checked="chrValue.includes(props.option)"
+                type="checkbox"
+                :value="props.option.name"
+              />
+              <span class="option__small">{{ props.option }}</span>
+              <!-- <font-awesome-icon icon="exclamation-triangle" /> -->
+            </div>
+          </template>
+        </multi-select>
+      </client-only></ScreenerView
+    >
+
+    <ScreenerView id="type_of_gene" title="Genes with Type of Gene">
+      <client-only>
+        <multi-select
+          v-model="TOGValue"
+          :allow-empty="true"
+          :close-on-select="false"
+          placeholder=""
+          :options="TOGOptions"
+          :multiple="true"
+          ><template slot="option" slot-scope="props">
+            <div class="option">
+              <input
+                type="checkbox"
+                :checked="TOGValue.includes(props.option)"
+                :value="props.option.name"
+              />
+              <span class="option__small">{{ props.option }}</span>
+              <!-- <font-awesome-icon icon="exclamation-triangle" /> -->
+            </div>
+          </template>
+        </multi-select>
+      </client-only>
+    </ScreenerView>
+
+    <ScreenerView id="go_term" title="Genes with GO Term">
+      <div class="example_wrapper">
+        <span class="example"
+          >e.g.
+          <span
+            class="sample_value"
+            @click="
+              handleSingleTagUpdate(
+                'GO:0008134',
+                'transcription factor binding'
+              )
+            "
+            >transcription factor binding</span
+          >,
+          <span
+            class="sample_value"
+            @click="handleSingleTagUpdate('GO:0030154', 'cell differentiation')"
+            >cell differentiation
+          </span>
+        </span>
+      </div>
+      <client-only>
+        <vue-tags-input
+          v-model="temporaryParameters.goTerm"
+          :tags="parameters.go"
+          :autocomplete-items="autoComplete.go"
+          :max-tags="1"
+          add-only-from-autocomplete
+          :placeholder="placeholderGOTerm"
+          :class="{ hide_caret: hideCaret }"
+          @input="updateAutoComplete"
+          @tags-changed="setTags($event, 'go')"
+        >
+          <div
+            slot="autocomplete-item"
+            slot-scope="{ item }"
+            class="my-item"
+            @click="handleSingleTagUpdate(item.id, item.text)"
+            v-html="
+              $highlightedSuggestion(item.text, temporaryParameters.goTerm)
+            "
+          ></div>
+        </vue-tags-input>
+      </client-only>
+    </ScreenerView>
+
     <ScreenerViewGeneFilter
       v-for="(filter, index) of geneFilters"
       :key="index"
@@ -120,6 +125,7 @@
   import datasets from '~/refex-sample/datasets.json';
   import geneFilters from '~/refex-sample/gene_filters.json';
   import ScreenerViewGeneFilter from './ScreenerViewGeneFilter.vue';
+  import ScreenerView from './ScreenerView.vue';
 
   const stringifiedGeneFilters = JSON.stringify(geneFilters);
   const stringifiedDatasets = JSON.stringify(datasets);
@@ -151,7 +157,7 @@
   };
 
   export default {
-    components: { MultiSelect, ScreenerViewGeneFilter },
+    components: { MultiSelect, ScreenerViewGeneFilter, ScreenerView },
     data() {
       return {
         autocompleteStaticData: {},
@@ -175,6 +181,7 @@
         activeFilter: 'active_filter',
         searchConditions: 'get_search_conditions',
         getScreenerFilterList: 'get_screener_filter_list',
+        getActiveGeneFilter: 'get_active_gene_filter',
       }),
       goTermString() {
         if (this.parameters.go.length === 0) return '';
@@ -200,13 +207,35 @@
       isInitialState(newVal) {
         this.$emit('setChildIsInitialState', newVal);
       },
+      getActiveGeneFilter() {
+        this.resetUpdateParameters();
+      },
       parameters() {
-        this.$emit('updateParameters', {
-          go: this.goTermString,
-          chromosomePosition: this.chrValue.join(),
-          typeOfGene: this.TOGValue.join(),
-          filter: this.filterValue,
-        });
+        // TODO: This is a temporary response and needs to be corrected when multiple searches are performed
+        switch (this.getActiveGeneFilter.id) {
+          case 'chr':
+            this.$emit('updateParameters', {
+              chromosomePosition: this.chrValue.join(),
+            });
+            break;
+          case 'type_of_gene':
+            this.$emit('updateParameters', {
+              typeOfGene: this.TOGValue.join(),
+            });
+            break;
+          case 'go_term':
+            this.$emit('updateParameters', {
+              go: this.goTermString,
+            });
+            break;
+          case 'filter_TPM':
+          case 'filter_specificity_ROKU':
+          case 'filter_specificity_tau':
+            this.$emit('updateParameters', {
+              filter: this.filterValue,
+            });
+            break;
+        }
       },
       chrValue() {
         const chrCondition = {
@@ -258,6 +287,7 @@
       ...mapMutations({
         setSearchConditions: 'set_search_conditions',
         setScreenerFilterList: 'set_screener_filter_list',
+        setActiveGeneFilter: 'set_active_gene_filter',
       }),
       resetUpdateParameters() {
         this.$emit('updateParameters', {});
