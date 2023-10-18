@@ -3,7 +3,7 @@
     <h2 class="category_title">Datasets</h2>
     <div class="datasets_contents">
       <h3 class="dataset_name">Human</h3>
-      <table>
+      <table class="datasets_table">
         <thead>
           <tr>
             <th>Dataset name</th>
@@ -95,7 +95,7 @@
       </table>
 
       <h3 class="dataset_name">Mouse</h3>
-      <table>
+      <table table class="datasets_table">
         <thead>
           <tr>
             <th>Dataset name</th>
@@ -142,7 +142,7 @@
       </table>
 
       <h3 class="dataset_name">Arabidopsis thaliana</h3>
-      <table>
+      <table table class="datasets_table">
         <thead>
           <tr>
             <th>Dataset name</th>
@@ -206,7 +206,7 @@
       </table>
 
       <h3 class="dataset_name">Drosophila melanogaster (Fruit fly)</h3>
-      <table>
+      <table table class="datasets_table">
         <thead>
           <tr>
             <th>Dataset name</th>
@@ -298,7 +298,7 @@
     margin-bottom: 2px
   .dataset_name:first-child
     margin-top: 16px
-  table
+  .datasets_table
     font-size: 14px
     border-spacing: 0px 10px
     width: 100%
