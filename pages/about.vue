@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2 class="category_title">About</h2>
-    <div>
+    <div class="about_contents">
       <p>
         RefEx2 is a web tool designed to facilitate the search for transcriptome
         datasets of various species, which serve as references for gene
@@ -59,15 +59,14 @@
     margin-top: 15px
     border-top: 3px solid $MAIN_COLOR
     display: flex
-    padding: 60px 160px 0
+    flex-direction: column
+    padding: 80px 15%
   .category_title
     color: $MAIN_COLOR
     padding-right: 150px
     font-size: 34px
     margin: 0
-    > p
-      padding-bottom: 20px
-      font-size: 18px
-      line-height: 2em
-      margin: 0
+  .about_contents
+    p
+      line-height: 1.5
 </style>
