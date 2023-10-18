@@ -119,7 +119,7 @@
     <template v-else-if="filterType === 'sample'">
       <div class="summary_check_wrapper"></div>
     </template>
-    <ScreenerView ref="screenerView" :key="$vnode.key">
+    <ScreenerView ref="screenerView" :key="$vnode.key" title="Screener" master>
       <component
         :is="`screener-view-${filterType}`"
         @updateParameters="updateParams"
@@ -266,12 +266,6 @@
       if (this.filterType === 'gene' && this.searchConditions.gene.summary) {
         this.isSummaryIncluded = this.searchConditions[this.filterType].summary;
       }
-      setTimeout(() => {
-        const mainInputField = this.$refs.searchInput.inputElement;
-        if (!Boolean(mainInputField.value)) {
-          mainInputField.focus(), 10;
-        }
-      });
     },
     methods: {
       ...mapMutations({
@@ -339,8 +333,19 @@
             query,
           })
           .then(results => {
+            const resultArray = Object.values(results.data[this.queryPrefix]);
+            const compareItems = (a, b) => a.symbol.localeCompare(b.symbol);
+            const matchingItems = resultArray.filter(
+              item => item.symbol === suggestion
+            );
+            const nonMatchingItems = resultArray.filter(
+              item => item.symbol !== suggestion
+            );
+            matchingItems.sort(compareItems);
+            nonMatchingItems.sort(compareItems);
+            const sortedResultArray = matchingItems.concat(nonMatchingItems);
             this.isLoading = false;
-            return results.data[this.queryPrefix];
+            return sortedResultArray;
           });
       },
       showResults(type = 'all') {
@@ -352,7 +357,6 @@
           this.isSummaryIncluded = false;
         this.$axios
           .$post('gql', {
-            // TODO:
             query: this.suggestQuery,
           })
           .then(result => {
@@ -511,4 +515,6 @@
           +button
           margin-top: 26px
           margin-bottom: 50px
+  .screener_wrapper
+    padding: 10px 34px
 </style>
