@@ -325,6 +325,10 @@
         activeDataset: 'active_dataset',
         activeFilter: 'active_filter',
       }),
+      geneIdListForCopy() {
+        const geneIdList = this.filteredSortedData?.map(({ geneid }) => geneid);
+        return geneIdList.join('\r\n');
+      },
       resultsUniqueKeys() {
         return this.results.map(item => item[this.keyForId]);
       },

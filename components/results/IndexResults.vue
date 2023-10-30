@@ -7,7 +7,7 @@
         <DownloadButton
           ref="downloadButton"
           :data-cy="`${$vnode.key}_download_button`"
-          :download-data="resultsDisplayed"
+          :download-data="$refs.mutlisortResults?.filteredSortedData"
           :file-name="tsvTitle"
           :fields-array="indexTableHead"
           :disabled="resultsDisplayed.length === 0"
@@ -16,7 +16,7 @@
           v-if="filterType === 'gene'"
           icon="copy"
           text="Copy Gene ID(s)"
-          :content="geneIdListForCopy"
+          :content="$refs.mutlisortResults?.geneIdListForCopy"
           :disabled="
             !filtersDisplayed.includes('geneid') ||
             resultsDisplayed.length === 0
@@ -193,10 +193,6 @@
       tsvTitle() {
         const today = this.$getToday();
         return `RefEx2_${this.activeSpecie.species_id}_${this.activeDataset.dataset}_${this.filterType}_search_results_${today}.tsv`;
-      },
-      geneIdListForCopy() {
-        const geneIdList = this.resultsCached?.map(({ geneid }) => geneid);
-        return geneIdList.join('\r\n');
       },
     },
     watch: {
