@@ -1,5 +1,5 @@
 <template>
-  <div class="multisort-result">
+  <div class="multisort-result" :class="[tableType]">
     <section class="table-wrapper">
       <table v-if="tableType === 'index'">
         <thead>
@@ -626,6 +626,9 @@
   };
 </script>
 <style lang="sass" scoped>
+  .multisort-result
+    &.project
+      margin: 0 20px
   .table-wrapper
     table
       +table

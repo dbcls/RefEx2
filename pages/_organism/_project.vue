@@ -505,6 +505,4 @@
             > .reset_btn, .show_all_btn
               +button
               +sub_button
-  .multisort-result
-    margin: 0 20px
 </style>
