@@ -353,10 +353,11 @@
       },
       columnSortersArray() {
         const arr = [];
+        const numericalStringKeys = ['ncbiGeneId', 'geneid'];
         for (const column of this.columnsArray) {
           const sorter = data =>
-            column === 'ncbiGeneId'
-              ? parseInt(data[column], 10)
+            numericalStringKeys.includes(column)
+              ? Number(data[column])
               : typeof data[column] === 'string'
               ? data[column].toLowerCase()
               : data[column];
