@@ -108,7 +108,6 @@ export const getters = {
   },
   active_filter_modal(state) {
     return (
-      state.index_filters['gene'].find(x => x.column === state.filter_modal) ||
       state.project_filters.find(x => x.column === state.filter_modal) ||
       null
     );

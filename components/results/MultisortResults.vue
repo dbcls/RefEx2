@@ -434,7 +434,6 @@
             // options filter
             if (options) {
               if (typeof filterModal === 'string') {
-                // if (this.tableType === 'index') return !isFiltered;
                 this.$store.commit(`update_${this.tableType}_filters`, {
                   filter: [filterModal],
                   type: this.filterType,
