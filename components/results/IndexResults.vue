@@ -410,9 +410,4 @@
         cursor: pointer
         > svg
           margin-left: 5px
-      > tbody
-        > tr
-          > td
-            > a
-              +link_with_icon
 </style>
