@@ -47,121 +47,10 @@
       :results-num="resultsNum"
       :key-for-id="keyForId"
     />
-    <table :data-cy="`${$vnode.key}_index_table`">
-      <thead :data-cy="`${$vnode.key}_index_thead`">
-        <tr>
-          <th class="checkbox">
-            <input
-              type="checkbox"
-              :checked="isAllChecked"
-              @click="toggleAllCheckbox"
-            />
-          </th>
-          <th v-if="filterType === 'sample'">Description</th>
-          <th
-            v-for="(filter, index) of filters"
-            v-show="filter.is_displayed"
-            :key="index"
-          >
-            {{ filter.label }}
-          </th>
-        </tr>
-      </thead>
-      <tbody :data-cy="`${$vnode.key}_index_tbody`">
-        <td
-          v-if="resultsCached.length === 0"
-          class="warning"
-          :colspan="filters.filter(x => x.is_displayed).length + 2"
-        >
-          <font-awesome-icon icon="exclamation-triangle" />
-          <template v-if="resultsNum === 0"
-            >No results found. Please check the spelling or try other
-            keywords.</template
-          >
-          <template v-else>
-            Please press the 'Find {{ filterType }}s' button to update the
-            results to the current screener settings.
-          </template>
-        </td>
-        <tr
-          v-for="(result, resultIndex) in pageItems"
-          v-else
-          :key="`result_${resultIndex}`"
-          :data-cy="`${$vnode.key}_index_result_${resultIndex}`"
-        >
-          <td class="checkbox" @click="e => e.stopPropagation()">
-            <input
-              v-model="checkedResults[activeFilter.name]"
-              type="checkbox"
-              :value="result[keyForId]"
-              @change="handleChange"
-            />
-          </td>
-          <td v-if="filterType === 'sample'">
-            <a
-              class="text_with_icon"
-              @click="moveToProjectPage(result['refexSampleId'])"
-            >
-              <font-awesome-icon icon="flask" />
-              {{ result.Description }}
-              <font-awesome-icon
-                icon="info-circle"
-                @click.stop="setSampleModal(result['refexSampleId'])"
-              />
-            </a>
-          </td>
-          <td
-            v-for="(filter, index) of filters"
-            v-show="filter.is_displayed"
-            :key="index"
-            :class="filter.column.replaceAll(' ', '_')"
-          >
-            <img
-              v-if="filter.column === 'gene expression patterns'"
-              :src="geneSummarySource(result.geneid)"
-              :alt="result.geneid"
-            />
-            <a
-              v-else-if="filter.column === 'symbol'"
-              class="text_with_icon"
-              @click="moveToProjectPage(result['geneid'])"
-              ><font-awesome-icon class="left_icon" icon="dna" />
-              {{ result[filter.column] }}
-              <font-awesome-icon
-                icon="info-circle"
-                @click.stop="setGeneModal(result.geneid)"
-              />
-            </a>
-            <a
-              v-else-if="filter.column === 'geneid'"
-              class="text_with_icon"
-              target="_blank"
-              :href="datasetInfo.url_prefix + result.geneid"
-            >
-              {{ result[filter.column] }}
-              <font-awesome-icon icon="external-link-alt" />
-            </a>
-            <span
-              v-else-if="$isArrayLikeString(result[filter.column])"
-              :key="index"
-            >
-              {{ JSON.parse(result[filter.column]).join(', ') }}
-            </span>
-            <template v-else-if="$hasStringQuotes(result[filter.column])">
-              {{ result[filter.column].replaceAll('"', '') }}
-            </template>
-            <template v-else> {{ result[filter.column] }}</template>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <ResultsPagination :pages-number="pagesNumber" table-type="index" />
   </div>
 </template>
 <script>
   import { mapGetters, mapMutations } from 'vuex';
-  import ResultsPagination from '~/components/results/ResultsPagination.vue';
-  import DownloadButton from '../DownloadButton.vue';
   import filters from '~/static/filters.json';
   import MultisortResults from '~/components/results/MultisortResults.vue';
   import { createNumberSorter } from '~/utilities/index.js';
@@ -175,8 +64,6 @@
 
   export default {
     components: {
-      ResultsPagination,
-      DownloadButton,
       MultisortResults,
     },
     props: {
