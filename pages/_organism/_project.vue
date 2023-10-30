@@ -117,6 +117,7 @@
   import ItemComparison from '~/components/results/ItemComparison.vue';
   import MultisortResults from '~/components/results/MultisortResults.vue';
   import LocalNavigation from '../../components/search/LocalNavigation/LocalNavigation.vue';
+  import { createNumberSorter } from '~/utilities/index.js';
 
   const logMedianFilter = {
     column: 'LogMedian',
@@ -170,32 +171,6 @@
             isError = true;
           }
           resultsAll[id] = data.refex_info.map((result, index) => {
-            const createNumberSorter = str => {
-              if (str === undefined) return;
-              const toNum = str => {
-                const numOrStr = parseInt(str);
-                return Number.isNaN(numOrStr) ? str : numOrStr;
-              };
-              let order = toNum(str);
-              if (typeof order === 'string') {
-                order.toUpperCase();
-                switch (order) {
-                  case 'X':
-                    order = 23;
-                    break;
-                  case 'Y':
-                    order = 24;
-                    break;
-                  case 'MT':
-                    order = 25;
-                    break;
-                  case '-':
-                    order = 26;
-                    break;
-                }
-              }
-              return order;
-            };
             result.chromosomePositionInt = createNumberSorter(
               result.chromosomePosition
             );
