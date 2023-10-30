@@ -108,8 +108,7 @@ export const getters = {
   },
   active_filter_modal(state) {
     return (
-      state.project_filters.find(x => x.column === state.filter_modal) ||
-      null
+      state.project_filters.find(x => x.column === state.filter_modal) || null
     );
   },
   compare_modal(state) {

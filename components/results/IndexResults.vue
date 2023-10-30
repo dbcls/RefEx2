@@ -241,6 +241,7 @@
       results() {
         const results = this.resultsByName(this.filterType).results;
         for (const result of results) {
+          // enable sorting chromosome
           if (result.chromosomePosition) {
             result.chromosomePositionInt = createNumberSorter(
               result.chromosomePosition
