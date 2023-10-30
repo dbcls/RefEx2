@@ -623,13 +623,12 @@
 </script>
 <style lang="sass" scoped>
   .table-wrapper
-    margin: 0 20px
     table
       +table
-      > thead
-        > tr
-          > th:last-child
-            width: 100%
+      // > thead
+      //   > tr
+      //     > th:last-child
+      //       width: 100%
       > tbody
         > tr
           > td
@@ -644,17 +643,14 @@
                 font-size: 11px
                 color: $MAIN_COLOR
                 cursor: pointer
-          > td:last-child
-            width: 100%
+          // > td:last-child
+          //   width: 100%
   .pagination
     display: flex
     position: sticky
     left: 0
     width: 100%
-    // min-width: calc(100vw - 55px)
-    // max-width: fit-content
     position: sticky
     background-color: white
     top: 0
-    // padding: $PADDING_WRAPPER
 </style>
