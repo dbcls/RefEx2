@@ -1,5 +1,5 @@
 <template>
-  <div class="table_header">
+  <div class="table_header" :class="[tableType, id]">
     <div v-if="columnNoFunction.includes(id)" :class="{ '-column': note }">
       <div>
         <div class="label">{{ label }}</div>

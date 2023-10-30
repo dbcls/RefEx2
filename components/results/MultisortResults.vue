@@ -129,7 +129,6 @@
               <TableHeader
                 :id="filter.column"
                 v-bind="filter"
-                :class="filter.column"
                 :columns-array="columnsArray"
                 :orders-array="ordersArray"
                 table-type="project"
