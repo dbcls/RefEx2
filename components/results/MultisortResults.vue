@@ -626,6 +626,9 @@
     table
       +table
       > tbody
+        .warning
+          +warning
+          padding: 40px
         > tr
           > td
             > a

@@ -411,9 +411,6 @@
         > svg
           margin-left: 5px
       > tbody
-        > .warning
-          +warning
-          padding: 40px
         > tr
           > td
             > a
