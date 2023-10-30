@@ -31,7 +31,11 @@
           }
         "
       >
-        <font-awesome-icon icon="search" :class="{ active: isActiveSearch }" />
+        <font-awesome-icon
+          v-if="tableType === 'project'"
+          icon="search"
+          :class="{ active: isActiveSearch }"
+        />
       </div>
     </div>
   </div>
