@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="multisort-result">
     <section class="table-wrapper">
       <table v-if="tableType === 'index'">
         <thead>
@@ -625,10 +625,6 @@
   .table-wrapper
     table
       +table
-      // > thead
-      //   > tr
-      //     > th:last-child
-      //       width: 100%
       > tbody
         > tr
           > td
@@ -643,8 +639,6 @@
                 font-size: 11px
                 color: $MAIN_COLOR
                 cursor: pointer
-          // > td:last-child
-          //   width: 100%
   .pagination
     display: flex
     position: sticky

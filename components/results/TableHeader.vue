@@ -148,14 +148,6 @@
     align-items: center
     justify-content: flex-start
     white-space: nowrap
-    &.index
-      // min-width: 150px
-      // &.Description
-      //   min-width: 450px
-      // &.symbol
-      //   min-width: 150px
-      // &.name
-      //   min-width: 300px
     &.project
       min-width: 150px
       &.Description
