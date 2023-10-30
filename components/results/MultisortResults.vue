@@ -320,6 +320,7 @@
         projectItems: 'get_project_items',
         paginationObject: 'get_project_pagination',
         geneSummarySource: 'gene_summary_source',
+        routeToProjectPage: 'route_to_project_page',
         routeToOtherProjectPage: 'route_to_other_project_page',
         filterObj: 'active_filter_modal',
         activeDataset: 'active_dataset',
