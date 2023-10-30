@@ -164,6 +164,7 @@
   import DownloadButton from '../DownloadButton.vue';
   import filters from '~/static/filters.json';
   import MultisortResults from '~/components/results/MultisortResults.vue';
+  import { createNumberSorter } from '~/utilities/index.js';
 
   const initialState = () => {
     return {
@@ -238,7 +239,15 @@
         );
       },
       results() {
-        return this.resultsByName(this.filterType).results;
+        const results = this.resultsByName(this.filterType).results;
+        for (const result of results) {
+          if (result.chromosomePosition) {
+            result.chromosomePositionInt = createNumberSorter(
+              result.chromosomePosition
+            );
+          }
+        }
+        return results;
       },
       pageItems() {
         return this.resultsCached.slice(
