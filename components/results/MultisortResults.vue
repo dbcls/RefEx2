@@ -650,10 +650,11 @@
     display: flex
     position: sticky
     left: 0
-    min-width: calc(100vw - 55px)
-    max-width: fit-content
+    width: 100%
+    // min-width: calc(100vw - 55px)
+    // max-width: fit-content
     position: sticky
     background-color: white
     top: 0
-    padding: $PADDING_WRAPPER
+    // padding: $PADDING_WRAPPER
 </style>
