@@ -626,7 +626,6 @@
   .table-wrapper
     margin: 0 20px
     table
-      white-space: nowrap
       +table
       > thead
         > tr
