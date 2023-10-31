@@ -101,6 +101,8 @@
       :height-chart-wrapper="heightChartWrapper"
       :results="resultsWithCombinedMedians"
       :filters="projectFilters"
+      :tsv-title="tsvTitle"
+      :fields-array="projectTableHead"
       @currentPageIdChanged="handleCurrentPageIdChanged"
     />
   </div>

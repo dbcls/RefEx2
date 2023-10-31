@@ -1,22 +1,21 @@
 <template>
   <div class="multisort-result" :class="[tableType]">
     <div class="results_title_wrapper">
-      <h2>Matching {{ filterType }}s</h2>
+      <h2 v-if="tableType === 'index'">Matching {{ filterType }}s</h2>
       <div class="button_wrapper">
-        <ComparisonButton />
+        <ComparisonButton v-if="tableType === 'index'" />
         <DownloadButton
           ref="downloadButton"
-          :data-cy="`${$vnode.key}_download_button`"
-          :download-data="$refs.mutlisortResults?.filteredSortedData"
+          :download-data="filteredSortedData"
           :file-name="tsvTitle"
-          :fields-array="indexTableHead"
+          :fields-array="fieldsArray"
           :disabled="resultsDisplayed.length === 0"
         />
         <CopyButton
           v-if="filterType === 'gene'"
           icon="copy"
           text="Copy Gene ID(s)"
-          :content="$refs.mutlisortResults?.geneIdListForCopy"
+          :content="geneIdListForCopy"
           :disabled="
             !filtersDisplayed.includes('geneid') ||
             resultsDisplayed.length === 0
@@ -26,7 +25,7 @@
       <div class="display_settings_wrapper">
         <button
           class="reset_btn"
-          :disabled="!isSortingColumns"
+          :disabled="!isSortColumns"
           @click="clearSortArray"
         >
           <font-awesome-icon icon="rotate-right" />
@@ -319,6 +318,10 @@
         type: Array,
         default: () => [],
       },
+      fieldsArray: {
+        type: Array,
+        default: () => [],
+      },
       heightChartWrapper: {
         type: Number,
         default: 200,
@@ -338,6 +341,10 @@
       resultsNum: {
         type: Number,
         default: 0,
+      },
+      tsvTitle: {
+        type: String,
+        default: '',
       },
     },
     data() {
@@ -516,9 +523,6 @@
       currentPageId(newVal) {
         this.$emit('currentPageIdChanged', newVal);
       },
-      isSortColumns(newVal) {
-        this.setIsSortingColumns(newVal);
-      },
       resultsDisplayed: {
         handler(newVal) {
           if (newVal.length > 0) {
@@ -527,9 +531,6 @@
         },
         deep: true,
       },
-    },
-    created() {
-      this.setIsSortingColumns(false);
     },
     mounted() {
       if (this.tableType === 'project') {
@@ -546,7 +547,6 @@
         setFilterSearchValue: 'set_filter_search_value',
         setFilterModal: 'set_filter_modal',
         setIsSampleModalMessage: 'set_is_sample_modal_message',
-        setIsSortingColumns: 'set_is_sorting_columns',
         setCheckedResults: 'set_checked_results',
       }),
       moveToProjectPage(route) {

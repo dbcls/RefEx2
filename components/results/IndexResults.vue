@@ -46,6 +46,9 @@
       :filters="filters"
       :results-num="resultsNum"
       :key-for-id="keyForId"
+      :tsv-title="tsvTitle"
+      :fields-array="indexTableHead"
+      @toggleDisplaySettings="$emit('toggleDisplaySettings')"
     />
   </div>
 </template>
