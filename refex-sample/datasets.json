@@ -33,8 +33,7 @@
               "note": "FANTOM5",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "ExperimentCategory",
@@ -42,8 +41,7 @@
               "note": "FANTOM5",
               "is_checkbox": true,
               "is_displayed": false,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "UberonLabel",
@@ -52,8 +50,7 @@
               "is_checkbox": false,
               "examples": ["skin", "liver"],
               "is_displayed": true,
-              "is_ontology": true,
-              "filterModal": ""
+              "is_ontology": true
             },
             {
               "column": "ClLabel",
@@ -62,8 +59,7 @@
               "is_checkbox": false,
               "examples": ["macrophage", "hepatocyte"],
               "is_displayed": true,
-              "is_ontology": true,
-              "filterModal": ""
+              "is_ontology": true
             },
             {
               "column": "NcitLabel",
@@ -72,8 +68,7 @@
               "is_checkbox": false,
               "examples": ["osteosarcoma", "Down syndrome"],
               "is_displayed": true,
-              "is_ontology": true,
-              "filterModal": ""
+              "is_ontology": true
             },
             {
               "column": "DevelopmentalStage",
@@ -81,8 +76,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": false,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "Sex",
@@ -90,8 +84,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": false,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             }
           ],
           "item_comparison_example": [
@@ -504,8 +497,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "TissueCategory",
@@ -513,8 +505,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": false,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "TissueSubcategory",
@@ -522,8 +513,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": false,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "Sex",
@@ -531,8 +521,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "Age",
@@ -540,8 +529,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             }
           ],
           "item_comparison_example": [
@@ -880,8 +868,7 @@
               "note": "FANTOM5",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "ExperimentCategory",
@@ -889,8 +876,7 @@
               "note": "FANTOM5",
               "is_checkbox": true,
               "is_displayed": false,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "UberonLabel",
@@ -899,8 +885,7 @@
               "is_checkbox": false,
               "examples": ["skin", "liver"],
               "is_displayed": true,
-              "is_ontology": true,
-              "filterModal": ""
+              "is_ontology": true
             },
             {
               "column": "ClLabel",
@@ -909,8 +894,7 @@
               "is_checkbox": false,
               "examples": ["macrophage", "hepatocyte"],
               "is_displayed": true,
-              "is_ontology": true,
-              "filterModal": ""
+              "is_ontology": true
             },
             {
               "column": "NcitLabel",
@@ -919,8 +903,7 @@
               "is_checkbox": false,
               "examples": ["erythroid neoplasm"],
               "is_displayed": true,
-              "is_ontology": true,
-              "filterModal": ""
+              "is_ontology": true
             },
             {
               "column": "DevelopmentalStage",
@@ -928,8 +911,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": false,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "Sex",
@@ -937,8 +919,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": false,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             }
           ],
           "item_comparison_example": [
@@ -1000,8 +981,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "DevelopmentalStage",
@@ -1009,8 +989,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "OrganismPart",
@@ -1018,8 +997,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "Treatment",
@@ -1027,8 +1005,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             }
           ],
           "item_comparison_example": [
@@ -1072,8 +1049,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "DevelopmentalStage",
@@ -1081,8 +1057,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "OrganismPart",
@@ -1090,8 +1065,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "SamplingSite",
@@ -1099,8 +1073,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             }
           ],
           "item_comparison_example": [
@@ -1154,8 +1127,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "Strain",
@@ -1163,8 +1135,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             },
             {
               "column": "Tissue",
@@ -1172,8 +1143,7 @@
               "note": "",
               "is_checkbox": true,
               "is_displayed": true,
-              "is_ontology": false,
-              "filterModal": ""
+              "is_ontology": false
             }
           ],
           "item_comparison_example": [
