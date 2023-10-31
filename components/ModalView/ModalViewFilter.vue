@@ -119,7 +119,6 @@
       ...mapGetters({
         filters: 'project_filters',
         filterObj: 'active_filter_modal',
-        activeFilter: 'active_filter',
         getFilterSearchValue: 'get_filter_search_value',
         tableType: 'get_table_type',
       }),
@@ -159,10 +158,9 @@
         this.searchValue = [numberValue.min, numberValue.max];
       },
       updateFilterModal(type, value) {
-        this.$store.commit(`update_${this.tableType}_filters`, {
+        this.updateProjectFilters({
           key: type,
           filter: value,
-          type: this.activeFilter.name,
         });
       },
     },
