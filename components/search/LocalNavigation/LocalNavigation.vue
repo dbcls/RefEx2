@@ -100,8 +100,6 @@
       background-color: $MAIN_COLOR
       height: 70px
       list-style-type: none
-      width: 100%
-      margin: 0
       > li
         cursor: pointer
         position: relative

@@ -87,14 +87,12 @@
     z-index: 2
     top: 0
     .nav_area
-      padding: $PADDING_WRAPPER
+      padding: 0
       margin: 0
       display: flex
       background-color: $MAIN_COLOR
       height: 70px
       list-style-type: none
-      width: 100%
-      margin: 0
       > li
         cursor: pointer
         position: relative
