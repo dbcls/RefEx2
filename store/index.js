@@ -42,7 +42,6 @@ export const state = () => ({
   active_specie: specieSets[0],
   active_filter: 'gene',
   active_dataset: specieSets[0].datasets[0],
-  index_filters: {},
   project_filters: [],
   project_filter_ranges: {
     LogMedian: [0, 18],
@@ -212,17 +211,6 @@ export const mutations = {
   set_compare_modal(state) {
     state.compare_modal = !state.compare_modal;
   },
-  set_index_filters(state, { type, filters }) {
-    filters.forEach((entry, index) => {
-      let paramsToBeMerged = {};
-      if (entry.options) {
-        const options = [...entry.options.sort((a, b) => a - b)];
-        paramsToBeMerged = { filterModal: options, options };
-      } else paramsToBeMerged = { filterModal: entry.options ? [] : '' };
-      filters[index] = { ...entry, ...paramsToBeMerged };
-    });
-    state.index_filters[type] = filters;
-  },
   set_project_filters(state, filters) {
     const copy = [...filters];
     copy.forEach((entry, index) => {
@@ -237,18 +225,6 @@ export const mutations = {
       copy[index] = { ...entry, ...paramsToBeMerged };
     });
     state.project_filters = copy;
-  },
-  update_index_filters(
-    state,
-    { key = 'filterModal', filter, filterKey = state.filter_modal, type }
-  ) {
-    const targetFilter = state.index_filters[type];
-    const targetColumnIndex = targetFilter.findIndex(
-      entry => entry.column === filterKey
-    );
-    if (targetFilter[targetColumnIndex][key] !== filter) {
-      targetFilter[targetColumnIndex][key] = filter;
-    }
   },
   update_project_filters(
     state,
