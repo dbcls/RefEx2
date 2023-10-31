@@ -1,43 +1,5 @@
 <template>
   <div class="results_wrapper">
-    <div class="results_title_wrapper">
-      <h2>Matching {{ filterType }}s</h2>
-      <div class="button_wrapper">
-        <ComparisonButton />
-        <DownloadButton
-          ref="downloadButton"
-          :data-cy="`${$vnode.key}_download_button`"
-          :download-data="$refs.mutlisortResults?.filteredSortedData"
-          :file-name="tsvTitle"
-          :fields-array="indexTableHead"
-          :disabled="resultsDisplayed.length === 0"
-        />
-        <CopyButton
-          v-if="filterType === 'gene'"
-          icon="copy"
-          text="Copy Gene ID(s)"
-          :content="$refs.mutlisortResults?.geneIdListForCopy"
-          :disabled="
-            !filtersDisplayed.includes('geneid') ||
-            resultsDisplayed.length === 0
-          "
-        />
-      </div>
-      <div class="display_settings_wrapper">
-        <button
-          class="reset_btn"
-          :disabled="!isSortingColumns"
-          @click="clearSortArray"
-        >
-          <font-awesome-icon icon="rotate-right" />
-          Reset sorting
-        </button>
-        <button class="show_all_btn" @click="$emit('toggleDisplaySettings')">
-          <font-awesome-icon icon="eye" />
-          Show/hide columns
-        </button>
-      </div>
-    </div>
     <MultisortResults
       ref="mutlisortResults"
       table-type="index"
