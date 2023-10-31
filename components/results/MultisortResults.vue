@@ -665,12 +665,10 @@
 </script>
 <style lang="sass" scoped>
   .multisort-result
-    // width: 100vw
     &.project
       margin: 0 20px
   .results_title_wrapper
     display: flex
-    // width: 100%
     align-items: center
     +sample_query
     > h2
@@ -709,7 +707,6 @@
     display: flex
     position: sticky
     left: 0
-    // width: 100%
     position: sticky
     background-color: white
     top: 0
