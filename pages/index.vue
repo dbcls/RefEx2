@@ -44,4 +44,6 @@
 
 <style lang="sass">
   +popper
+  .index_wrapper
+    min-width: fit-content
 </style>
