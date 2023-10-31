@@ -465,6 +465,11 @@
         }
       },
       filteredSortedData() {
+        const multisortData = data =>
+          _.orderBy(data, this.columnSortersArray, this.ordersArray);
+        if (this.tableType === 'index') {
+          return multisortData(this.results);
+        }
         const inRange = (x, [min, max]) => {
           return typeof x !== 'number' || (x - min) * (x - max) <= 0;
         };
@@ -486,7 +491,7 @@
             // options filter
             if (options) {
               if (typeof filterModal === 'string') {
-                this.$store.commit(`update_${this.tableType}_filters`, {
+                this.$store.commit(`update_project_filters`, {
                   filter: [filterModal],
                   type: this.filterType,
                 });
@@ -516,8 +521,6 @@
           return !isFiltered;
         });
         this.updateProjectTableHead();
-        const multisortData = data =>
-          _.orderBy(data, this.columnSortersArray, this.ordersArray);
         return multisortData(filtered);
       },
       paginationObject() {
