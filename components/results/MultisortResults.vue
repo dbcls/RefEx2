@@ -369,6 +369,8 @@
         filterObj: 'active_filter_modal',
         activeDataset: 'active_dataset',
         activeFilter: 'active_filter',
+        projectPaginationObject: 'get_project_pagination',
+        indexPaginationObject: 'index_pagination',
       }),
       geneIdListForCopy() {
         const geneIdList = this.filteredSortedData?.map(({ geneid }) => geneid);
@@ -517,6 +519,11 @@
         const multisortData = data =>
           _.orderBy(data, this.columnSortersArray, this.ordersArray);
         return multisortData(filtered);
+      },
+      paginationObject() {
+        return this.tableType === 'index'
+          ? this.indexPaginationObject
+          : this.projectPaginationObject;
       },
     },
     watch: {
