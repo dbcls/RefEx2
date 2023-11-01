@@ -12,7 +12,7 @@
           :disabled="resultsDisplayed.length === 0"
         />
         <CopyButton
-          v-if="filterType === 'gene'"
+          v-if="tableType === 'index' && filterType === 'gene'"
           icon="copy"
           text="Copy Gene ID(s)"
           :content="geneIdListForCopy"
@@ -20,6 +20,12 @@
             !filtersDisplayed.includes('geneid') ||
             resultsDisplayed.length === 0
           "
+        />
+        <CopyButton
+          v-if="tableType === 'project'"
+          icon="link"
+          text="Share"
+          :content="currentUrl"
         />
       </div>
       <div class="display_settings_wrapper">
@@ -372,6 +378,9 @@
         projectPaginationObject: 'get_project_pagination',
         indexPaginationObject: 'index_pagination',
       }),
+      currentUrl() {
+        return window.location.href;
+      },
       geneIdListForCopy() {
         const geneIdList = this.filteredSortedData?.map(({ geneid }) => geneid);
         return geneIdList.join('\r\n');
