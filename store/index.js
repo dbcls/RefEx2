@@ -79,6 +79,7 @@ export const state = () => ({
   is_sample_modal_message: false,
   options_static_data: {},
   table_type: '',
+  active_gene_filter: { id: '', title: '' },
 });
 
 export const getters = {
@@ -183,6 +184,8 @@ export const getters = {
   },
   get_table_type(state) {
     return state.table_type;
+  get_active_gene_filter(state) {
+    return state.active_gene_filter;
   },
 };
 
@@ -311,5 +314,7 @@ export const mutations = {
   },
   set_table_type(state, type) {
     state.table_type = type;
+  set_active_gene_filter(state, value) {
+    state.active_gene_filter = value;
   },
 };

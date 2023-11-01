@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <h2 class="category_title">Help</h2>
+    <div class="help_contents"></div>
   </div>
 </template>
 
@@ -41,15 +42,4 @@
   };
 </script>
 
-<style lang="sass">
-  .container
-    margin-top: 15px
-    border-top: 3px solid $MAIN_COLOR
-    display: flex
-    padding: 90px
-  .category_title
-    color: $MAIN_COLOR
-    padding-right: 150px
-    font-size: 34px
-    margin: 0
-</style>
+<style lang="sass"></style>

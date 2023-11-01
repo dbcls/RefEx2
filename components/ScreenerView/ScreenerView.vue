@@ -6,34 +6,90 @@
     :class="{ open: isOpen }"
     :data-cy="`${$vnode.key}_screener`"
   >
-    <p class="screener_title" @click="toggleScreener">
-      <font-awesome-icon icon="filter" class="filter" />
-      Screener
+    <p
+      class="screener_title"
+      :class="{ open: isOpen, active: isOpen, sub_accordion: !master }"
+      @click="toggleScreener"
+    >
+      <template v-if="master">
+        <font-awesome-icon icon="filter" class="filter" />
+        Screener
+      </template>
+      <template v-else>
+        <font-awesome-icon
+          icon="check"
+          class="filter"
+          :class="{ active: isOpen }"
+        />
+        {{ title }}
+      </template>
       <font-awesome-icon
         icon="chevron-right"
         :class="isOpen ? 'open' : 'close'"
       />
     </p>
-    <slot></slot>
+    <div class="sub_wrapper">
+      <slot></slot>
+    </div>
   </div>
 </template>
 <script>
+  import { mapGetters } from 'vuex';
+
   export default {
+    props: {
+      title: {
+        type: String,
+        default: 'Please enter a title',
+        required: true,
+      },
+      id: {
+        type: String,
+        default: '',
+      },
+      master: {
+        type: Boolean,
+        default: false,
+      },
+    },
     data() {
       return {
         isOpen: false,
       };
     },
+    computed: {
+      ...mapGetters({
+        getActiveGeneFilter: 'get_active_gene_filter',
+      }),
+    },
+    watch: {
+      '$store.state.active_gene_filter': function () {
+        if (this.master) return;
+        this.isOpen = this.id === this.$store.state.active_gene_filter.id;
+      },
+    },
     methods: {
       toggleScreener() {
         this.isOpen = !this.isOpen;
+        if (this.master) return;
+        if (this.getActiveGeneFilter.id === this.id) {
+          this.$store.commit('set_active_gene_filter', {
+            id: '',
+            title: '',
+          });
+        } else {
+          this.$store.commit('set_active_gene_filter', {
+            id: this.id,
+            title: this.title,
+          });
+        }
       },
     },
   };
 </script>
 <style lang="sass" scoped>
   .screener_wrapper
-    padding: 10px 34px
+    // padding: 10px 34px
     box-shadow: 0 1px 4px rgba(62, 70, 82, .22)
     border-radius: 3px
     height: 42px
@@ -87,10 +143,11 @@
     p
       margin: 0
       &.screener_title
-        margin-top: 3px
-        margin-bottom:10px
+        padding: 3px 0 10px 0
         display: flex
         align-items: center
+        &.sub_accordion
+          padding-bottom: 0
         > svg
           font-size: 12px
           transition: .3s
@@ -101,15 +158,21 @@
             margin-left: 10px
           &.open
             transform: rotate(90deg)
+          &[data-icon="check"]
+            font-size: 20px
+            color: $DISABLE_COLOR
         &:hover
           cursor: pointer
+        &.open
+          [data-icon="check"]
+            color: $MAIN_COLOR
     h3,h4
       display: flex
       gap: .5rem
       margin-bottom: 0.5rem
       align-items: center
-      > span
-        +sample_query
+    .example_wrapper
+      +sample_query
     input
       +text_input
       font-size: 20px
@@ -122,4 +185,6 @@
       margin-top: -7px
     .tag
       +ontology_tag
+  .sub_wrapper
+    padding: 10px 10px
 </style>
