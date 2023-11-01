@@ -55,31 +55,6 @@
           @showModal="setSampleModal"
         >
         </item-comparison>
-        <div class="results_title_wrapper">
-          <div class="align_left">
-            <DownloadButton
-              ref="downloadButton"
-              :download-data="resultsDisplayed"
-              :file-name="tsvTitle"
-              :fields-array="projectTableHead"
-            />
-            <CopyButton icon="link" text="Share" :content="currentUrl" />
-          </div>
-          <div class="align_right">
-            <button
-              class="reset_btn"
-              :disabled="!isSortingColumns"
-              @click="clearSortArray"
-            >
-              <font-awesome-icon icon="rotate-right" />
-              Reset sorting
-            </button>
-            <button class="show_all_btn" @click="toggleDisplaySettings">
-              <font-awesome-icon icon="eye" />
-              Show/hide columns
-            </button>
-          </div>
-        </div>
       </div>
     </div>
     <ModalViewDisplay
@@ -441,7 +416,7 @@
 <style lang="sass">
   .wrapper
     display: flex
-    min-width: fit-content
+    // min-width: fit-content
     flex-direction: column
     margin-bottom: 50px
     > .error

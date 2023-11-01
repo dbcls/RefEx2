@@ -12,7 +12,7 @@
           :disabled="resultsDisplayed.length === 0"
         />
         <CopyButton
-          v-if="filterType === 'gene'"
+          v-if="tableType === 'index' && filterType === 'gene'"
           icon="copy"
           text="Copy Gene ID(s)"
           :content="geneIdListForCopy"
@@ -20,6 +20,12 @@
             !filtersDisplayed.includes('geneid') ||
             resultsDisplayed.length === 0
           "
+        />
+        <CopyButton
+          v-if="tableType === 'project'"
+          icon="link"
+          text="Share"
+          :content="currentUrl"
         />
       </div>
       <div class="display_settings_wrapper">
@@ -161,7 +167,6 @@
               v-for="(filter, filterIndex) of filters"
               v-show="filter.is_displayed"
               :key="`filterIndex-${filterIndex}`"
-              :style="{ top: heightChartWrapper + 'px' }"
             >
               <TableHeader
                 :id="filter.column"
@@ -372,6 +377,9 @@
         projectPaginationObject: 'get_project_pagination',
         indexPaginationObject: 'index_pagination',
       }),
+      currentUrl() {
+        return window.location.href;
+      },
       geneIdListForCopy() {
         const geneIdList = this.filteredSortedData?.map(({ geneid }) => geneid);
         return geneIdList.join('\r\n');
@@ -465,6 +473,11 @@
         }
       },
       filteredSortedData() {
+        const multisortData = data =>
+          _.orderBy(data, this.columnSortersArray, this.ordersArray);
+        if (this.tableType === 'index') {
+          return multisortData(this.results);
+        }
         const inRange = (x, [min, max]) => {
           return typeof x !== 'number' || (x - min) * (x - max) <= 0;
         };
@@ -486,7 +499,7 @@
             // options filter
             if (options) {
               if (typeof filterModal === 'string') {
-                this.$store.commit(`update_${this.tableType}_filters`, {
+                this.$store.commit(`update_project_filters`, {
                   filter: [filterModal],
                   type: this.filterType,
                 });
@@ -516,8 +529,6 @@
           return !isFiltered;
         });
         this.updateProjectTableHead();
-        const multisortData = data =>
-          _.orderBy(data, this.columnSortersArray, this.ordersArray);
         return multisortData(filtered);
       },
       paginationObject() {
@@ -717,4 +728,17 @@
     position: sticky
     background-color: white
     top: 0
+
+  .project
+    .results_title_wrapper
+      position: sticky
+      top: 200px
+      z-index: 100
+      background-color: white
+      padding-bottom: 10px
+    .table-wrapper
+      max-height: calc(100vh - 500px)
+      overflow-x: scroll
+      th
+        top: 0 !important
 </style>
