@@ -167,7 +167,6 @@
               v-for="(filter, filterIndex) of filters"
               v-show="filter.is_displayed"
               :key="`filterIndex-${filterIndex}`"
-              :style="{ top: heightChartWrapper + 'px' }"
             >
               <TableHeader
                 :id="filter.column"
@@ -729,4 +728,16 @@
     position: sticky
     background-color: white
     top: 0
+
+  .project
+    .results_title_wrapper
+      position: sticky
+      top: 200px
+      z-index: 100
+      background-color: white
+      margin-bottom: 10px
+    .table-wrapper
+      overflow-x: scroll
+      .th
+        top: 0 !important
 </style>

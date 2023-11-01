@@ -416,7 +416,7 @@
 <style lang="sass">
   .wrapper
     display: flex
-    min-width: fit-content
+    // min-width: fit-content
     flex-direction: column
     margin-bottom: 50px
     > .error
