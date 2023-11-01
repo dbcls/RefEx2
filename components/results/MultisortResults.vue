@@ -735,9 +735,10 @@
       top: 200px
       z-index: 100
       background-color: white
-      margin-bottom: 10px
+      padding-bottom: 10px
     .table-wrapper
+      max-height: calc(100vh - 500px)
       overflow-x: scroll
-      .th
+      th
         top: 0 !important
 </style>
